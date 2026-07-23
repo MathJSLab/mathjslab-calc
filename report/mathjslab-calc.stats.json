@@ -1,9 +1,9 @@
 {
   "name": "mathjslab-calc",
-  "hash": "78fa90ce374ad120a70e",
+  "hash": "18d851c954b9fa213914",
   "version": "5.108.4",
-  "time": 14817,
-  "builtAt": 1784774429251,
+  "time": 9520,
+  "builtAt": 1784808414291,
   "publicPath": "auto",
   "outputPath": "H:\\workarea\\mathjslab-project\\mathjslab-repositories\\mathjslab-calc\\dist",
   "assetsByChunkName": {
@@ -130,7 +130,7 @@
         "mathjslab-calc.js"
       ],
       "auxiliaryFiles": [],
-      "hash": "957b8a6deedb9c018fca",
+      "hash": "fd722a46cf544a6a2cb6",
       "childrenByOrder": {},
       "id": 805,
       "siblings": [],
