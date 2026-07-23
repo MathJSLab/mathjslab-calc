@@ -1,94 +1,144 @@
 import styles from './calc-prompt-list.styles.scss';
-import { ComponentElement } from '../ComponentElement.js';
+import i18n from '../../i18n.js';
+import type WebComponentElement from '../WebComponentElement.js';
+import constructorFactory from '../constructorFactory.js';
+import createElementFactory from '../createElementFactory.js';
+import defineFactory from '../defineFactory.js';
+import keyToPostfix from '../keyToPostfix.js';
+import setContainerFactory from '../setContainerFactory.js';
+import setIdFirstFactory from '../setIdFirstFactory.js';
 import { CalcPrompt } from '../calc-prompt/calc-prompt.component.js';
 
-type CalcPromptListElements = {
-  root: HTMLElement;
-};
+export interface CalcPromptListElementEntry {
+    root: HTMLElement;
+}
+
+export type CalcPromptListElement = WebComponentElement<CalcPromptListElementEntry>;
+export const CalcPromptListElementEntryKey: (keyof CalcPromptListElementEntry)[] = ['root'] as const;
 
 export type PromptEvaluator = (prompt: CalcPrompt) => void;
 
-export class CalcPromptList extends ComponentElement<CalcPromptListElements> {
-  public static readonly tagName = 'calc-prompt-list';
-  public evaluator: PromptEvaluator = () => {};
-  private activePrompt: CalcPrompt | null = null;
+export class CalcPromptList extends HTMLElement {
+    public static readonly tagName = 'calc-prompt-list';
+    public readonly element = {} as CalcPromptListElement;
+    public static readonly elementFields: (keyof CalcPromptListElementEntry)[] = CalcPromptListElementEntryKey;
+    public static readonly elementPostfix = keyToPostfix(CalcPromptListElementEntryKey);
+    public static readonly null = null as unknown as CalcPromptList;
+    public static readonly undefined = undefined as unknown as CalcPromptList;
+    public evaluator: PromptEvaluator = () => {};
+    private activePrompt: CalcPrompt | null = null;
 
-  public constructor() {
-    super();
-    this.mountTemplate(CalcPromptList.tagName, ['root'], styles);
-  }
-
-  public connectedCallback(): void {
-    this.addEventListener('calc-prompt-evaluate', this.evaluateEvent as EventListener);
-    if (!this.activePrompt) {
-      this.appendPrompt();
+    public constructor() {
+        super();
+        constructorFactory(CalcPromptList, styles).bind(this)();
     }
-  }
 
-  public disconnectedCallback(): void {
-    this.removeEventListener('calc-prompt-evaluate', this.evaluateEvent as EventListener);
-  }
-
-  public appendPrompt(value = ''): CalcPrompt {
-    const prompt = document.createElement(CalcPrompt.tagName) as CalcPrompt;
-    prompt.value = value;
-    this.element.root.append(prompt);
-    this.activePrompt = prompt;
-    prompt.focusInput();
-    return prompt;
-  }
-
-  public insertText(text: string): void {
-    if (!this.activePrompt) {
-      this.appendPrompt();
+    public set superId(id: string) {
+        super.id = id;
     }
-    this.activePrompt!.insertText(text);
-  }
 
-  public backspace(): void {
-    const input = this.activePrompt?.element.input;
-    if (!input) {
-      return;
+    public get superId(): string {
+        return super.id;
     }
-    const start = input.selectionStart;
-    const end = input.selectionEnd;
-    if (start === end && start > 0) {
-      input.setRangeText('', start - 1, end, 'end');
-    } else {
-      input.setRangeText('', start, end, 'end');
-    }
-    input.dispatchEvent(new Event('input', { bubbles: true }));
-    input.focus();
-  }
 
-  public clearActive(): void {
-    if (this.activePrompt) {
-      this.activePrompt.value = '';
-      this.activePrompt.clearOutput();
-      this.activePrompt.focusInput();
+    public set id(id: string) {
+        this.setId(id);
     }
-  }
 
-  public evaluateActive(): void {
-    if (this.activePrompt) {
-      this.evaluate(this.activePrompt);
+    public get id(): string {
+        return super.id;
     }
-  }
 
-  private evaluate(prompt: CalcPrompt): void {
-    if (!prompt.value.trim()) {
-      return;
-    }
-    this.evaluator(prompt);
-    if (prompt === this.activePrompt) {
-      this.appendPrompt();
-    }
-  }
+    public setId: (this: CalcPromptList, id?: string) => void = setIdFirstFactory(CalcPromptList).bind(this);
+    public static readonly createElement = createElementFactory(CalcPromptList);
+    public static readonly define = defineFactory(CalcPromptList);
 
-  private readonly evaluateEvent = (event: CustomEvent<{ prompt: CalcPrompt }>): void => {
-    event.stopPropagation();
-    this.evaluate(event.detail.prompt);
-  };
+    public set container(element: HTMLElement) {
+        setContainerFactory().bind(this)(element);
+    }
+
+    public get container(): HTMLElement {
+        return this.element.container;
+    }
+
+    public connectedCallback(): void {
+        i18n.addEventListener('languagechange', this.setLanguage);
+        this.addEventListener('calc-prompt-evaluate', this.evaluateEvent as EventListener);
+        this.setLanguage();
+        if (!this.activePrompt) {
+            this.appendPrompt();
+        }
+    }
+
+    public disconnectedCallback(): void {
+        i18n.removeEventListener('languagechange', this.setLanguage);
+        this.removeEventListener('calc-prompt-evaluate', this.evaluateEvent as EventListener);
+    }
+
+    public appendPrompt(value = ''): CalcPrompt {
+        const prompt = document.createElement(CalcPrompt.tagName) as CalcPrompt;
+        prompt.value = value;
+        this.element.root.append(prompt);
+        this.activePrompt = prompt;
+        prompt.focusInput();
+        return prompt;
+    }
+
+    public insertText(text: string): void {
+        if (!this.activePrompt) {
+            this.appendPrompt();
+        }
+        this.activePrompt!.insertText(text);
+    }
+
+    public backspace(): void {
+        const input = this.activePrompt?.element.input;
+        if (!input) {
+            return;
+        }
+        const start = input.selectionStart;
+        const end = input.selectionEnd;
+        if (start === end && start > 0) {
+            input.setRangeText('', start - 1, end, 'end');
+        } else {
+            input.setRangeText('', start, end, 'end');
+        }
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+        input.focus();
+    }
+
+    public clearActive(): void {
+        if (this.activePrompt) {
+            this.activePrompt.value = '';
+            this.activePrompt.clearOutput();
+            this.activePrompt.focusInput();
+        }
+    }
+
+    public evaluateActive(): void {
+        if (this.activePrompt) {
+            this.evaluate(this.activePrompt);
+        }
+    }
+
+    private evaluate(prompt: CalcPrompt): void {
+        if (!prompt.value.trim()) {
+            return;
+        }
+        this.evaluator(prompt);
+        if (prompt === this.activePrompt) {
+            this.appendPrompt();
+        }
+    }
+
+    private readonly evaluateEvent = (event: CustomEvent<{ prompt: CalcPrompt }>): void => {
+        event.stopPropagation();
+        this.evaluate(event.detail.prompt);
+    };
+
+    private readonly setLanguage = (): void => {
+        this.element.root.setAttribute('aria-label', i18n.page.prompt.listAriaLabel);
+    };
 }
 
-customElements.define(CalcPromptList.tagName, CalcPromptList);
+CalcPromptList.define();

@@ -5,6 +5,5 @@
     "declarationMap": false,
     "noEmit": false
   },
-  "include": ["src/**/*.ts", "types/**/*.d.ts"],
-  "exclude": ["src/components/component.include.ts"]
+  "include": ["src/**/*.ts", "types/**/*.d.ts"]
 }

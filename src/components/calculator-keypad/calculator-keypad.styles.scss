@@ -8,9 +8,9 @@
   color: #1d2939;
   display: flex;
   flex-direction: column;
-  gap: clamp(7px, 1.4cqi, 12px);
+  gap: clamp(8px, 2cqi, 14px);
   height: 100%;
-  padding: clamp(8px, 2cqi, 14px);
+  padding: clamp(10px, 2.5cqi, 18px);
 }
 
 .keypad-header {
@@ -20,12 +20,12 @@
 }
 
 .keypad-header strong {
-  font-size: clamp(0.86rem, 3.2cqi, 1rem);
+  font-size: clamp(0.95rem, 3.4cqi, 1.2rem);
 }
 
 .keypad-header span {
   color: #667085;
-  font-size: clamp(0.68rem, 2.5cqi, 0.78rem);
+  font-size: clamp(0.76rem, 2.6cqi, 0.92rem);
 }
 
 .tabs {
@@ -40,21 +40,22 @@
 
 .keys {
   display: grid;
-  gap: clamp(5px, 1.5cqi, 8px);
+  gap: clamp(6px, 1.9cqi, 10px);
   grid-template-columns: repeat(5, minmax(0, 1fr));
 }
 
 button {
   align-items: center;
-  aspect-ratio: 1.18;
+  aspect-ratio: 1.08;
   background: #ffffff;
   border: 1px solid #d0d5dd;
   border-radius: 7px;
   color: inherit;
   cursor: pointer;
   display: inline-flex;
-  font: 600 clamp(0.74rem, 3.4cqi, 0.95rem) / 1.1 system-ui, sans-serif;
+  font: 600 clamp(0.86rem, 4.6cqi, 1.2rem) / 1.1 system-ui, sans-serif;
   justify-content: center;
+  min-height: clamp(40px, 14cqi, 66px);
   min-width: 0;
   padding: 0;
 }
@@ -64,8 +65,9 @@ button {
   border-color: transparent;
   border-radius: 6px;
   color: #475467;
-  font-size: clamp(0.72rem, 3cqi, 0.86rem);
-  height: clamp(26px, 9cqi, 32px);
+  font-size: clamp(0.78rem, 3.3cqi, 1rem);
+  height: clamp(30px, 9.5cqi, 40px);
+  min-height: 0;
 }
 
 .tab[aria-selected='true'] {
@@ -99,26 +101,34 @@ button {
 .key[data-wide='true'] {
   aspect-ratio: auto;
   grid-column: span 2;
-  min-height: clamp(32px, 11cqi, 44px);
+  min-height: clamp(40px, 12cqi, 58px);
 }
 
 @media (orientation: portrait) {
   .keypad {
-    gap: clamp(6px, 1.2svh, 10px);
-    padding: clamp(8px, 1.4svh, 12px);
+    gap: clamp(2px, 0.45svh, 5px);
+    height: auto;
+    padding: clamp(4px, 0.7svh, 7px);
   }
 
   .keys {
-    gap: clamp(5px, 1svh, 7px);
+    gap: clamp(2px, 0.45svh, 4px);
   }
 
   button {
-    aspect-ratio: 1.65;
-    font-size: clamp(0.72rem, 2.6vw, 0.9rem);
+    aspect-ratio: auto;
+    font-size: clamp(0.76rem, 2.8vw, 1rem);
+    height: clamp(18px, 3.2svh, 28px);
+    min-height: 0;
+  }
+
+  .key[data-wide='true'] {
+    height: clamp(18px, 3.2svh, 28px);
+    min-height: 0;
   }
 
   .tab {
-    height: clamp(26px, 4.4svh, 32px);
+    height: clamp(20px, 3svh, 26px);
   }
 }
 
@@ -129,7 +139,12 @@ button {
 
   button {
     aspect-ratio: 1.35;
-    font-size: clamp(0.68rem, 2.8cqi, 0.86rem);
+    font-size: clamp(0.74rem, 3.2cqi, 0.95rem);
+    min-height: clamp(24px, 9cqi, 38px);
+  }
+
+  .key[data-wide='true'] {
+    min-height: clamp(24px, 9cqi, 38px);
   }
 }
 

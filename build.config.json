@@ -9,9 +9,9 @@
     "bundles": ["mathjslab-calc"],
     "devServer": {
       "open": false,
-      "liveReload": true,
+      "liveReload": false,
       "server": {
-        "type": "http"
+        "type": "https"
       }
     }
   }

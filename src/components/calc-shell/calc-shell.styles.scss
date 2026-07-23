@@ -51,9 +51,33 @@ p {
   width: 42px;
 }
 
+.toolbar-actions {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+}
+
+.language-select {
+  align-items: center;
+  color: #475467;
+  display: flex;
+  font-size: 0.82rem;
+  gap: 7px;
+}
+
+.language-select select {
+  background: #ffffff;
+  border: 1px solid #cfd7df;
+  border-radius: 7px;
+  color: #1d2939;
+  font: inherit;
+  height: 34px;
+  padding: 0 28px 0 10px;
+}
+
 .workspace {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) clamp(238px, 30vw, 320px);
+  grid-template-columns: minmax(0, 1fr) clamp(280px, 34vw, 420px);
   min-height: 0;
 }
 
@@ -87,7 +111,7 @@ p {
 
   .keypad-panel {
     border-top: 1px solid #d9dee7;
-    max-height: min(48svh, 420px);
+    max-height: min(42svh, 360px);
     overflow: auto;
   }
 
@@ -118,6 +142,20 @@ p {
   .prompt-area {
     padding: 10px;
   }
+
+  .toolbar-actions {
+    gap: 6px;
+  }
+
+  .language-select span {
+    display: none;
+  }
+
+  .language-select select {
+    height: 32px;
+    max-width: 112px;
+    padding-left: 8px;
+  }
 }
 
 @media (prefers-color-scheme: dark) {
@@ -138,5 +176,15 @@ p {
     background: #263847;
     border-color: #3e6f5c;
     color: #bde6d5;
+  }
+
+  .language-select {
+    color: #cbd5e1;
+  }
+
+  .language-select select {
+    background: #20242b;
+    border-color: #475467;
+    color: #f2f4f7;
   }
 }

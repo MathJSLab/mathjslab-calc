@@ -1,0 +1,97 @@
+{
+    "repository": ".github",
+    "files": [
+        {
+            "src": "resource/mathjslab-calc/eleventy.build.json",
+            "dest": "eleventy.build.json"
+        },
+        "script/tsconfig.json",
+        "script/helper/clean-package-lock.cjs",
+        "script/helper/EleventyUtil.mjs",
+        "script/helper/readFileBom.ts",
+        "script/helper/readFileBomSync.ts",
+        "script/helper/mark-crono.ts",
+        "script/helper/mkDirIfNotExist.ts",
+        "script/helper/git-commit.cjs",
+        "script/helper/toIco.ts",
+        {
+            "src": "images/img/ico/favicon.ico",
+            "dest": "images/favicon.ico"
+        },
+        {
+            "src": "images/img/ico/favicon-dark.ico",
+            "dest": "images/favicon-dark.ico"
+        },
+        {
+            "src": "images/img/ico/mathjslab-logo-16.png",
+            "dest": "images/mathjslab-logo-16.png"
+        },
+        {
+            "src": "images/img/ico/mathjslab-logo-32.png",
+            "dest": "images/mathjslab-logo-32.png"
+        },
+        {
+            "src": "images/img/ico/mathjslab-logo-48.png",
+            "dest": "images/mathjslab-logo-48.png"
+        },
+        {
+            "src": "images/img/ico/mathjslab-logo-64.png",
+            "dest": "images/mathjslab-logo-64.png"
+        },
+        {
+            "src": "images/img/ico/mathjslab-logo-72.png",
+            "dest": "images/mathjslab-logo-72.png"
+        },
+        {
+            "src": "images/img/ico/mathjslab-logo-96.png",
+            "dest": "images/mathjslab-logo-96.png"
+        },
+        {
+            "src": "images/img/ico/mathjslab-logo-128.png",
+            "dest": "images/mathjslab-logo-128.png"
+        },
+        {
+            "src": "images/img/ico/mathjslab-logo-144.png",
+            "dest": "images/mathjslab-logo-144.png"
+        },
+        {
+            "src": "images/img/ico/mathjslab-logo-152.png",
+            "dest": "images/mathjslab-logo-152.png"
+        },
+        {
+            "src": "images/img/ico/mathjslab-logo-192.png",
+            "dest": "images/mathjslab-logo-192.png"
+        },
+        {
+            "src": "images/img/ico/mathjslab-logo-256.png",
+            "dest": "images/mathjslab-logo-256.png"
+        },
+        {
+            "src": "images/img/ico/mathjslab-logo-384.png",
+            "dest": "images/mathjslab-logo-384.png"
+        },
+        {
+            "src": "images/img/ico/mathjslab-logo-512.png",
+            "dest": "images/mathjslab-logo-512.png"
+        },
+        {
+            "src": "images/img/ico/mathjslab-logo-630.png",
+            "dest": "images/mathjslab-logo-630.png"
+        },
+        "images/mathjslab-logo.svg",
+        "images/mathjslab-logo-light.svg",
+        "images/mathjslab-logo-dark.svg",
+        "src/components/component.include.ts",
+        "src/components/constructorFactory.ts",
+        "src/components/createElementFactory.ts",
+        "src/components/defineFactory.ts",
+        "src/components/keyToPostfix.ts",
+        "src/components/setContainerFactory.ts",
+        "src/components/setIdFactory.ts",
+        "src/components/setIdFirstFactory.ts",
+        "src/components/WebComponentElement.d.ts",
+        "src/components/WebComponentInterface.d.ts",
+        "src/components/WebComponentType.d.ts",
+        ".prettierrc"
+    ]
+}

@@ -1,0 +1,27 @@
+{
+    "dataset": "mathjslab-app",
+    "build": {
+        /* Project build parameters. */
+        "eleventy": {
+            "commonOptions": {
+                "htmlTemplateEngine": "njk",
+                "markdownTemplateEngine": "njk",
+                "dataTemplateEngine": "njk",
+                "templateFormats": ["njk"]
+            },
+            "steps": [
+                {
+                    "options": {
+                        "dir": {
+                            "input": "./",
+                            "data": "./data",
+                            "includes": "./src/includes",
+                            "layouts": "./src/layouts",
+                            "output": "./"
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}
