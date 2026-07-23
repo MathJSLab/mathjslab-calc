@@ -1,0 +1,19 @@
+<template id="calc-shell-template">
+  <section class="shell" data-element="root">
+    <header class="toolbar">
+      <div>
+        <h1>MathJSLab Calc</h1>
+        <p>Scientific prompt calculator</p>
+      </div>
+      <button type="button" class="toggle" data-element="toggle" aria-expanded="true" title="Toggle keypad">⌨</button>
+    </header>
+    <div class="workspace" data-element="workspace">
+      <main class="prompt-area">
+        <calc-prompt-list data-element="prompts"></calc-prompt-list>
+      </main>
+      <aside class="keypad-panel" data-element="panel">
+        <calculator-keypad data-element="keypad"></calculator-keypad>
+      </aside>
+    </div>
+  </section>
+</template>

@@ -1,0 +1,170 @@
+:host {
+  display: block;
+  container-type: inline-size;
+}
+
+.keypad {
+  background: #f7f8fa;
+  color: #1d2939;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(7px, 1.4cqi, 12px);
+  height: 100%;
+  padding: clamp(8px, 2cqi, 14px);
+}
+
+.keypad-header {
+  align-items: baseline;
+  display: flex;
+  justify-content: space-between;
+}
+
+.keypad-header strong {
+  font-size: clamp(0.86rem, 3.2cqi, 1rem);
+}
+
+.keypad-header span {
+  color: #667085;
+  font-size: clamp(0.68rem, 2.5cqi, 0.78rem);
+}
+
+.tabs {
+  background: #e8edf2;
+  border: 1px solid #d0d5dd;
+  border-radius: 8px;
+  display: grid;
+  gap: clamp(2px, 0.8cqi, 3px);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  padding: clamp(2px, 0.8cqi, 3px);
+}
+
+.keys {
+  display: grid;
+  gap: clamp(5px, 1.5cqi, 8px);
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+button {
+  align-items: center;
+  aspect-ratio: 1.18;
+  background: #ffffff;
+  border: 1px solid #d0d5dd;
+  border-radius: 7px;
+  color: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  font: 600 clamp(0.74rem, 3.4cqi, 0.95rem) / 1.1 system-ui, sans-serif;
+  justify-content: center;
+  min-width: 0;
+  padding: 0;
+}
+
+.tab {
+  aspect-ratio: auto;
+  border-color: transparent;
+  border-radius: 6px;
+  color: #475467;
+  font-size: clamp(0.72rem, 3cqi, 0.86rem);
+  height: clamp(26px, 9cqi, 32px);
+}
+
+.tab[aria-selected='true'] {
+  background: #ffffff;
+  border-color: #c7d7cf;
+  box-shadow: 0 1px 2px rgb(16 24 40 / 10%);
+  color: #215b43;
+}
+
+.key:hover,
+.tab:hover {
+  background: #edf6f2;
+  border-color: #74b59c;
+}
+
+.key:active,
+.tab:active {
+  transform: translateY(1px);
+}
+
+.key[data-kind='operation'] {
+  background: #edf3f8;
+}
+
+.key[data-kind='command'] {
+  background: #2e7d5b;
+  border-color: #2e7d5b;
+  color: #fff;
+}
+
+.key[data-wide='true'] {
+  aspect-ratio: auto;
+  grid-column: span 2;
+  min-height: clamp(32px, 11cqi, 44px);
+}
+
+@media (orientation: portrait) {
+  .keypad {
+    gap: clamp(6px, 1.2svh, 10px);
+    padding: clamp(8px, 1.4svh, 12px);
+  }
+
+  .keys {
+    gap: clamp(5px, 1svh, 7px);
+  }
+
+  button {
+    aspect-ratio: 1.65;
+    font-size: clamp(0.72rem, 2.6vw, 0.9rem);
+  }
+
+  .tab {
+    height: clamp(26px, 4.4svh, 32px);
+  }
+}
+
+@media (orientation: landscape) and (max-height: 520px) {
+  .keypad-header {
+    display: none;
+  }
+
+  button {
+    aspect-ratio: 1.35;
+    font-size: clamp(0.68rem, 2.8cqi, 0.86rem);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .keypad {
+    background: #20242b;
+    border-color: #3a424f;
+    color: #f2f4f7;
+  }
+
+  .keypad-header span {
+    color: #98a2b3;
+  }
+
+  .tabs {
+    background: #171a20;
+    border-color: #475467;
+  }
+
+  button {
+    background: #2b313a;
+    border-color: #475467;
+  }
+
+  .tab {
+    color: #cbd5e1;
+  }
+
+  .tab[aria-selected='true'] {
+    background: #364152;
+    border-color: #5a8b77;
+    color: #d8f3e8;
+  }
+
+  .key[data-kind='operation'] {
+    background: #263847;
+  }
+}

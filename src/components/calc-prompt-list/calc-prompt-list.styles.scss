@@ -1,0 +1,13 @@
+:host {
+  display: block;
+  min-height: 100%;
+}
+
+.prompt-list {
+  background: Canvas;
+  border: 1px solid color-mix(in srgb, CanvasText 13%, transparent);
+  border-radius: 8px;
+  box-shadow: 0 12px 32px color-mix(in srgb, CanvasText 8%, transparent);
+  min-height: 100%;
+  overflow: hidden;
+}

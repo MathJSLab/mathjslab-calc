@@ -1,0 +1,69 @@
+{
+    "name": "mathjslab-calc",
+    "version": "0.0.1",
+    "description": "A MathJSLab scientific calculator prompt application.",
+    "main": "dist/mathjslab-calc.js",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/MathJSLab/mathjslab-calc.git"
+    },
+    "keywords": [],
+    "type": "module",
+    "bugs": {
+        "url": "https://github.com/MathJSLab/mathjslab-calc/issues"
+    },
+    "homepage": "https://github.com/MathJSLab/mathjslab-calc#readme",
+    "scripts": {
+        "clean": "shx rm -rf dist report src/build-configuration.json",
+        "format": "prettier --write **/*.{ts,js,cjs,mjs,css,scss,html,json,md}",
+        "build:eleventy": "eleventy --config=eleventy.config.mjs",
+        "prebuild:dev": "npm run build:eleventy",
+        "build:development": "tsx --require tsconfig-paths/register ./node_modules/webpack-dev-server/bin/webpack-dev-server --mode development",
+        "build:production": "tsx --require tsconfig-paths/register ./node_modules/webpack/bin/webpack --mode production",
+        "build:dev": "npm run build:development",
+        "prebuild:prod": "npm run build:eleventy",
+        "build:prod": "npm run build:production",
+        "build": "npm run build:prod",
+        "install:approve:all": "npm install-scripts approve --all && npm install",
+        "install:all": "npm install",
+        "update": "npx npm-check-updates -u -x typescript && npm run install:all",
+        "git:add": "git add .",
+        "git:commit": "node script/helper/git-commit.cjs",
+        "git:push": "git push",
+        "git:all": "npm run git:add && npm run git:commit && npm run git:push",
+        "tsx": "tsx --require tsconfig-paths/register",
+        "npx:tsx": "npx tsx"
+    },
+    "dependencies": {
+        "mathjslab": "file:../mathjslab"
+    },
+    "devDependencies": {
+        "@11ty/eleventy": "^3.1.6",
+        "@types/node": "^26.1.1",
+        "@types/webpack": "^5.28.5",
+        "@types/webpack-bundle-analyzer": "^4.7.0",
+        "css-loader": "^7.1.4",
+        "html-webpack-plugin": "^5.6.7",
+        "mini-css-extract-plugin": "^2.10.2",
+        "prettier": "^3.9.6",
+        "sass": "^1.101.6",
+        "sass-loader": "^17.0.0",
+        "sass-to-string": "^1.6.4",
+        "shx": "^0.4.0",
+        "style-loader": "^4.0.0",
+        "ts-loader": "^9.6.2",
+        "ts-node": "^10.9.2",
+        "tsconfig-paths": "^4.2.0",
+        "tsx": "^4.23.1",
+        "typescript": "^6.0.3",
+        "webpack": "^5.108.4",
+        "webpack-bundle-analyzer": "^5.3.1",
+        "webpack-cli": "^7.2.1",
+        "webpack-dev-server": "^6.0.0"
+    },
+    "allowScripts": {
+        "esbuild": true,
+        "@parcel/watcher@2.6.0": true,
+        "unrs-resolver": true
+    }
+}

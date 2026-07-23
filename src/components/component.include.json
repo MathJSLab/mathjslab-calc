@@ -1,0 +1,3 @@
+{
+  "include": ["calc-prompt", "calc-prompt-list", "calculator-keypad", "calc-shell"]
+}

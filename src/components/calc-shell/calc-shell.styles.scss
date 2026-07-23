@@ -1,0 +1,142 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  min-height: 100svh;
+}
+
+.shell {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  min-height: 100vh;
+  min-height: 100svh;
+}
+
+.toolbar {
+  align-items: center;
+  background: #ffffff;
+  border-bottom: 1px solid #d9dee7;
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+  padding: 12px 18px;
+}
+
+h1,
+p {
+  margin: 0;
+}
+
+h1 {
+  color: #215b43;
+  font-size: 1.15rem;
+  font-weight: 750;
+}
+
+p {
+  color: #667085;
+  font-size: 0.86rem;
+}
+
+.toggle {
+  align-items: center;
+  background: #edf6f2;
+  border: 1px solid #9ac8b4;
+  border-radius: 7px;
+  color: #215b43;
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 1.05rem;
+  height: 38px;
+  justify-content: center;
+  width: 42px;
+}
+
+.workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) clamp(238px, 30vw, 320px);
+  min-height: 0;
+}
+
+.workspace[data-panel='closed'] {
+  grid-template-columns: minmax(0, 1fr) 0;
+}
+
+.prompt-area {
+  min-width: 0;
+  overflow: auto;
+  padding: 18px;
+}
+
+.keypad-panel {
+  min-width: 0;
+  overflow: hidden;
+  transition:
+    max-height 160ms ease,
+    width 160ms ease;
+}
+
+.workspace[data-panel='closed'] .keypad-panel {
+  visibility: hidden;
+}
+
+@media (orientation: portrait) {
+  .workspace {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr) minmax(0, auto);
+  }
+
+  .keypad-panel {
+    border-top: 1px solid #d9dee7;
+    max-height: min(48svh, 420px);
+    overflow: auto;
+  }
+
+  .workspace[data-panel='closed'] {
+    grid-template-rows: minmax(0, 1fr) 0;
+  }
+}
+
+@media (orientation: landscape) {
+  .keypad-panel {
+    border-left: 1px solid #d9dee7;
+  }
+}
+
+@media (max-width: 640px) {
+  .toolbar {
+    padding: 9px 12px;
+  }
+
+  h1 {
+    font-size: 1rem;
+  }
+
+  p {
+    font-size: 0.78rem;
+  }
+
+  .prompt-area {
+    padding: 10px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .toolbar {
+    background: #171a20;
+    border-color: #343b46;
+  }
+
+  h1 {
+    color: #9bd4bd;
+  }
+
+  p {
+    color: #98a2b3;
+  }
+
+  .toggle {
+    background: #263847;
+    border-color: #3e6f5c;
+    color: #bde6d5;
+  }
+}

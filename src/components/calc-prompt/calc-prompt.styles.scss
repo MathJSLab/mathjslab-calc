@@ -1,0 +1,64 @@
+:host {
+  display: block;
+}
+
+.prompt {
+  border-bottom: 1px solid color-mix(in srgb, CanvasText 10%, transparent);
+  padding: 12px 14px 14px;
+}
+
+.prompt:focus-within {
+  background: color-mix(in srgb, Highlight 7%, Canvas);
+}
+
+.prompt-line {
+  align-items: flex-start;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 1.4rem minmax(0, 1fr);
+}
+
+.marker {
+  color: #2e7d5b;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.65;
+}
+
+textarea {
+  background: transparent;
+  border: 0;
+  color: CanvasText;
+  font: 1rem/1.55 ui-monospace, SFMono-Regular, Consolas, monospace;
+  min-height: 1.8rem;
+  outline: 0;
+  overflow: hidden;
+  resize: none;
+  width: 100%;
+}
+
+output {
+  display: block;
+  margin: 8px 0 0 2.15rem;
+  min-height: 0;
+}
+
+output:empty {
+  display: none;
+}
+
+output table {
+  border-collapse: collapse;
+}
+
+output td {
+  padding: 2px 7px 2px 0;
+  vertical-align: middle;
+}
+
+.error {
+  color: #a33a2b;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  white-space: pre-wrap;
+}
