@@ -34,9 +34,6 @@
         "tsx": "tsx --require tsconfig-paths/register",
         "npx:tsx": "npx tsx"
     },
-    "dependencies": {
-        "mathjslab": "file:../mathjslab"
-    },
     "devDependencies": {
         "@11ty/eleventy": "^3.1.6",
         "@types/node": "^26.1.1",
@@ -65,5 +62,8 @@
         "esbuild": true,
         "@parcel/watcher@2.6.0": true,
         "unrs-resolver": true
+    },
+    "dependencies": {
+        "mathjslab": "^2.2.0"
     }
 }
