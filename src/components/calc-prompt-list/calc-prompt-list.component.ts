@@ -1,13 +1,13 @@
 import styles from './calc-prompt-list.styles.scss';
-import i18n from '../../i18n.js';
-import type WebComponentElement from '../WebComponentElement.js';
-import constructorFactory from '../constructorFactory.js';
-import createElementFactory from '../createElementFactory.js';
-import defineFactory from '../defineFactory.js';
-import keyToPostfix from '../keyToPostfix.js';
-import setContainerFactory from '../setContainerFactory.js';
-import setIdFirstFactory from '../setIdFirstFactory.js';
-import { CalcPrompt } from '../calc-prompt/calc-prompt.component.js';
+import i18n from '../../i18n';
+import type WebComponentElement from '../WebComponentElement';
+import constructorFactory from '../constructorFactory';
+import createElementFactory from '../createElementFactory';
+import defineFactory from '../defineFactory';
+import keyToPostfix from '../keyToPostfix';
+import setContainerFactory from '../setContainerFactory';
+import setIdFirstFactory from '../setIdFirstFactory';
+import { CalcPrompt } from '../calc-prompt/calc-prompt.component';
 
 export interface CalcPromptListElementEntry {
     root: HTMLElement;

@@ -1,5 +1,5 @@
 {
-    "dataset": "mathjslab-app",
+    "dataset": "mathjslab-calc",
     "build": {
         /* Project build parameters. */
         "eleventy": {

@@ -1,5 +1,5 @@
-/* Web components. File generated at Thu, 23 Jul 2026 22:59:10 GMT. */
-export * from './calc-prompt/calc-prompt.component.js';
-export * from './calc-prompt-list/calc-prompt-list.component.js';
-export * from './calculator-keypad/calculator-keypad.component.js';
-export * from './calc-shell/calc-shell.component.js';
+/* Web components. File generated at Fri, 24 Jul 2026 00:34:45 GMT. */
+export * from './calc-prompt/calc-prompt.component';
+export * from './calc-prompt-list/calc-prompt-list.component';
+export * from './calculator-keypad/calculator-keypad.component';
+export * from './calc-shell/calc-shell.component';

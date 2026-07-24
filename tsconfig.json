@@ -1,14 +1,14 @@
 {
   // Visit https://aka.ms/tsconfig to read more about this file
   "compilerOptions": {
-    "rootDir": ".",
-
     // Environment Settings
     // See also https://aka.ms/tsconfig/module
-    "module": "nodenext",
-    "moduleResolution": "nodenext",
-    "target": "esnext",
-    "lib": ["dom", "esnext"],
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "baseUrl": "./",
+    "typeRoots": ["node_modules/@types", "types"],
     "types": ["node"],
     // For nodejs:
     // "lib": ["esnext"],
@@ -16,9 +16,7 @@
     // and npm install -D @types/node
 
     // Other Outputs
-    "sourceMap": true,
-    "declaration": true,
-    "declarationMap": true,
+    "sourceMap": false,
 
     // Stricter Typechecking Options
     "noUncheckedIndexedAccess": true,
@@ -34,13 +32,14 @@
 
     // Recommended Options
     "strict": true,
-    "jsx": "react-jsx",
-    "verbatimModuleSyntax": true,
-    "isolatedModules": true,
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
     "resolveJsonModule": true,
-    "allowSyntheticDefaultImports": true,
+    "ignoreDeprecations": "6.0",
     "skipLibCheck": true,
   }
 }
