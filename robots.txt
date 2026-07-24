@@ -1,0 +1,14 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /manifest.json
+Disallow: /*.json$
+Disallow: /*.m$
+Disallow: /*.md$
+Allow: /
+Allow: /*.css$
+Allow: /*.js$
+Allow: /*.jpg$
+Allow: /*.png$
+Allow: /*.gif$
+Allow: /*.svg$
+Sitemap: https://calc.mathjslab.com/sitemap.xml

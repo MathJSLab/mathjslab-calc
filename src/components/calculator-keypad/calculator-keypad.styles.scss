@@ -53,7 +53,9 @@ button {
   color: inherit;
   cursor: pointer;
   display: inline-flex;
-  font: 600 clamp(0.86rem, 4.6cqi, 1.2rem) / 1.1 system-ui, sans-serif;
+  font:
+    600 clamp(0.86rem, 4.6cqi, 1.2rem) / 1.1 system-ui,
+    sans-serif;
   justify-content: center;
   min-height: clamp(40px, 14cqi, 66px);
   min-width: 0;

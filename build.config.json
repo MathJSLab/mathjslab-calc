@@ -1,18 +1,18 @@
 {
-  "production": {
-    "bundles": ["mathjslab-calc"],
-    "analyzer": {
-      "openAnalyzer": false
+    "production": {
+        "bundles": ["mathjslab-calc"],
+        "analyzer": {
+            "openAnalyzer": false
+        }
+    },
+    "development": {
+        "bundles": ["mathjslab-calc"],
+        "devServer": {
+            "open": false,
+            "liveReload": false,
+            "server": {
+                "type": "https"
+            }
+        }
     }
-  },
-  "development": {
-    "bundles": ["mathjslab-calc"],
-    "devServer": {
-      "open": false,
-      "liveReload": false,
-      "server": {
-        "type": "https"
-      }
-    }
-  }
 }

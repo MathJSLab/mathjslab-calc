@@ -7,7 +7,10 @@
 [![Netlify Status](https://api.netlify.com/api/v1/badges/17019e19-5270-42e0-b119-8c8b230f953f/deploy-status)](https://app.netlify.com/projects/mathjslab-calc/deploys)
 [![Website](https://img.shields.io/website?url=https%3A%2F%2Fmathjslab.com%2F)](https://mathjslab.com/)
 
-> An [interpreter](https://en.wikipedia.org/wiki/Interpreter_(computing)) with language syntax like [MATLAB&reg;](https://www.mathworks.com/)/[Octave](https://www.gnu.org/software/octave/) written in [TypeScript](https://www.typescriptlang.org/).
+> An [interpreter](<https://en.wikipedia.org/wiki/Interpreter_(computing)>)
+> with language syntax like
+> [MATLAB&reg;](https://www.mathworks.com/)/[Octave](https://www.gnu.org/software/octave/)
+> written in [TypeScript](https://www.typescriptlang.org/).
 
 MathJSLab Calc is a scientific calculator-style Web application built on top of
 the `mathjslab` package. It starts as a prompt interpreter, like

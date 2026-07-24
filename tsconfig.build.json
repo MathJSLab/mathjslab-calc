@@ -1,11 +1,11 @@
 {
-  "extends": "./tsconfig.json",
-  "compilerOptions": {
-    "baseUrl": "./",
-    "declaration": false,
-    "declarationMap": false,
-    "noEmit": false,
-    "outDir": "./dist"
-  },
-  "exclude": ["node_modules", "webpack.config.ts", "data", "dist", "images", "report", "script"]
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "baseUrl": "./",
+        "declaration": false,
+        "declarationMap": false,
+        "noEmit": false,
+        "outDir": "./dist"
+    },
+    "exclude": ["node_modules", "webpack.config.ts", "data", "dist", "images", "report", "script"]
 }

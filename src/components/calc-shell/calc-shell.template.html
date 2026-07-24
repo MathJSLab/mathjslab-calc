@@ -1,25 +1,25 @@
 <template id="calc-shell-template">
-  <section id="calc-shell-root" class="shell">
-    <header class="toolbar">
-      <div>
-        <h1 id="calc-shell-title">MathJSLab Calc</h1>
-        <p id="calc-shell-description">Scientific prompt calculator</p>
-      </div>
-      <div class="toolbar-actions">
-        <label class="language-select">
-          <span id="calc-shell-language-label">Language</span>
-          <select id="calc-shell-language"></select>
-        </label>
-        <button type="button" id="calc-shell-toggle" class="toggle" aria-expanded="true" title="Toggle keypad">⌨</button>
-      </div>
-    </header>
-    <div id="calc-shell-workspace" class="workspace">
-      <main class="prompt-area">
-        <calc-prompt-list id="calc-shell-prompts"></calc-prompt-list>
-      </main>
-      <aside id="calc-shell-panel" class="keypad-panel">
-        <calculator-keypad id="calc-shell-keypad"></calculator-keypad>
-      </aside>
-    </div>
-  </section>
+    <section id="calc-shell-root" class="shell">
+        <header class="toolbar">
+            <div>
+                <h1 id="calc-shell-title">MathJSLab Calc</h1>
+                <p id="calc-shell-description">Scientific prompt calculator</p>
+            </div>
+            <div class="toolbar-actions">
+                <label class="language-select">
+                    <span id="calc-shell-language-label">Language</span>
+                    <select id="calc-shell-language"></select>
+                </label>
+                <button type="button" id="calc-shell-toggle" class="toggle" aria-expanded="true" title="Toggle keypad">⌨</button>
+            </div>
+        </header>
+        <div id="calc-shell-workspace" class="workspace">
+            <main class="prompt-area">
+                <calc-prompt-list id="calc-shell-prompts"></calc-prompt-list>
+            </main>
+            <aside id="calc-shell-panel" class="keypad-panel">
+                <calculator-keypad id="calc-shell-keypad"></calculator-keypad>
+            </aside>
+        </div>
+    </section>
 </template>

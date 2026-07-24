@@ -17,6 +17,24 @@ import { components, templates } from './src/components/component.include';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+class StaticRootAssetsPlugin {
+    apply(compiler: webpack.Compiler): void {
+        compiler.hooks.afterEmit.tap('StaticRootAssetsPlugin', () => {
+            const outputPath = compiler.options.output.path;
+            if (!outputPath) {
+                return;
+            }
+            ['manifest.json', 'robots.txt', 'sitemap.xml'].forEach((file) => {
+                const source = path.join(__dirname, file);
+                if (fs.existsSync(source)) {
+                    fs.copyFileSync(source, path.join(outputPath, file));
+                }
+            });
+            fs.cpSync(path.join(__dirname, 'images'), path.join(outputPath, 'images'), { recursive: true });
+        });
+    }
+}
+
 export default (env: any, argv: any): webpack.Configuration[] => {
     const mode = (argv.mode || 'production') as 'production' | 'development';
     const isProduction = mode === 'production';
@@ -119,6 +137,7 @@ export default (env: any, argv: any): webpack.Configuration[] => {
                         fs.readFileSync(path.join(__dirname, 'src', 'main.html'), 'utf-8').replace('</body>', templates + '</body>'),
                     inject: 'body',
                 }),
+                new StaticRootAssetsPlugin(),
                 ...(isProduction ? [new MiniCssExtractPlugin({ filename: '[name].css' })] : []),
             ],
         },
