@@ -12,6 +12,9 @@ src/build-configuration.json
 # Commit configuration
 git-commit.config.json
 
+# Build chronometer utility status file.
+mark.crono.json
+
 # Build directory
 dist/
 

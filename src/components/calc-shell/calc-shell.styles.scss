@@ -26,6 +26,19 @@ p {
   margin: 0;
 }
 
+.brand {
+  align-items: center;
+  display: flex;
+  gap: 11px;
+  min-width: 0;
+}
+
+.brand-logo {
+  flex: 0 0 auto;
+  height: 42px;
+  width: 42px;
+}
+
 h1 {
   color: #215b43;
   font-size: 1.15rem;
@@ -129,6 +142,15 @@ p {
 @media (max-width: 640px) {
   .toolbar {
     padding: 9px 12px;
+  }
+
+  .brand {
+    gap: 8px;
+  }
+
+  .brand-logo {
+    height: 34px;
+    width: 34px;
   }
 
   h1 {
