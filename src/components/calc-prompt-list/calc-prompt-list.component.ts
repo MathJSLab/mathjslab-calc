@@ -9,6 +9,9 @@ import setContainerFactory from '../setContainerFactory';
 import setIdFirstFactory from '../setIdFirstFactory';
 import { CalcPrompt } from '../calc-prompt/calc-prompt.component';
 
+/**
+ * Elements addressed inside the prompt list shadow tree.
+ */
 export interface CalcPromptListElementEntry {
     root: HTMLElement;
 }
@@ -16,8 +19,14 @@ export interface CalcPromptListElementEntry {
 export type CalcPromptListElement = WebComponentElement<CalcPromptListElementEntry>;
 export const CalcPromptListElementEntryKey: (keyof CalcPromptListElementEntry)[] = ['root'] as const;
 
+/**
+ * Callback used by the shell to evaluate one prompt.
+ */
 export type PromptEvaluator = (prompt: CalcPrompt) => void;
 
+/**
+ * Prompt history manager that owns the active editable prompt.
+ */
 export class CalcPromptList extends HTMLElement {
     public static readonly tagName = 'calc-prompt-list';
     public readonly element = {} as CalcPromptListElement;
@@ -75,6 +84,9 @@ export class CalcPromptList extends HTMLElement {
         this.removeEventListener('calc-prompt-evaluate', this.evaluateEvent as EventListener);
     }
 
+    /**
+     * Append a prompt, make it active, and focus its input.
+     */
     public appendPrompt(value = ''): CalcPrompt {
         const prompt = document.createElement(CalcPrompt.tagName) as CalcPrompt;
         prompt.value = value;
@@ -84,6 +96,9 @@ export class CalcPromptList extends HTMLElement {
         return prompt;
     }
 
+    /**
+     * Insert keypad text into the active prompt, creating one if needed.
+     */
     public insertText(text: string): void {
         if (!this.activePrompt) {
             this.appendPrompt();
@@ -91,6 +106,9 @@ export class CalcPromptList extends HTMLElement {
         this.activePrompt!.insertText(text);
     }
 
+    /**
+     * Delete the selected text or one character before the cursor.
+     */
     public backspace(): void {
         const input = this.activePrompt?.element.input;
         if (!input) {
@@ -107,6 +125,9 @@ export class CalcPromptList extends HTMLElement {
         input.focus();
     }
 
+    /**
+     * Clear the current prompt input and output.
+     */
     public clearActive(): void {
         if (this.activePrompt) {
             this.activePrompt.value = '';
@@ -115,6 +136,9 @@ export class CalcPromptList extends HTMLElement {
         }
     }
 
+    /**
+     * Evaluate the active prompt through the configured evaluator.
+     */
     public evaluateActive(): void {
         if (this.activePrompt) {
             this.evaluate(this.activePrompt);

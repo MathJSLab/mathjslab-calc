@@ -1,6 +1,7 @@
-import { Interpreter, type NodeInput } from 'mathjslab';
+import type { NodeInput } from 'mathjslab';
 import styles from './calc-shell.styles.scss';
-import buildConfiguration from '../../build-configuration.json';
+import '../../InterpreterConfiguration';
+import { appEngine } from '../../appEngine';
 import i18n from '../../i18n';
 import type WebComponentElement from '../WebComponentElement';
 import constructorFactory from '../constructorFactory';
@@ -12,6 +13,9 @@ import setIdFirstFactory from '../setIdFirstFactory';
 import { CalcPrompt } from '../calc-prompt/calc-prompt.component';
 import { CalcPromptList } from '../calc-prompt-list/calc-prompt-list.component';
 
+/**
+ * Elements addressed inside the calculator shell shadow tree.
+ */
 export interface CalcShellElementEntry {
     root: HTMLElement;
     workspace: HTMLElement;
@@ -44,6 +48,9 @@ type CalculatorKeyEvent = CustomEvent<{
     value: string;
 }>;
 
+/**
+ * Top-level calculator component that connects prompts, keypad and interpreter.
+ */
 export class CalcShell extends HTMLElement {
     public static readonly tagName = 'calc-shell';
     public readonly element = {} as CalcShellElement;
@@ -51,13 +58,12 @@ export class CalcShell extends HTMLElement {
     public static readonly elementPostfix = keyToPostfix(CalcShellElementEntryKey);
     public static readonly null = null as unknown as CalcShell;
     public static readonly undefined = undefined as unknown as CalcShell;
-    private readonly interpreter = Interpreter.Create({});
     private panelOpen = true;
 
     public constructor() {
         super();
         constructorFactory(CalcShell, styles).bind(this)();
-        this.interpreter.debug = buildConfiguration.debug;
+        appEngine.shell = this;
         this.element.prompts.evaluator = this.evaluatePrompt;
         this.renderLanguageOptions();
         this.setLanguage();
@@ -105,6 +111,9 @@ export class CalcShell extends HTMLElement {
         this.removeEventListener('calculator-key', this.keyInput as EventListener);
     }
 
+    /**
+     * Toggle the keypad panel without losing focus from the active prompt.
+     */
     private readonly togglePanel = (): void => {
         this.panelOpen = !this.panelOpen;
         this.element.workspace.dataset.panel = this.panelOpen ? 'open' : 'closed';
@@ -112,6 +121,9 @@ export class CalcShell extends HTMLElement {
         this.element.prompts.insertText('');
     };
 
+    /**
+     * Translate keypad events into prompt list actions.
+     */
     private readonly keyInput = (event: CalculatorKeyEvent): void => {
         event.stopPropagation();
         const { action, value } = event.detail;
@@ -126,6 +138,9 @@ export class CalcShell extends HTMLElement {
         }
     };
 
+    /**
+     * Build the language selector from the shared i18n service.
+     */
     private renderLanguageOptions(): void {
         this.element.language.replaceChildren();
         for (const locale of i18n.locales) {
@@ -137,9 +152,12 @@ export class CalcShell extends HTMLElement {
     }
 
     private readonly changeLanguage = (): void => {
-        i18n.setLocale(this.element.language.value);
+        appEngine.setLanguage(this.element.language.value);
     };
 
+    /**
+     * Apply localized strings to the shell controls.
+     */
     private readonly setLanguage = (): void => {
         i18n.applyDocumentLanguage();
         this.element.title.textContent = i18n.page.app.title;
@@ -151,15 +169,19 @@ export class CalcShell extends HTMLElement {
         this.element.toggle.setAttribute('aria-label', i18n.page.shell.toggleKeypad);
     };
 
+    /**
+     * Parse and evaluate one prompt with the shared MathJSLab interpreter.
+     */
     private readonly evaluatePrompt = (prompt: CalcPrompt): void => {
         let tree: NodeInput | undefined;
+        const { interpreter } = appEngine;
         try {
-            tree = this.interpreter.Parse(prompt.value);
-            const evaluated = this.interpreter.Evaluate(tree);
-            const inputText = this.interpreter.Unparse(tree);
-            const resultText = this.interpreter.Unparse(evaluated);
-            const inputMath = this.interpreter.UnparseMathML(tree);
-            const resultMath = this.interpreter.UnparseMathML(evaluated);
+            tree = interpreter.Parse(prompt.value);
+            const evaluated = interpreter.Evaluate(tree);
+            const inputText = interpreter.Unparse(tree);
+            const resultText = interpreter.Unparse(evaluated);
+            const inputMath = interpreter.UnparseMathML(tree);
+            const resultMath = interpreter.UnparseMathML(evaluated);
 
             if (inputText === resultText) {
                 prompt.setOutput(`<table><tr><td>${inputMath}</td></tr></table>`);
@@ -170,9 +192,9 @@ export class CalcShell extends HTMLElement {
             }
         } catch (error) {
             const message = error instanceof Error ? error.message : String(error);
-            const parsedInput = tree ? `<table><tr><td>${this.interpreter.UnparseMathML(tree)}</td></tr></table>` : '';
+            const parsedInput = tree ? `<table><tr><td>${interpreter.UnparseMathML(tree)}</td></tr></table>` : '';
             prompt.setOutput(`${parsedInput}<pre class="error">${message}</pre>`);
-            if (this.interpreter.debug) {
+            if (interpreter.debug) {
                 throw error;
             }
         }

@@ -1,0 +1,5 @@
+{
+    "files": [".circleci/**", "src/**", "script/**"],
+    "from": "/\\r?\\n/gm",
+    "to": "\r\n"
+}

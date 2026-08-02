@@ -8,6 +8,9 @@ import keyToPostfix from '../keyToPostfix';
 import setContainerFactory from '../setContainerFactory';
 import setIdFirstFactory from '../setIdFirstFactory';
 
+/**
+ * Elements addressed inside the scientific keypad shadow tree.
+ */
 export interface CalculatorKeypadElementEntry {
     root: HTMLElement;
     title: HTMLElement;
@@ -21,6 +24,9 @@ export const CalculatorKeypadElementEntryKey: (keyof CalculatorKeypadElementEntr
 
 type PanelId = 'calculator' | 'functions' | 'alphabet';
 
+/**
+ * A single calculator key and the command it emits.
+ */
 type KeyDefinition = {
     label: string;
     value?: string;
@@ -29,12 +35,19 @@ type KeyDefinition = {
     wide?: boolean;
 };
 
+/**
+ * One tabbed keypad panel arranged as five-column rows.
+ */
 type KeyPanel = {
     id: PanelId;
     label: string;
     rows: KeyDefinition[][];
 };
 
+/**
+ * Calculator panel definitions. Each panel is capped at nine five-column rows
+ * so it remains usable in the portrait layout.
+ */
 const panels: KeyPanel[] = [
     {
         id: 'calculator',
@@ -189,6 +202,9 @@ const panels: KeyPanel[] = [
     },
 ];
 
+/**
+ * Tabbed scientific keypad that dispatches insertion and command events.
+ */
 export class CalculatorKeypad extends HTMLElement {
     public static readonly tagName = 'calculator-keypad';
     public readonly element = {} as CalculatorKeypadElement;
@@ -242,6 +258,9 @@ export class CalculatorKeypad extends HTMLElement {
         i18n.removeEventListener('languagechange', this.setLanguage);
     }
 
+    /**
+     * Render the three GeoGebra-inspired panel tabs.
+     */
     private renderTabs(): void {
         for (const panel of panels) {
             const tab = document.createElement('button');
@@ -259,6 +278,9 @@ export class CalculatorKeypad extends HTMLElement {
         }
     }
 
+    /**
+     * Render the keys for the active panel and wire their events.
+     */
     private renderKeys(): void {
         this.element.keys.replaceChildren();
         this.element.keys.id = `${CalculatorKeypad.tagName}-${this.activePanel}-panel`;
@@ -292,6 +314,9 @@ export class CalculatorKeypad extends HTMLElement {
         }
     }
 
+    /**
+     * Keep tab ARIA state synchronized with the active panel.
+     */
     private updateTabs(): void {
         for (const tab of this.element.tabs.querySelectorAll<HTMLButtonElement>('.tab')) {
             const selected = tab.dataset.panel === this.activePanel;

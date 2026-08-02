@@ -1,8 +1,18 @@
 import { IntlMessageFormat } from 'intl-messageformat';
 
+/**
+ * Supported application locale identifiers.
+ */
 type Locale = 'en' | 'es' | 'pt';
+
+/**
+ * Recursive source message shape used before ICU formatting.
+ */
 type MessageTree = string | MessageTree[] | { [key: string]: MessageTree };
 
+/**
+ * Locale source messages rendered by the calculator shell and its components.
+ */
 const source = {
     en: {
         locale: 'en',
@@ -106,12 +116,32 @@ const source = {
 } as const;
 
 const locales = Object.keys(source) as Locale[];
+const localeStorageKey = 'mathjslab-calc:i18n:locale';
 
-const normalizeLocale = (locale?: string): Locale => {
+/**
+ * Normalize a language tag to one of the supported application locales.
+ */
+const normalizeLocale = (locale?: string | null): Locale => {
     const language = locale?.toLowerCase().split('-')[0] as Locale | undefined;
     return language && locales.includes(language) ? language : 'en';
 };
 
+/**
+ * Return the first supported language from a prioritized list of candidates.
+ */
+const firstSupportedLocale = (locales: Iterable<string | null | undefined>): Locale | undefined => {
+    for (const locale of locales) {
+        const language = locale?.toLowerCase().split('-')[0] as Locale | undefined;
+        if (language && source[language]) {
+            return language;
+        }
+    }
+    return undefined;
+};
+
+/**
+ * Format static ICU messages recursively for direct component consumption.
+ */
 const formatValue = (value: MessageTree, locale: Locale): any => {
     if (typeof value === 'string') {
         return new IntlMessageFormat(value, locale).format();
@@ -126,11 +156,17 @@ const formatValue = (value: MessageTree, locale: Locale): any => {
 
 const pages = Object.fromEntries(Object.entries(source).map(([locale, values]) => [locale, formatValue(values, locale as Locale)])) as Record<Locale, any>;
 
+/**
+ * Pick the startup locale from URL, persisted selection, then browser settings.
+ */
 const getInitialLocale = (): Locale => {
     const params = new URLSearchParams(globalThis.location.search);
-    return normalizeLocale(params.get('lang') || globalThis.localStorage.getItem('mathjslab-calc:locale') || globalThis.navigator.language);
+    return firstSupportedLocale([params.get('lang'), globalThis.localStorage.getItem(localeStorageKey), ...globalThis.navigator.languages, globalThis.navigator.language]) ?? 'en';
 };
 
+/**
+ * Shared locale coordinator for document metadata and Web Components.
+ */
 class I18n extends EventTarget {
     public readonly defaultLocale: Locale = 'en';
     public readonly locales = locales;
@@ -146,17 +182,23 @@ class I18n extends EventTarget {
         return this.pages[this.currentLocale];
     }
 
-    public setLocale(locale?: string): void {
+    /**
+     * Change and persist the active locale.
+     */
+    public setLocale(locale?: string | null): void {
         const nextLocale = normalizeLocale(locale);
         if (nextLocale === this.currentLocale) {
             return;
         }
         this.currentLocale = nextLocale;
-        globalThis.localStorage.setItem('mathjslab-calc:locale', nextLocale);
+        globalThis.localStorage.setItem(localeStorageKey, nextLocale);
         this.applyDocumentLanguage();
         this.dispatchEvent(new CustomEvent('languagechange', { detail: { locale: nextLocale } }));
     }
 
+    /**
+     * Apply localized metadata to the host document.
+     */
     public applyDocumentLanguage(): void {
         document.documentElement.lang = this.page.htmlLang;
         document.title = this.page.app.title;
