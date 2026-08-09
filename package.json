@@ -22,11 +22,13 @@
         "grammar",
         "interpreter"
     ],
-    "type": "module",
+    "author": "MathJSLab <mathjslab@gmail.com>",
+    "license": "MIT",
     "bugs": {
         "url": "https://github.com/MathJSLab/mathjslab-calc/issues"
     },
     "homepage": "https://github.com/MathJSLab/mathjslab-calc#readme",
+    "type": "module",
     "scripts": {
         "clean:package-lock": "node script/helper/clean-package-lock.cjs",
         "clean:eleventy": "shx rm -rf sitemap.xml src/build-configuration.json",
