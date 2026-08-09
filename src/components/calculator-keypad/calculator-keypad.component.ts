@@ -36,17 +36,18 @@ type KeyDefinition = {
 };
 
 /**
- * One tabbed keypad panel arranged as five-column rows.
+ * One tabbed keypad panel with regular and compact key layouts.
  */
 type KeyPanel = {
     id: PanelId;
     label: string;
     rows: KeyDefinition[][];
+    compactRows: KeyDefinition[][];
 };
 
 /**
  * Calculator panel definitions. Each panel is capped at nine five-column rows
- * so it remains usable in the portrait layout.
+ * on desktop and six four-column rows on smaller screens.
  */
 const panels: KeyPanel[] = [
     {
@@ -98,6 +99,34 @@ const panels: KeyPanel[] = [
                 { label: 'AC', action: 'clear', kind: 'command' },
             ],
             [{ label: 'Enter', action: 'evaluate', kind: 'command', wide: true }],
+        ],
+        compactRows: [
+            [{ label: 'a' }, { label: 'b' }, { label: 'c' }, { label: '=', kind: 'operation' }],
+            [{ label: 'sin', value: 'sin(' }, { label: 'cos', value: 'cos(' }, { label: 'tan', value: 'tan(' }, { label: 'i' }],
+            [
+                { label: '7', kind: 'number' },
+                { label: '8', kind: 'number' },
+                { label: '9', kind: 'number' },
+                { label: '/', kind: 'operation' },
+            ],
+            [
+                { label: '4', kind: 'number' },
+                { label: '5', kind: 'number' },
+                { label: '6', kind: 'number' },
+                { label: '*', kind: 'operation' },
+            ],
+            [
+                { label: '1', kind: 'number' },
+                { label: '2', kind: 'number' },
+                { label: '3', kind: 'number' },
+                { label: '-', kind: 'operation' },
+            ],
+            [
+                { label: '0', kind: 'number' },
+                { label: '.', kind: 'number' },
+                { label: '+', kind: 'operation' },
+                { label: 'Enter', action: 'evaluate', kind: 'command' },
+            ],
         ],
     },
     {
@@ -167,6 +196,44 @@ const panels: KeyPanel[] = [
                 { label: 'Enter', action: 'evaluate', kind: 'command', wide: true },
             ],
         ],
+        compactRows: [
+            [
+                { label: 'sin', value: 'sin(' },
+                { label: 'cos', value: 'cos(' },
+                { label: 'tan', value: 'tan(' },
+                { label: 'sqrt', value: 'sqrt(' },
+            ],
+            [
+                { label: 'asin', value: 'asin(' },
+                { label: 'acos', value: 'acos(' },
+                { label: 'atan', value: 'atan(' },
+                { label: '^', kind: 'operation' },
+            ],
+            [
+                { label: 'log', value: 'log(' },
+                { label: 'log10', value: 'log10(' },
+                { label: 'exp', value: 'exp(' },
+                { label: 'abs', value: 'abs(' },
+            ],
+            [
+                { label: 'real', value: 'real(' },
+                { label: 'imag', value: 'imag(' },
+                { label: 'conj', value: 'conj(' },
+                { label: 'arg', value: 'arg(' },
+            ],
+            [
+                { label: 'sum', value: 'sum(' },
+                { label: 'prod', value: 'prod(' },
+                { label: 'min', value: 'min(' },
+                { label: 'max', value: 'max(' },
+            ],
+            [
+                { label: ',', kind: 'operation' },
+                { label: 'DEL', action: 'backspace', kind: 'command' },
+                { label: 'AC', action: 'clear', kind: 'command' },
+                { label: 'Enter', action: 'evaluate', kind: 'command' },
+            ],
+        ],
     },
     {
         id: 'alphabet',
@@ -199,8 +266,28 @@ const panels: KeyPanel[] = [
                 { label: 'Enter', action: 'evaluate', kind: 'command', wide: true },
             ],
         ],
+        compactRows: [
+            ['a', 'b', 'c', 'x'].map((label) => ({ label })),
+            ['y', 'z', 'i', 'j'].map((label) => ({ label })),
+            ['m', 'n', 'k', 't'].map((label) => ({ label })),
+            [{ label: '_' }, { label: '=' }, { label: ';' }, { label: 'pi', value: 'pi' }],
+            [
+                { label: '[', kind: 'operation' },
+                { label: ']', kind: 'operation' },
+                { label: "'", kind: 'operation' },
+                { label: '%', kind: 'operation' },
+            ],
+            [
+                { label: 'ans', value: 'ans' },
+                { label: 'DEL', action: 'backspace', kind: 'command' },
+                { label: 'AC', action: 'clear', kind: 'command' },
+                { label: 'Enter', action: 'evaluate', kind: 'command' },
+            ],
+        ],
     },
 ];
+
+const compactLayoutMedia = '(max-width: 680px), (max-height: 520px)';
 
 /**
  * Tabbed scientific keypad that dispatches insertion and command events.
@@ -213,6 +300,7 @@ export class CalculatorKeypad extends HTMLElement {
     public static readonly null = null as unknown as CalculatorKeypad;
     public static readonly undefined = undefined as unknown as CalculatorKeypad;
     private activePanel: PanelId = 'calculator';
+    private readonly compactLayout = globalThis.matchMedia(compactLayoutMedia);
 
     public constructor() {
         super();
@@ -252,10 +340,12 @@ export class CalculatorKeypad extends HTMLElement {
 
     public connectedCallback(): void {
         i18n.addEventListener('languagechange', this.setLanguage);
+        this.compactLayout.addEventListener('change', this.layoutChange);
     }
 
     public disconnectedCallback(): void {
         i18n.removeEventListener('languagechange', this.setLanguage);
+        this.compactLayout.removeEventListener('change', this.layoutChange);
     }
 
     /**
@@ -286,10 +376,12 @@ export class CalculatorKeypad extends HTMLElement {
         this.element.keys.id = `${CalculatorKeypad.tagName}-${this.activePanel}-panel`;
         this.element.keys.setAttribute('role', 'tabpanel');
         this.element.keys.setAttribute('aria-label', panels.find((panel) => panel.id === this.activePanel)!.label);
+        this.element.keys.dataset.layout = this.compactLayout.matches ? 'compact' : 'regular';
         this.updateTabs();
 
         const panel = panels.find((candidate) => candidate.id === this.activePanel)!;
-        for (const key of panel.rows.flat()) {
+        const rows = this.compactLayout.matches ? panel.compactRows : panel.rows;
+        for (const key of rows.flat()) {
             const button = document.createElement('button');
             button.type = 'button';
             button.textContent = this.getKeyLabel(key);
@@ -336,6 +428,10 @@ export class CalculatorKeypad extends HTMLElement {
                 tab.title = i18n.page.keypad.panels[panel.id];
             }
         }
+        this.renderKeys();
+    };
+
+    private readonly layoutChange = (): void => {
         this.renderKeys();
     };
 

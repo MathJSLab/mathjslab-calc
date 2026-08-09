@@ -1,4 +1,4 @@
 {
-  "debug": {{ "true" if env.DEBUG else "false" }},
-  "buildMessage": "MathJSLab Calc development build"
+  "buildMessage": "MathJSLab Calc v{{ pkg.version }} built at {% currentDate 'HTTP' %}.{{ 'DEBUG' | processEnv | printIfTruthy(' Debug flag enabled.') }} Homepage: {{ pkg.homepage }}, License: {{ pkg.license }}",
+  "debug": {{ 'DEBUG' | processEnv('false') }}
 }

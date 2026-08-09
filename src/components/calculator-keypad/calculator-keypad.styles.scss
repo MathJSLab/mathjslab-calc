@@ -44,6 +44,10 @@
   grid-template-columns: repeat(5, minmax(0, 1fr));
 }
 
+.keys[data-layout='compact'] {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
 button {
   align-items: center;
   aspect-ratio: 1.08;
@@ -120,12 +124,12 @@ button {
   button {
     aspect-ratio: auto;
     font-size: clamp(0.76rem, 2.8vw, 1rem);
-    height: clamp(18px, 3.2svh, 28px);
+    height: clamp(28px, 5.2svh, 42px);
     min-height: 0;
   }
 
   .key[data-wide='true'] {
-    height: clamp(18px, 3.2svh, 28px);
+    height: clamp(28px, 5.2svh, 42px);
     min-height: 0;
   }
 
@@ -142,11 +146,11 @@ button {
   button {
     aspect-ratio: 1.35;
     font-size: clamp(0.74rem, 3.2cqi, 0.95rem);
-    min-height: clamp(24px, 9cqi, 38px);
+    min-height: clamp(22px, 8cqi, 34px);
   }
 
   .key[data-wide='true'] {
-    min-height: clamp(24px, 9cqi, 38px);
+    min-height: clamp(22px, 8cqi, 34px);
   }
 }
 
