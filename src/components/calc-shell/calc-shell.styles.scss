@@ -119,13 +119,14 @@ p {
 @media (orientation: portrait) {
   .workspace {
     grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: minmax(0, 1fr) minmax(0, auto);
+    grid-template-rows: minmax(0, 1fr) max-content;
   }
 
   .keypad-panel {
+    align-self: end;
     border-top: 1px solid #d9dee7;
-    max-height: min(42svh, 360px);
-    overflow: auto;
+    max-height: none;
+    overflow: visible;
   }
 
   .workspace[data-panel='closed'] {
