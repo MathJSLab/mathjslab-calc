@@ -96,6 +96,7 @@ export class CalcPromptList extends HTMLElement {
         this.activePrompt = prompt;
         prompt.focusInput();
         prompt.element.input.setSelectionRange(value.length, value.length);
+        prompt.scrollIntoView({ block: 'end', inline: 'nearest' });
         return prompt;
     }
 
