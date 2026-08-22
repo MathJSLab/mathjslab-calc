@@ -112,24 +112,24 @@ button {
 
 @media (orientation: portrait) {
   .keypad {
-    gap: clamp(2px, 0.45svh, 5px);
+    gap: clamp(2px, 0.35svh, 4px);
     height: auto;
-    padding: clamp(4px, 0.7svh, 7px);
+    padding: clamp(3px, 0.55svh, 6px);
   }
 
   .keys {
-    gap: clamp(2px, 0.45svh, 4px);
+    gap: clamp(2px, 0.35svh, 3px);
   }
 
   button {
     aspect-ratio: auto;
-    font-size: clamp(0.76rem, 2.8vw, 1rem);
-    height: clamp(28px, 5.2svh, 42px);
+    font-size: clamp(0.84rem, 3.2vw, 1.08rem);
+    height: clamp(24px, 4.6svh, 36px);
     min-height: 0;
   }
 
   .key[data-wide='true'] {
-    height: clamp(28px, 5.2svh, 42px);
+    height: clamp(24px, 4.6svh, 36px);
     min-height: 0;
   }
 

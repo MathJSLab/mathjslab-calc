@@ -101,7 +101,7 @@ const panels: KeyPanel[] = [
             [{ label: 'Enter', action: 'evaluate', kind: 'command', wide: true }],
         ],
         compactRows: [
-            [{ label: 'a' }, { label: 'b' }, { label: 'c' }, { label: '=', kind: 'operation' }],
+            [{ label: 'a' }, { label: 'b' }, { label: '=', kind: 'operation' }, { label: 'AC', action: 'clear', kind: 'command' }],
             [{ label: 'sin', value: 'sin(' }, { label: 'cos', value: 'cos(' }, { label: 'tan', value: 'tan(' }, { label: 'i' }],
             [
                 { label: '7', kind: 'number' },
