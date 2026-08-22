@@ -48,6 +48,10 @@ type CalculatorKeyEvent = CustomEvent<{
     value: string;
 }>;
 
+type CalculatorBaseEvent = CustomEvent<{
+    prefix: string;
+}>;
+
 type CalcInputMode = 'app' | 'native';
 
 const nativeKeyboardSwitchMedia = '(pointer: coarse) and (max-width: 680px), (pointer: coarse) and (max-height: 520px)';
@@ -108,6 +112,7 @@ export class CalcShell extends HTMLElement {
         this.element.language.addEventListener('change', this.changeLanguage);
         this.element.toggle.addEventListener('click', this.togglePanel);
         this.addEventListener('calculator-key', this.keyInput as EventListener);
+        this.addEventListener('calculator-base-change', this.baseInput as EventListener);
         this.nativeKeyboardSwitch.addEventListener('change', this.layoutChange);
         this.applyInputMode();
     }
@@ -117,6 +122,7 @@ export class CalcShell extends HTMLElement {
         this.element.language.removeEventListener('change', this.changeLanguage);
         this.element.toggle.removeEventListener('click', this.togglePanel);
         this.removeEventListener('calculator-key', this.keyInput as EventListener);
+        this.removeEventListener('calculator-base-change', this.baseInput as EventListener);
         this.nativeKeyboardSwitch.removeEventListener('change', this.layoutChange);
     }
 
@@ -151,6 +157,14 @@ export class CalcShell extends HTMLElement {
         } else {
             this.element.prompts.evaluateActive();
         }
+    };
+
+    /**
+     * Apply programming numeric base prefixes to empty prompts.
+     */
+    private readonly baseInput = (event: CalculatorBaseEvent): void => {
+        event.stopPropagation();
+        this.element.prompts.setEmptyPromptPrefix(event.detail.prefix);
     };
 
     /**

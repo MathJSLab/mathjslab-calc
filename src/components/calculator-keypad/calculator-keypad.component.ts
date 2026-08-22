@@ -16,13 +16,17 @@ export interface CalculatorKeypadElementEntry {
     title: HTMLElement;
     brand: HTMLElement;
     tabs: HTMLElement;
+    baseControl: HTMLFieldSetElement;
+    baseLabel: HTMLElement;
+    base: HTMLElement;
     keys: HTMLElement;
 }
 
 export type CalculatorKeypadElement = WebComponentElement<CalculatorKeypadElementEntry>;
-export const CalculatorKeypadElementEntryKey: (keyof CalculatorKeypadElementEntry)[] = ['root', 'title', 'brand', 'tabs', 'keys'] as const;
+export const CalculatorKeypadElementEntryKey: (keyof CalculatorKeypadElementEntry)[] = ['root', 'title', 'brand', 'tabs', 'baseControl', 'baseLabel', 'base', 'keys'] as const;
 
-type PanelId = 'calculator' | 'functions' | 'alphabet';
+type PanelId = 'calculator' | 'functions' | 'alphabet' | 'programming';
+type NumericBase = 'bin' | 'oct' | 'dec' | 'hex';
 
 /**
  * A single calculator key and the command it emits.
@@ -33,6 +37,7 @@ type KeyDefinition = {
     action?: 'insert' | 'backspace' | 'clear' | 'evaluate';
     kind?: 'number' | 'operation' | 'command';
     wide?: boolean;
+    bases?: NumericBase[];
 };
 
 /**
@@ -285,7 +290,116 @@ const panels: KeyPanel[] = [
             ],
         ],
     },
+    {
+        id: 'programming',
+        label: '[>',
+        rows: [
+            [
+                { label: 'A', kind: 'number', bases: ['hex'] },
+                { label: 'B', kind: 'number', bases: ['hex'] },
+                { label: 'C', kind: 'number', bases: ['hex'] },
+                { label: 'D', kind: 'number', bases: ['hex'] },
+                { label: 'E', kind: 'number', bases: ['hex'] },
+            ],
+            [
+                { label: 'F', kind: 'number', bases: ['hex'] },
+                { label: '<', kind: 'operation' },
+                { label: '>', kind: 'operation' },
+                { label: '<=', kind: 'operation' },
+                { label: '=', kind: 'operation' },
+            ],
+            [
+                { label: '7', kind: 'number', bases: ['oct', 'dec', 'hex'] },
+                { label: '8', kind: 'number', bases: ['dec', 'hex'] },
+                { label: '9', kind: 'number', bases: ['dec', 'hex'] },
+                { label: '&', kind: 'operation' },
+                { label: '>=', kind: 'operation' },
+            ],
+            [
+                { label: '4', kind: 'number', bases: ['oct', 'dec', 'hex'] },
+                { label: '5', kind: 'number', bases: ['oct', 'dec', 'hex'] },
+                { label: '6', kind: 'number', bases: ['oct', 'dec', 'hex'] },
+                { label: '|', kind: 'operation' },
+                { label: '!=', kind: 'operation' },
+            ],
+            [
+                { label: '1', kind: 'number' },
+                { label: '2', kind: 'number', bases: ['oct', 'dec', 'hex'] },
+                { label: '3', kind: 'number', bases: ['oct', 'dec', 'hex'] },
+                { label: '&&', kind: 'operation' },
+                { label: '==', kind: 'operation' },
+            ],
+            [
+                { label: '0', kind: 'number' },
+                { label: 'xor', value: 'xor(', kind: 'operation' },
+                { label: 'and', value: 'and(', kind: 'operation' },
+                { label: 'or', value: 'or(', kind: 'operation' },
+                { label: 'not', value: 'not(', kind: 'operation' },
+            ],
+            [
+                { label: '<<', kind: 'operation' },
+                { label: '>>', kind: 'operation' },
+                { label: '~', kind: 'operation' },
+                { label: '!', kind: 'operation' },
+                { label: ',', kind: 'operation' },
+            ],
+            [
+                { label: '(', kind: 'operation' },
+                { label: ')', kind: 'operation' },
+                { label: ';', kind: 'operation' },
+                { label: 'DEL', action: 'backspace', kind: 'command' },
+                { label: 'AC', action: 'clear', kind: 'command' },
+            ],
+            [{ label: 'Enter', action: 'evaluate', kind: 'command', wide: true }],
+        ],
+        compactRows: [
+            [
+                { label: 'A', kind: 'number', bases: ['hex'] },
+                { label: 'B', kind: 'number', bases: ['hex'] },
+                { label: 'C', kind: 'number', bases: ['hex'] },
+                { label: 'AC', action: 'clear', kind: 'command' },
+            ],
+            [
+                { label: 'D', kind: 'number', bases: ['hex'] },
+                { label: 'E', kind: 'number', bases: ['hex'] },
+                { label: 'F', kind: 'number', bases: ['hex'] },
+                { label: '==', kind: 'operation' },
+            ],
+            [
+                { label: '7', kind: 'number', bases: ['oct', 'dec', 'hex'] },
+                { label: '8', kind: 'number', bases: ['dec', 'hex'] },
+                { label: '9', kind: 'number', bases: ['dec', 'hex'] },
+                { label: '<', kind: 'operation' },
+            ],
+            [
+                { label: '4', kind: 'number', bases: ['oct', 'dec', 'hex'] },
+                { label: '5', kind: 'number', bases: ['oct', 'dec', 'hex'] },
+                { label: '6', kind: 'number', bases: ['oct', 'dec', 'hex'] },
+                { label: '>', kind: 'operation' },
+            ],
+            [
+                { label: '1', kind: 'number' },
+                { label: '2', kind: 'number', bases: ['oct', 'dec', 'hex'] },
+                { label: '3', kind: 'number', bases: ['oct', 'dec', 'hex'] },
+                { label: '&', kind: 'operation' },
+            ],
+            [
+                { label: '0', kind: 'number' },
+                { label: '|', kind: 'operation' },
+                { label: 'DEL', action: 'backspace', kind: 'command' },
+                { label: 'Enter', action: 'evaluate', kind: 'command' },
+            ],
+        ],
+    },
 ];
+
+const numericBases: NumericBase[] = ['bin', 'oct', 'dec', 'hex'];
+const numericBasePrefixes: Record<NumericBase, string> = {
+    bin: '0b',
+    oct: '0o',
+    dec: '',
+    hex: '0x',
+};
 
 const compactLayoutMedia = '(max-width: 680px), (max-height: 520px)';
 
@@ -300,11 +414,13 @@ export class CalculatorKeypad extends HTMLElement {
     public static readonly null = null as unknown as CalculatorKeypad;
     public static readonly undefined = undefined as unknown as CalculatorKeypad;
     private activePanel: PanelId = 'calculator';
+    private numericBase: NumericBase = 'dec';
     private readonly compactLayout = globalThis.matchMedia(compactLayoutMedia);
 
     public constructor() {
         super();
         constructorFactory(CalculatorKeypad, styles).bind(this)();
+        this.renderBaseOptions();
         this.renderTabs();
         this.renderKeys();
         this.setLanguage();
@@ -341,15 +457,17 @@ export class CalculatorKeypad extends HTMLElement {
     public connectedCallback(): void {
         i18n.addEventListener('languagechange', this.setLanguage);
         this.compactLayout.addEventListener('change', this.layoutChange);
+        this.element.base.addEventListener('change', this.changeNumericBase);
     }
 
     public disconnectedCallback(): void {
         i18n.removeEventListener('languagechange', this.setLanguage);
         this.compactLayout.removeEventListener('change', this.layoutChange);
+        this.element.base.removeEventListener('change', this.changeNumericBase);
     }
 
     /**
-     * Render the three GeoGebra-inspired panel tabs.
+     * Render the GeoGebra-inspired panel tabs.
      */
     private renderTabs(): void {
         for (const panel of panels) {
@@ -377,16 +495,21 @@ export class CalculatorKeypad extends HTMLElement {
         this.element.keys.setAttribute('role', 'tabpanel');
         this.element.keys.setAttribute('aria-label', panels.find((panel) => panel.id === this.activePanel)!.label);
         this.element.keys.dataset.layout = this.compactLayout.matches ? 'compact' : 'regular';
+        this.element.root.dataset.panel = this.activePanel;
         this.updateTabs();
+        this.updateBaseControl();
 
         const panel = panels.find((candidate) => candidate.id === this.activePanel)!;
         const rows = this.compactLayout.matches ? panel.compactRows : panel.rows;
         for (const key of rows.flat()) {
+            const enabled = this.isKeyEnabled(key);
             const button = document.createElement('button');
             button.type = 'button';
             button.textContent = this.getKeyLabel(key);
             button.className = 'key';
             button.dataset.kind = key.kind || 'operation';
+            button.disabled = !enabled;
+            button.setAttribute('aria-disabled', String(!enabled));
             if (key.wide) {
                 button.dataset.wide = 'true';
             }
@@ -407,6 +530,25 @@ export class CalculatorKeypad extends HTMLElement {
     }
 
     /**
+     * Render supported numeric base options.
+     */
+    private renderBaseOptions(): void {
+        this.element.base.replaceChildren();
+        for (const base of numericBases) {
+            const option = document.createElement('label');
+            const input = document.createElement('input');
+            const caption = document.createElement('span');
+            input.type = 'radio';
+            input.name = `${CalculatorKeypad.tagName}-base`;
+            input.value = base;
+            input.checked = base === this.numericBase;
+            caption.textContent = i18n.page.keypad.base.options[base];
+            option.append(input, caption);
+            this.element.base.append(option);
+        }
+    }
+
+    /**
      * Keep tab ARIA state synchronized with the active panel.
      */
     private updateTabs(): void {
@@ -422,18 +564,54 @@ export class CalculatorKeypad extends HTMLElement {
         this.element.tabs.setAttribute('aria-label', i18n.page.keypad.panelLabel);
         this.element.title.textContent = i18n.page.keypad.title;
         this.element.brand.textContent = i18n.page.keypad.brand;
+        this.element.baseLabel.textContent = i18n.page.keypad.base.label;
         for (const tab of this.element.tabs.querySelectorAll<HTMLButtonElement>('.tab')) {
             const panel = panels.find((candidate) => candidate.id === tab.dataset.panel);
             if (panel) {
                 tab.title = i18n.page.keypad.panels[panel.id];
             }
         }
+        this.renderBaseOptions();
         this.renderKeys();
     };
 
     private readonly layoutChange = (): void => {
         this.renderKeys();
     };
+
+    private readonly changeNumericBase = (): void => {
+        const checked = this.element.base.querySelector<HTMLInputElement>('input:checked');
+        if (!checked) {
+            return;
+        }
+        this.numericBase = checked.value as NumericBase;
+        this.renderKeys();
+        this.dispatchEvent(
+            new CustomEvent('calculator-base-change', {
+                bubbles: true,
+                composed: true,
+                detail: {
+                    base: this.numericBase,
+                    prefix: numericBasePrefixes[this.numericBase],
+                },
+            }),
+        );
+    };
+
+    /**
+     * Show the base selector only when the programming panel is active.
+     */
+    private updateBaseControl(): void {
+        const visible = this.activePanel === 'programming';
+        this.element.baseControl.hidden = !visible;
+        for (const input of this.element.base.querySelectorAll<HTMLInputElement>('input')) {
+            input.checked = input.value === this.numericBase;
+        }
+    }
+
+    private isKeyEnabled(key: KeyDefinition): boolean {
+        return this.activePanel !== 'programming' || !key.bases || key.bases.includes(this.numericBase);
+    }
 
     private getKeyLabel(key: KeyDefinition): string {
         if (key.action === 'evaluate') {

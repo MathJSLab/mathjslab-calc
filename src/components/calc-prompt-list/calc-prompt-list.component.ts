@@ -18,6 +18,7 @@ export interface CalcPromptListElementEntry {
 
 export type CalcPromptListElement = WebComponentElement<CalcPromptListElementEntry>;
 export const CalcPromptListElementEntryKey: (keyof CalcPromptListElementEntry)[] = ['root'] as const;
+const numericBasePrefixes = ['0b', '0o', '0x'];
 
 /**
  * Callback used by the shell to evaluate one prompt.
@@ -36,6 +37,7 @@ export class CalcPromptList extends HTMLElement {
     public static readonly undefined = undefined as unknown as CalcPromptList;
     public evaluator: PromptEvaluator = () => {};
     private activePrompt: CalcPrompt | null = null;
+    private emptyPromptPrefix = '';
 
     public constructor() {
         super();
@@ -87,13 +89,28 @@ export class CalcPromptList extends HTMLElement {
     /**
      * Append a prompt, make it active, and focus its input.
      */
-    public appendPrompt(value = ''): CalcPrompt {
+    public appendPrompt(value = this.emptyPromptPrefix): CalcPrompt {
         const prompt = document.createElement(CalcPrompt.tagName) as CalcPrompt;
         prompt.value = value;
         this.element.root.append(prompt);
         this.activePrompt = prompt;
         prompt.focusInput();
+        prompt.element.input.setSelectionRange(value.length, value.length);
         return prompt;
+    }
+
+    /**
+     * Configure the text used to initialize empty prompts.
+     */
+    public setEmptyPromptPrefix(prefix: string): void {
+        this.emptyPromptPrefix = prefix;
+        if (!this.activePrompt) {
+            this.appendPrompt();
+            return;
+        }
+        if (this.activePrompt.value === '' || numericBasePrefixes.includes(this.activePrompt.value)) {
+            this.setActivePromptValue(prefix);
+        }
     }
 
     /**
@@ -170,6 +187,15 @@ export class CalcPromptList extends HTMLElement {
         event.stopPropagation();
         this.evaluate(event.detail.prompt);
     };
+
+    private setActivePromptValue(value: string): void {
+        if (!this.activePrompt) {
+            return;
+        }
+        this.activePrompt.value = value;
+        this.activePrompt.focusInput();
+        this.activePrompt.element.input.setSelectionRange(value.length, value.length);
+    }
 
     private readonly setLanguage = (): void => {
         this.element.root.setAttribute('aria-label', i18n.page.prompt.listAriaLabel);

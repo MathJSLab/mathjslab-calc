@@ -41,6 +41,16 @@ const source = {
                 calculator: 'Calculator',
                 functions: 'Functions',
                 alphabet: 'Alphabet',
+                programming: 'Programming',
+            },
+            base: {
+                label: 'Base',
+                options: {
+                    bin: 'BIN',
+                    oct: 'OCT',
+                    dec: 'DEC',
+                    hex: 'HEX',
+                },
             },
             keys: {
                 enter: 'Enter',
@@ -76,6 +86,16 @@ const source = {
                 calculator: 'Calculadora',
                 functions: 'Funciones',
                 alphabet: 'Alfabético',
+                programming: 'Programación',
+            },
+            base: {
+                label: 'Base',
+                options: {
+                    bin: 'BIN',
+                    oct: 'OCT',
+                    dec: 'DEC',
+                    hex: 'HEX',
+                },
             },
             keys: {
                 enter: 'Intro',
@@ -111,6 +131,16 @@ const source = {
                 calculator: 'Calculadora',
                 functions: 'Funções',
                 alphabet: 'Alfabético',
+                programming: 'Programação',
+            },
+            base: {
+                label: 'Base',
+                options: {
+                    bin: 'BIN',
+                    oct: 'OCT',
+                    dec: 'DEC',
+                    hex: 'HEX',
+                },
             },
             keys: {
                 enter: 'Enter',

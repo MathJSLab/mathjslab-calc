@@ -34,8 +34,75 @@
   border-radius: 8px;
   display: grid;
   gap: clamp(2px, 0.8cqi, 3px);
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   padding: clamp(2px, 0.8cqi, 3px);
+}
+
+.base-control {
+  align-items: center;
+  border: 0;
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+  margin: 0;
+  min-width: 0;
+  padding: 0;
+}
+
+.base-control[hidden] {
+  display: none;
+}
+
+.base-control legend {
+  color: #475467;
+  float: left;
+  font-size: clamp(0.76rem, 2.5cqi, 0.9rem);
+  font-weight: 600;
+  line-height: clamp(28px, 8.5cqi, 36px);
+  padding: 0;
+}
+
+.base-options {
+  background: #e8edf2;
+  border: 1px solid #cfd7df;
+  border-radius: 7px;
+  display: grid;
+  flex: 1 1 auto;
+  gap: 2px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  min-width: 0;
+  padding: 2px;
+}
+
+.base-options label {
+  align-items: center;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  color: #1d2939;
+  cursor: pointer;
+  display: inline-flex;
+  font:
+    650 clamp(0.7rem, 2.6cqi, 0.86rem) / 1 system-ui,
+    sans-serif;
+  height: clamp(28px, 8.5cqi, 36px);
+  justify-content: center;
+  min-width: 0;
+  padding: 0 4px;
+}
+
+.base-options input {
+  appearance: none;
+  height: 0;
+  margin: 0;
+  position: absolute;
+  width: 0;
+}
+
+.base-options label:has(input:checked) {
+  background: #ffffff;
+  border-color: #c7d7cf;
+  box-shadow: 0 1px 2px rgb(16 24 40 / 10%);
+  color: #215b43;
 }
 
 .keys {
@@ -89,6 +156,14 @@ button {
   border-color: #74b59c;
 }
 
+.key:disabled {
+  background: #eef1f4;
+  border-color: #d8dee6;
+  color: #98a2b3;
+  cursor: not-allowed;
+  opacity: 0.58;
+}
+
 .key:active,
 .tab:active {
   transform: translateY(1px);
@@ -135,6 +210,19 @@ button {
 
   .tab {
     height: clamp(20px, 3svh, 26px);
+  }
+
+  .base-control {
+    gap: 6px;
+  }
+
+  .base-control legend {
+    line-height: clamp(22px, 3.4svh, 28px);
+  }
+
+  .base-options label {
+    font-size: clamp(0.68rem, 2.8vw, 0.8rem);
+    height: clamp(22px, 3.4svh, 28px);
   }
 }
 
@@ -185,7 +273,32 @@ button {
     color: #d8f3e8;
   }
 
+  .base-control legend {
+    color: #cbd5e1;
+  }
+
+  .base-options {
+    background: #171a20;
+    border-color: #475467;
+  }
+
+  .base-options label {
+    color: #f2f4f7;
+  }
+
+  .base-options label:has(input:checked) {
+    background: #364152;
+    border-color: #5a8b77;
+    color: #d8f3e8;
+  }
+
   .key[data-kind='operation'] {
     background: #263847;
+  }
+
+  .key:disabled {
+    background: #252a32;
+    border-color: #343b46;
+    color: #667085;
   }
 }

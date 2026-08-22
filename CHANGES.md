@@ -7,6 +7,7 @@ project adheres to [Semantic Versioning](http://semver.org/).
 
 - Toggle button between the native keyboard and the app's keyboard on mobile
   devices.
+- Implementation of the programming keypad panel.
 
 ## 0.0.7
 
