@@ -20,6 +20,8 @@ export interface CalcPromptElementEntry {
 export type CalcPromptElement = WebComponentElement<CalcPromptElementEntry>;
 export const CalcPromptElementEntryKey: (keyof CalcPromptElementEntry)[] = ['root', 'input', 'output'] as const;
 
+const nativeKeyboardSuppressionMedia = '(pointer: coarse) and (max-width: 680px), (pointer: coarse) and (max-height: 520px)';
+
 /**
  * Editable prompt row with input handling and MathML output rendering.
  */
@@ -30,6 +32,7 @@ export class CalcPrompt extends HTMLElement {
     public static readonly elementPostfix = keyToPostfix(CalcPromptElementEntryKey);
     public static readonly null = null as unknown as CalcPrompt;
     public static readonly undefined = undefined as unknown as CalcPrompt;
+    private readonly nativeKeyboardSuppression = globalThis.matchMedia(nativeKeyboardSuppressionMedia);
 
     public constructor() {
         super();
@@ -68,6 +71,8 @@ export class CalcPrompt extends HTMLElement {
         i18n.addEventListener('languagechange', this.setLanguage);
         this.element.input.addEventListener('input', this.resize);
         this.element.input.addEventListener('keydown', this.keydown);
+        this.nativeKeyboardSuppression.addEventListener('change', this.layoutChange);
+        this.setInputMode();
         this.setLanguage();
         this.resize();
     }
@@ -76,6 +81,7 @@ export class CalcPrompt extends HTMLElement {
         i18n.removeEventListener('languagechange', this.setLanguage);
         this.element.input.removeEventListener('input', this.resize);
         this.element.input.removeEventListener('keydown', this.keydown);
+        this.nativeKeyboardSuppression.removeEventListener('change', this.layoutChange);
     }
 
     public get value(): string {
@@ -134,6 +140,25 @@ export class CalcPrompt extends HTMLElement {
 
     private readonly setLanguage = (): void => {
         this.element.input.setAttribute('aria-label', i18n.page.prompt.ariaLabel);
+    };
+
+    /**
+     * Suppress the native virtual keyboard when touch devices use the compact keypad.
+     */
+    private setInputMode(): void {
+        if (this.nativeKeyboardSuppression.matches) {
+            this.element.input.inputMode = 'none';
+            this.element.input.readOnly = true;
+            this.element.input.setAttribute('virtualkeyboardpolicy', 'manual');
+        } else {
+            this.element.input.inputMode = '';
+            this.element.input.readOnly = false;
+            this.element.input.removeAttribute('virtualkeyboardpolicy');
+        }
+    }
+
+    private readonly layoutChange = (): void => {
+        this.setInputMode();
     };
 }
 

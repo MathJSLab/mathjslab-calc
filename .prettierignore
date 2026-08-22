@@ -10,3 +10,5 @@ report/
 script/build/
 # Output directory.
 dist/
+# SVG files.
+*.svg

@@ -7,17 +7,6 @@
   "bracketSpacing": true,
   "overrides": [
     {
-      "files": "*.svg",
-      "options": {
-        "parser": "html",
-        "printWidth": 120,
-        "tabWidth": 2,
-        "useTabs": false,
-        "proseWrap": "preserve",
-        "htmlWhitespaceSensitivity": "strict"
-      }
-    },
-    {
       "files": "*.scss",
       "options": {
         "parser": "scss",

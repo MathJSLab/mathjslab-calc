@@ -1,29 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="630" height="630" viewBox="0 0 630 630">
   <style>
-    .fill-symbol {
-      fill: hsl(120, 52%, 88%);
-    }
+.fill-symbol {
+  fill: hsl(120, 52%, 88%);
+}
 
-    .stroke-fill-panel {
-      stroke: hsl(120, 100%, 25%);
-      fill: hsl(120, 52%, 16%);
-    }
+.stroke-fill-panel {
+  stroke: hsl(120, 100%, 25%);
+  fill: hsl(120, 52%, 16%);
+}
 
-    .stroke-trace {
-      fill: none;
-      stroke: hsl(0, 0%, 92%);
-    }
+.stroke-trace {
+  fill: none;
+  stroke: hsl(0, 0%, 92%);
+}
 
-    .fill-trace {
-      fill: hsl(0, 0%, 92%);
-    }
+.fill-trace {
+  fill: hsl(0, 0%, 92%);
+}
   </style>
-  <circle style="fill: none; stroke: none; stroke-opacity: 1" cx="315" cy="315" r="315" />
-  <circle class="stroke-fill-panel" style="stroke-width: 14px" cx="315" cy="315" r="288" />
+
+  <circle style="fill:none;stroke:none;stroke-opacity:1" cx="315" cy="315" r="315"/>
+  <circle class="stroke-fill-panel" style="stroke-width:14px" cx="315" cy="315" r="288"/>
   <path
-    class="fill-symbol"
-    d="M 237,94
+   class="fill-symbol"
+   d="M 237,94
       C 248,85 255,82 275,82
       H 408
       V 109
@@ -36,16 +37,11 @@
       L 275,110
       H 240
       C 234,110 228,110 220,118 222,108 231,100 237,94
-      Z"
-  />
-  <!-- prettier-ignore -->
+      Z" />
   <text class="fill-symbol" style="font-size:76px;font-family:'Times New Roman';font-style:italic" x="153" y="423">ax<tspan style="font-size:65%;baseline-shift:super">3</tspan><tspan style="font-style:normal;font-weight:bold;font-size:80%;font-family:'Times New Roman'">+</tspan>bx<tspan style="font-size:65%;baseline-shift:super">2</tspan><tspan style="font-style:normal;font-weight:bold;font-size:80%;font-family:'Times New Roman'">+</tspan>cx<tspan style="font-style:normal;font-weight:bold;font-size:80%;font-family:'Times New Roman'">+</tspan>d</text>
-  <path class="stroke-trace" style="stroke-width: 14px; stroke-linecap: round" d="M 126,135 V 490 H 513" />
-  <path class="stroke-trace" style="stroke-width: 14px" d="M 126,441 H 176 V 490" />
-  <circle class="fill-trace" style="stroke: none" cx="152" cy="464" r="4.1" />
-  <path
-    class="stroke-trace"
-    style="stroke-width: 14px; stroke-linecap: round"
-    d="M 126,441 C 140,390 203,273 252,273 305,273 336,330 378,330 420,330 513,203 532,168"
-  />
+  <path class="stroke-trace" style="stroke-width:14px;stroke-linecap:round" d="M 126,135 V 490 H 513"/>
+  <path class="stroke-trace" style="stroke-width:14px" d="M 126,441 H 176 V 490"/>
+  <circle class="fill-trace" style="stroke:none" cx="152" cy="464" r="4.1"/>
+  <path class="stroke-trace" style="stroke-width:14px;stroke-linecap:round" d="M 126,441 C 140,390 203,273 252,273 305,273 336,330 378,330 420,330 513,203 532,168"/>
+
 </svg>
