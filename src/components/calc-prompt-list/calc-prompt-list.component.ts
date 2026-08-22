@@ -107,6 +107,17 @@ export class CalcPromptList extends HTMLElement {
     }
 
     /**
+     * Focus the active prompt, creating one when the history is empty.
+     */
+    public focusActive(): void {
+        if (!this.activePrompt) {
+            this.appendPrompt();
+            return;
+        }
+        this.activePrompt.focusInput();
+    }
+
+    /**
      * Delete the selected text or one character before the cursor.
      */
     public backspace(): void {

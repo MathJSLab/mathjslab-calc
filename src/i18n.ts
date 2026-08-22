@@ -25,6 +25,8 @@ const source = {
         shell: {
             languageLabel: 'Language',
             toggleKeypad: 'Toggle keypad',
+            useAppKeypad: 'Use app keypad',
+            useNativeKeyboard: 'Use native keyboard',
         },
         prompt: {
             ariaLabel: 'MathJSLab prompt',
@@ -58,6 +60,8 @@ const source = {
         shell: {
             languageLabel: 'Idioma',
             toggleKeypad: 'Mostrar u ocultar teclado',
+            useAppKeypad: 'Usar teclado de la app',
+            useNativeKeyboard: 'Usar teclado nativo',
         },
         prompt: {
             ariaLabel: 'Prompt de MathJSLab',
@@ -91,6 +95,8 @@ const source = {
         shell: {
             languageLabel: 'Idioma',
             toggleKeypad: 'Mostrar ou ocultar teclado',
+            useAppKeypad: 'Usar teclado do aplicativo',
+            useNativeKeyboard: 'Usar teclado nativo',
         },
         prompt: {
             ariaLabel: 'Prompt do MathJSLab',

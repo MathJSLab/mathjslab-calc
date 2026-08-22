@@ -20,6 +20,12 @@ export interface CalcPromptElementEntry {
 export type CalcPromptElement = WebComponentElement<CalcPromptElementEntry>;
 export const CalcPromptElementEntryKey: (keyof CalcPromptElementEntry)[] = ['root', 'input', 'output'] as const;
 
+type CalcInputMode = 'app' | 'native';
+
+type CalcInputModeEvent = CustomEvent<{
+    mode: CalcInputMode;
+}>;
+
 const nativeKeyboardSuppressionMedia = '(pointer: coarse) and (max-width: 680px), (pointer: coarse) and (max-height: 520px)';
 
 /**
@@ -33,6 +39,7 @@ export class CalcPrompt extends HTMLElement {
     public static readonly null = null as unknown as CalcPrompt;
     public static readonly undefined = undefined as unknown as CalcPrompt;
     private readonly nativeKeyboardSuppression = globalThis.matchMedia(nativeKeyboardSuppressionMedia);
+    private keyboardMode: CalcInputMode = 'app';
 
     public constructor() {
         super();
@@ -72,6 +79,7 @@ export class CalcPrompt extends HTMLElement {
         this.element.input.addEventListener('input', this.resize);
         this.element.input.addEventListener('keydown', this.keydown);
         this.nativeKeyboardSuppression.addEventListener('change', this.layoutChange);
+        globalThis.addEventListener('calc-input-mode-change', this.inputModeChange as EventListener);
         this.setInputMode();
         this.setLanguage();
         this.resize();
@@ -82,6 +90,7 @@ export class CalcPrompt extends HTMLElement {
         this.element.input.removeEventListener('input', this.resize);
         this.element.input.removeEventListener('keydown', this.keydown);
         this.nativeKeyboardSuppression.removeEventListener('change', this.layoutChange);
+        globalThis.removeEventListener('calc-input-mode-change', this.inputModeChange as EventListener);
     }
 
     public get value(): string {
@@ -143,10 +152,10 @@ export class CalcPrompt extends HTMLElement {
     };
 
     /**
-     * Suppress the native virtual keyboard when touch devices use the compact keypad.
+     * Suppress the native virtual keyboard only while touch devices use the app keypad.
      */
     private setInputMode(): void {
-        if (this.nativeKeyboardSuppression.matches) {
+        if (this.nativeKeyboardSuppression.matches && this.keyboardMode === 'app') {
             this.element.input.inputMode = 'none';
             this.element.input.readOnly = true;
             this.element.input.setAttribute('virtualkeyboardpolicy', 'manual');
@@ -158,6 +167,11 @@ export class CalcPrompt extends HTMLElement {
     }
 
     private readonly layoutChange = (): void => {
+        this.setInputMode();
+    };
+
+    private readonly inputModeChange = (event: CalcInputModeEvent): void => {
+        this.keyboardMode = event.detail.mode;
         this.setInputMode();
     };
 }

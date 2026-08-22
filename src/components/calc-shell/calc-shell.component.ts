@@ -48,6 +48,10 @@ type CalculatorKeyEvent = CustomEvent<{
     value: string;
 }>;
 
+type CalcInputMode = 'app' | 'native';
+
+const nativeKeyboardSwitchMedia = '(pointer: coarse) and (max-width: 680px), (pointer: coarse) and (max-height: 520px)';
+
 /**
  * Top-level calculator component that connects prompts, keypad and interpreter.
  */
@@ -58,7 +62,9 @@ export class CalcShell extends HTMLElement {
     public static readonly elementPostfix = keyToPostfix(CalcShellElementEntryKey);
     public static readonly null = null as unknown as CalcShell;
     public static readonly undefined = undefined as unknown as CalcShell;
+    private readonly nativeKeyboardSwitch = globalThis.matchMedia(nativeKeyboardSwitchMedia);
     private panelOpen = true;
+    private keyboardMode: CalcInputMode = 'app';
 
     public constructor() {
         super();
@@ -102,6 +108,8 @@ export class CalcShell extends HTMLElement {
         this.element.language.addEventListener('change', this.changeLanguage);
         this.element.toggle.addEventListener('click', this.togglePanel);
         this.addEventListener('calculator-key', this.keyInput as EventListener);
+        this.nativeKeyboardSwitch.addEventListener('change', this.layoutChange);
+        this.applyInputMode();
     }
 
     public disconnectedCallback(): void {
@@ -109,15 +117,22 @@ export class CalcShell extends HTMLElement {
         this.element.language.removeEventListener('change', this.changeLanguage);
         this.element.toggle.removeEventListener('click', this.togglePanel);
         this.removeEventListener('calculator-key', this.keyInput as EventListener);
+        this.nativeKeyboardSwitch.removeEventListener('change', this.layoutChange);
     }
 
     /**
-     * Toggle the keypad panel without losing focus from the active prompt.
+     * Toggle the keypad panel on desktop and the input mode on mobile.
      */
     private readonly togglePanel = (): void => {
+        if (this.nativeKeyboardSwitch.matches) {
+            this.keyboardMode = this.keyboardMode === 'app' ? 'native' : 'app';
+            this.applyInputMode();
+            globalThis.setTimeout(() => this.element.prompts.focusActive());
+            return;
+        }
+
         this.panelOpen = !this.panelOpen;
-        this.element.workspace.dataset.panel = this.panelOpen ? 'open' : 'closed';
-        this.element.toggle.setAttribute('aria-expanded', String(this.panelOpen));
+        this.applyPanelState();
         this.element.prompts.insertText('');
     };
 
@@ -156,6 +171,43 @@ export class CalcShell extends HTMLElement {
     };
 
     /**
+     * Apply the shell panel state to layout and accessibility attributes.
+     */
+    private applyPanelState(): void {
+        this.element.workspace.dataset.panel = this.panelOpen ? 'open' : 'closed';
+        this.element.toggle.setAttribute('aria-expanded', String(this.panelOpen));
+    }
+
+    /**
+     * Coordinate the visible keypad and prompt input policy.
+     */
+    private applyInputMode(): void {
+        if (this.nativeKeyboardSwitch.matches) {
+            this.panelOpen = this.keyboardMode === 'app';
+            globalThis.dispatchEvent(new CustomEvent('calc-input-mode-change', { detail: { mode: this.keyboardMode } }));
+            this.element.toggle.setAttribute('aria-pressed', String(this.keyboardMode === 'native'));
+            this.element.toggle.dataset.mode = this.keyboardMode;
+        } else {
+            this.keyboardMode = 'app';
+            this.element.toggle.removeAttribute('aria-pressed');
+            delete this.element.toggle.dataset.mode;
+        }
+
+        this.applyPanelState();
+        this.setToggleLabel();
+    }
+
+    /**
+     * Restore the app keypad whenever the layout leaves the compact touch mode.
+     */
+    private readonly layoutChange = (): void => {
+        if (!this.nativeKeyboardSwitch.matches) {
+            this.keyboardMode = 'app';
+        }
+        this.applyInputMode();
+    };
+
+    /**
      * Apply localized strings to the shell controls.
      */
     private readonly setLanguage = (): void => {
@@ -165,9 +217,22 @@ export class CalcShell extends HTMLElement {
         this.element.languageLabel.textContent = i18n.page.shell.languageLabel;
         this.element.language.setAttribute('aria-label', i18n.page.shell.languageLabel);
         this.element.language.value = i18n.locale;
-        this.element.toggle.title = i18n.page.shell.toggleKeypad;
-        this.element.toggle.setAttribute('aria-label', i18n.page.shell.toggleKeypad);
+        this.setToggleLabel();
     };
+
+    /**
+     * Localize the keypad mode button according to the next available action.
+     */
+    private setToggleLabel(): void {
+        const label =
+            this.nativeKeyboardSwitch.matches && this.keyboardMode === 'app'
+                ? i18n.page.shell.useNativeKeyboard
+                : this.nativeKeyboardSwitch.matches && this.keyboardMode === 'native'
+                  ? i18n.page.shell.useAppKeypad
+                  : i18n.page.shell.toggleKeypad;
+        this.element.toggle.title = label;
+        this.element.toggle.setAttribute('aria-label', label);
+    }
 
     /**
      * Parse and evaluate one prompt with the shared MathJSLab interpreter.

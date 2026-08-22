@@ -64,6 +64,12 @@ p {
   width: 42px;
 }
 
+.toggle[aria-pressed='true'] {
+  background: #ffffff;
+  border-color: #98a2b3;
+  color: #475467;
+}
+
 .toolbar-actions {
   align-items: center;
   display: flex;
@@ -199,6 +205,12 @@ p {
     background: #263847;
     border-color: #3e6f5c;
     color: #bde6d5;
+  }
+
+  .toggle[aria-pressed='true'] {
+    background: #20242b;
+    border-color: #667085;
+    color: #d0d5dd;
   }
 
   .language-select {

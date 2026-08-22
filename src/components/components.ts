@@ -1,4 +1,4 @@
-/* Web components. File generated at Sat, 22 Aug 2026 02:30:32 GMT. */
+/* Web components. File generated at Sat, 22 Aug 2026 02:49:21 GMT. */
 export * from './calc-prompt/calc-prompt.component';
 export * from './calc-prompt-list/calc-prompt-list.component';
 export * from './calculator-keypad/calculator-keypad.component';
