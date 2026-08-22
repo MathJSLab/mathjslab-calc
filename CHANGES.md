@@ -5,7 +5,8 @@ project adheres to [Semantic Versioning](http://semver.org/).
 
 ## 0.0.8
 
-- Blocking the native keyboard on mobile devices.
+- Toggle button between the native keyboard and the app's keyboard on mobile
+  devices.
 
 ## 0.0.7
 
