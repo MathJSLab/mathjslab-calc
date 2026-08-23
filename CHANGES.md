@@ -10,6 +10,10 @@ project adheres to [Semantic Versioning](http://semver.org/).
 - Implementation of the programming keypad panel.
 - Multilingual i18n engine with more streamlined definitions in the `data/`
   directory.
+- The project page was implemented using SCSS templates in the same way as in
+  the `mathjslab-app` project, by copying files from the organization's
+  repository.
+- Dependecies updated (`mathjslab` 2.5.1).
 
 ## 0.0.7
 
