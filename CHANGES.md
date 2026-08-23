@@ -8,6 +8,8 @@ project adheres to [Semantic Versioning](http://semver.org/).
 - Toggle button between the native keyboard and the app's keyboard on mobile
   devices.
 - Implementation of the programming keypad panel.
+- Multilingual i18n engine with more streamlined definitions in the `data/`
+  directory.
 
 ## 0.0.7
 

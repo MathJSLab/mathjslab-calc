@@ -4,10 +4,10 @@
 }
 
 .prompt-list {
-  background: Canvas;
-  border: 1px solid color-mix(in srgb, CanvasText 13%, transparent);
+  background: var(--calc-surface);
+  border: 1px solid var(--calc-border);
   border-radius: 8px;
-  box-shadow: 0 12px 32px color-mix(in srgb, CanvasText 8%, transparent);
+  box-shadow: var(--calc-shadow);
   min-height: 100%;
   overflow: hidden;
 }

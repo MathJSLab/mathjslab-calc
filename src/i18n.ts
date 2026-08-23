@@ -1,4 +1,7 @@
 import { IntlMessageFormat } from 'intl-messageformat';
+import en from '../data/i18n-en';
+import es from '../data/i18n-es';
+import pt from '../data/i18n-pt';
 
 /**
  * Supported application locale identifiers.
@@ -14,145 +17,14 @@ type MessageTree = string | MessageTree[] | { [key: string]: MessageTree };
  * Locale source messages rendered by the calculator shell and its components.
  */
 const source = {
-    en: {
-        locale: 'en',
-        htmlLang: 'en',
-        languageName: 'English',
-        app: {
-            title: 'MathJSLab Calc',
-            description: 'Scientific prompt calculator',
-        },
-        shell: {
-            languageLabel: 'Language',
-            toggleKeypad: 'Toggle keypad',
-            useAppKeypad: 'Use app keypad',
-            useNativeKeyboard: 'Use native keyboard',
-        },
-        prompt: {
-            ariaLabel: 'MathJSLab prompt',
-            listAriaLabel: 'MathJSLab prompt list',
-        },
-        keypad: {
-            ariaLabel: 'Scientific keypad',
-            panelLabel: 'Keypad panels',
-            title: 'Scientific',
-            brand: 'MathJSLab',
-            panels: {
-                calculator: 'Calculator',
-                functions: 'Functions',
-                alphabet: 'Alphabet',
-                programming: 'Programming',
-            },
-            base: {
-                label: 'Base',
-                options: {
-                    bin: 'BIN',
-                    oct: 'OCT',
-                    dec: 'DEC',
-                    hex: 'HEX',
-                },
-            },
-            keys: {
-                enter: 'Enter',
-                delete: 'DEL',
-                clear: 'AC',
-            },
-        },
-    },
-    es: {
-        locale: 'es',
-        htmlLang: 'es',
-        languageName: 'Español',
-        app: {
-            title: 'MathJSLab Calc',
-            description: 'Calculadora científica con prompt',
-        },
-        shell: {
-            languageLabel: 'Idioma',
-            toggleKeypad: 'Mostrar u ocultar teclado',
-            useAppKeypad: 'Usar teclado de la app',
-            useNativeKeyboard: 'Usar teclado nativo',
-        },
-        prompt: {
-            ariaLabel: 'Prompt de MathJSLab',
-            listAriaLabel: 'Lista de prompts de MathJSLab',
-        },
-        keypad: {
-            ariaLabel: 'Teclado científico',
-            panelLabel: 'Paneles del teclado',
-            title: 'Científica',
-            brand: 'MathJSLab',
-            panels: {
-                calculator: 'Calculadora',
-                functions: 'Funciones',
-                alphabet: 'Alfabético',
-                programming: 'Programación',
-            },
-            base: {
-                label: 'Base',
-                options: {
-                    bin: 'BIN',
-                    oct: 'OCT',
-                    dec: 'DEC',
-                    hex: 'HEX',
-                },
-            },
-            keys: {
-                enter: 'Intro',
-                delete: 'DEL',
-                clear: 'AC',
-            },
-        },
-    },
-    pt: {
-        locale: 'pt',
-        htmlLang: 'pt-BR',
-        languageName: 'Português',
-        app: {
-            title: 'MathJSLab Calc',
-            description: 'Calculadora científica com prompt',
-        },
-        shell: {
-            languageLabel: 'Idioma',
-            toggleKeypad: 'Mostrar ou ocultar teclado',
-            useAppKeypad: 'Usar teclado do aplicativo',
-            useNativeKeyboard: 'Usar teclado nativo',
-        },
-        prompt: {
-            ariaLabel: 'Prompt do MathJSLab',
-            listAriaLabel: 'Lista de prompts do MathJSLab',
-        },
-        keypad: {
-            ariaLabel: 'Teclado científico',
-            panelLabel: 'Painéis do teclado',
-            title: 'Científica',
-            brand: 'MathJSLab',
-            panels: {
-                calculator: 'Calculadora',
-                functions: 'Funções',
-                alphabet: 'Alfabético',
-                programming: 'Programação',
-            },
-            base: {
-                label: 'Base',
-                options: {
-                    bin: 'BIN',
-                    oct: 'OCT',
-                    dec: 'DEC',
-                    hex: 'HEX',
-                },
-            },
-            keys: {
-                enter: 'Enter',
-                delete: 'DEL',
-                clear: 'AC',
-            },
-        },
-    },
+    en,
+    es,
+    pt,
 } as const;
 
 const locales = Object.keys(source) as Locale[];
 const localeStorageKey = 'mathjslab-calc:i18n:locale';
+const isBrowser = typeof window !== 'undefined';
 
 /**
  * Normalize a language tag to one of the supported application locales.
@@ -176,39 +48,72 @@ const firstSupportedLocale = (locales: Iterable<string | null | undefined>): Loc
 };
 
 /**
+ * Build the public endpoint path for one supported locale.
+ */
+const localePath = (locale: Locale): string => `/${locale}/`;
+
+/**
+ * Check whether the current document is the root endpoint.
+ */
+const isRootPath = (pathname: string): boolean => pathname === '/' || pathname === '/index.html';
+
+/**
  * Format static ICU messages recursively for direct component consumption.
  */
-const formatValue = (value: MessageTree, locale: Locale): any => {
+const formatValue = (value: MessageTree, locale: Locale, key = ''): any => {
     if (typeof value === 'string') {
+        if (key.endsWith('Html') || key.endsWith('MathML')) {
+            return value;
+        }
         return new IntlMessageFormat(value, locale).format();
     }
 
     if (Array.isArray(value)) {
-        return value.map((entry) => formatValue(entry, locale));
+        return value.map((entry) => formatValue(entry, locale, key));
     }
 
-    return Object.fromEntries(Object.entries(value).map(([key, entry]) => [key, formatValue(entry, locale)]));
+    return Object.fromEntries(Object.entries(value).map(([entryKey, entry]) => [entryKey, formatValue(entry, locale, entryKey)]));
 };
 
 const pages = Object.fromEntries(Object.entries(source).map(([locale, values]) => [locale, formatValue(values, locale as Locale)])) as Record<Locale, any>;
+const languageNames = Object.fromEntries(Object.entries(source).map(([locale, values]) => [locale, values.languageName])) as Record<Locale, string>;
 
 /**
- * Pick the startup locale from URL, persisted selection, then browser settings.
+ * Static locale data shared by browser runtime and Eleventy templates.
+ */
+const i18nData = {
+    defaultLocale: 'en' as Locale,
+    locales,
+    languageNames,
+    pages,
+};
+
+/**
+ * Pick the startup locale from URL, path, browser settings, then persisted selection.
  */
 const getInitialLocale = (): Locale => {
-    const params = new URLSearchParams(globalThis.location.search);
-    return firstSupportedLocale([params.get('lang'), globalThis.localStorage.getItem(localeStorageKey), ...globalThis.navigator.languages, globalThis.navigator.language]) ?? 'en';
+    const location = globalThis.location;
+    const navigator = globalThis.navigator;
+    const params = new URLSearchParams(location?.search || '');
+    const pathLocale = location?.pathname.split('/').find(Boolean);
+    const storedLocale = isBrowser ? globalThis.localStorage?.getItem(localeStorageKey) : null;
+    return firstSupportedLocale([params.get('lang'), pathLocale, ...(navigator?.languages || []), navigator?.language, storedLocale]) ?? 'en';
 };
 
 /**
  * Shared locale coordinator for document metadata and Web Components.
  */
 class I18n extends EventTarget {
-    public readonly defaultLocale: Locale = 'en';
-    public readonly locales = locales;
-    public readonly languageNames = Object.fromEntries(Object.entries(source).map(([locale, values]) => [locale, values.languageName])) as Record<Locale, string>;
+    public readonly defaultLocale: Locale = i18nData.defaultLocale;
+    public readonly locales = i18nData.locales;
+    public readonly languageNames = i18nData.languageNames;
     public readonly pages = pages;
     private currentLocale: Locale = getInitialLocale();
+
+    public constructor() {
+        super();
+        this.redirectRootEndpoint();
+    }
 
     public get locale(): Locale {
         return this.currentLocale;
@@ -223,11 +128,16 @@ class I18n extends EventTarget {
      */
     public setLocale(locale?: string | null): void {
         const nextLocale = normalizeLocale(locale);
+        if (isBrowser) {
+            globalThis.localStorage?.setItem(localeStorageKey, nextLocale);
+            if (this.navigateToLocaleEndpoint(nextLocale)) {
+                return;
+            }
+        }
         if (nextLocale === this.currentLocale) {
             return;
         }
         this.currentLocale = nextLocale;
-        globalThis.localStorage.setItem(localeStorageKey, nextLocale);
         this.applyDocumentLanguage();
         this.dispatchEvent(new CustomEvent('languagechange', { detail: { locale: nextLocale } }));
     }
@@ -236,13 +146,46 @@ class I18n extends EventTarget {
      * Apply localized metadata to the host document.
      */
     public applyDocumentLanguage(): void {
+        if (typeof document === 'undefined') {
+            return;
+        }
         document.documentElement.lang = this.page.htmlLang;
         document.title = this.page.app.title;
         document.querySelector('meta[name="description"]')?.setAttribute('content', this.page.app.description);
+    }
+
+    /**
+     * Redirect the root app endpoint to the locale-specific endpoint selected
+     * from URL parameters or browser preferences.
+     */
+    private redirectRootEndpoint(): void {
+        if (!isBrowser || !isRootPath(globalThis.location.pathname)) {
+            return;
+        }
+        this.navigateToLocaleEndpoint(this.currentLocale, true);
+    }
+
+    /**
+     * Navigate to the canonical endpoint for a locale when needed.
+     */
+    private navigateToLocaleEndpoint(locale: Locale, replace = false): boolean {
+        const targetPath = localePath(locale);
+        if (!isBrowser || globalThis.location.pathname === targetPath) {
+            return false;
+        }
+
+        const nextUrl = new URL(globalThis.location.href);
+        nextUrl.pathname = targetPath;
+        if (replace) {
+            globalThis.location.replace(nextUrl.href);
+        } else {
+            globalThis.location.assign(nextUrl.href);
+        }
+        return true;
     }
 }
 
 const i18n = new I18n();
 
-export { type Locale, i18n };
+export { type Locale, i18n, i18nData };
 export default i18n;

@@ -1,0 +1,6 @@
+/// Defines CSS custom properties from a SASS map.
+@mixin mixin($map) {
+  @each $name, $value in $map {
+    --#{$name}: #{$value};
+  }
+}

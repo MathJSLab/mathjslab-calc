@@ -1,0 +1,85 @@
+{% set pageData = i18n.pages[lang] %}
+{% set canonicalPath = '/' if rootEndpoint else '/' + lang + '/' %}
+{% set canonicalUrl = site.url + canonicalPath %}
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{{ pageData.app.title }}">
+    <meta property="og:description" content="{{ pageData.app.description }}">
+    <meta property="og:url" content="{{ canonicalUrl }}">
+    <meta property="og:site_name" content="MathJSLab">
+    <meta property="og:locale" content="{{ pageData.ogLocale }}">
+    {%- for locale in i18n.locales %}
+      {%- if locale != lang %}
+    <meta property="og:locale:alternate" content="{{ i18n.pages[locale].ogLocale }}">
+      {%- endif -%}
+    {% endfor %}
+    <meta property="og:image" content="{{ site.url }}/images/mathjslab-logo-512.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="512">
+    <meta property="og:image:height" content="512">
+    <meta property="og:image:alt" content="MathJSLab">
+{% include "head-twitter.njk" %}
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebApplication",
+            "@id": "{{ site.url }}/#app",
+            "name": "{{ pageData.app.title }}",
+            "url": "{{ canonicalUrl }}",
+            "description": "{{ pageData.app.description }}",
+            "applicationCategory": "EducationalApplication",
+            "operatingSystem": "Web",
+            "inLanguage": "{{ pageData.htmlLang }}",
+            "isAccessibleForFree": true,
+            "license": "https://opensource.org/license/MIT",
+            "publisher": {
+              "@id": "{{ site.url }}/#organization"
+            }
+          },
+          {
+            "@type": "WebPage",
+            "@id": "{{ canonicalUrl }}#webpage",
+            "url": "{{ canonicalUrl }}",
+            "name": "{{ pageData.app.title }}",
+            "description": "{{ pageData.app.description }}",
+            "inLanguage": "{{ pageData.htmlLang }}",
+            "about": {
+              "@id": "{{ site.url }}/#app"
+            },
+            "isPartOf": {
+              "@id": "{{ site.url }}/#website"
+            }
+          },
+          {
+            "@type": "WebSite",
+            "@id": "{{ site.url }}/#website",
+            "url": "{{ site.url }}/",
+            "name": "MathJSLab Calc",
+            "publisher": {
+              "@id": "{{ site.url }}/#organization"
+            }
+          },
+          {
+            "@type": "Organization",
+            "@id": "{{ site.url }}/#organization",
+            "name": "MathJSLab",
+            "url": "https://mathjslab.com/",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "{{ site.url }}/images/mathjslab-logo-512.png",
+              "width": 512,
+              "height": 512
+            },
+            "sameAs": [
+              "https://github.com/MathJSLab"
+            ]
+          }
+        ]
+      }
+    </script>
+    <link rel="canonical" href="{{ canonicalUrl }}">
+    {% for locale in i18n.locales %}
+    <link rel="alternate" hreflang="{{ i18n.pages[locale].htmlLang }}" href="{{ site.url }}/{{ locale }}/">
+    {% endfor %}
+    <link rel="alternate" hreflang="x-default" href="{{ site.url }}/">

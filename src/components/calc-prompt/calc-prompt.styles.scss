@@ -3,12 +3,12 @@
 }
 
 .prompt {
-  border-bottom: 1px solid color-mix(in srgb, CanvasText 10%, transparent);
+  border-bottom: 1px solid var(--calc-border);
   padding: 12px 14px 14px;
 }
 
 .prompt:focus-within {
-  background: color-mix(in srgb, Highlight 7%, Canvas);
+  background: var(--calc-focus);
 }
 
 .prompt-line {
@@ -19,7 +19,7 @@
 }
 
 .marker {
-  color: #2e7d5b;
+  color: var(--green-text);
   font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
   font-size: 1rem;
   font-weight: 700;
@@ -29,7 +29,7 @@
 textarea {
   background: transparent;
   border: 0;
-  color: CanvasText;
+  color: var(--calc-text);
   font:
     1rem/1.55 ui-monospace,
     SFMono-Regular,
@@ -62,7 +62,7 @@ output td {
 }
 
 .error {
-  color: #a33a2b;
+  color: var(--calc-error);
   font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
   white-space: pre-wrap;
 }

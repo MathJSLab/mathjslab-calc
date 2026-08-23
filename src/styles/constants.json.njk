@@ -1,0 +1,10 @@
+{%- set css = 'src/styles/abstract/_constants.scss' | compileSCSS %}
+{%- set vars = [] %}
+{%- for line in css | split("\n") %}
+  {%- if line | searchRegExp('^\\ *--') != -1 %}
+    {%- set parts = line | split(":") %}
+    {%- set variable = parts[0] | trim | replace("--", "") %}
+    {%- set value = parts[1] | trim | replace(";", "") %}
+    {%- set vars = vars.concat('  "' + variable + '": "' + value + '"') %}
+  {%- endif %}
+{%- endfor %}{{ "{\n" + vars | join(",\n") + "\n}" }}

@@ -1,0 +1,8 @@
+/// _constants.scss - Immutable CSS variables.
+
+@use '../base/sizes';
+@use './define-map';
+
+:root {
+  @include define-map.mixin(sizes.get());
+}

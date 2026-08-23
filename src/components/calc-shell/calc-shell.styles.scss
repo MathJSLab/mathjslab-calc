@@ -19,8 +19,8 @@
 
 .toolbar {
   align-items: center;
-  background: #ffffff;
-  border-bottom: 1px solid #d9dee7;
+  background: var(--calc-surface);
+  border-bottom: 1px solid var(--calc-border);
   display: flex;
   gap: 16px;
   justify-content: space-between;
@@ -46,22 +46,22 @@ p {
 }
 
 h1 {
-  color: #215b43;
+  color: var(--calc-heading);
   font-size: 1.15rem;
   font-weight: 750;
 }
 
 p {
-  color: #667085;
+  color: var(--calc-text-muted);
   font-size: 0.86rem;
 }
 
 .toggle {
   align-items: center;
-  background: #edf6f2;
-  border: 1px solid #9ac8b4;
+  background: var(--calc-control);
+  border: 1px solid var(--calc-border-strong);
   border-radius: 7px;
-  color: #215b43;
+  color: var(--calc-control-text);
   cursor: pointer;
   display: inline-flex;
   font-size: 1.05rem;
@@ -71,9 +71,9 @@ p {
 }
 
 .toggle[aria-pressed='true'] {
-  background: #ffffff;
-  border-color: #98a2b3;
-  color: #475467;
+  background: var(--calc-control-active);
+  border-color: var(--calc-border);
+  color: var(--calc-control-muted-text);
 }
 
 .toolbar-actions {
@@ -84,17 +84,17 @@ p {
 
 .language-select {
   align-items: center;
-  color: #475467;
+  color: var(--calc-control-muted-text);
   display: flex;
   font-size: 0.82rem;
   gap: 7px;
 }
 
 .language-select select {
-  background: #ffffff;
-  border: 1px solid #cfd7df;
+  background: var(--calc-surface);
+  border: 1px solid var(--calc-border);
   border-radius: 7px;
-  color: #1d2939;
+  color: var(--calc-text);
   font: inherit;
   height: 34px;
   padding: 0 28px 0 10px;
@@ -137,7 +137,7 @@ p {
 
   .keypad-panel {
     align-self: end;
-    border-top: 1px solid #d9dee7;
+    border-top: 1px solid var(--calc-border);
     max-height: none;
     overflow: visible;
   }
@@ -149,7 +149,7 @@ p {
 
 @media (orientation: landscape) {
   .keypad-panel {
-    border-left: 1px solid #d9dee7;
+    border-left: 1px solid var(--calc-border);
   }
 }
 
@@ -191,42 +191,5 @@ p {
     height: 32px;
     max-width: 112px;
     padding-left: 8px;
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  .toolbar {
-    background: #171a20;
-    border-color: #343b46;
-  }
-
-  h1 {
-    color: #9bd4bd;
-  }
-
-  p {
-    color: #98a2b3;
-  }
-
-  .toggle {
-    background: #263847;
-    border-color: #3e6f5c;
-    color: #bde6d5;
-  }
-
-  .toggle[aria-pressed='true'] {
-    background: #20242b;
-    border-color: #667085;
-    color: #d0d5dd;
-  }
-
-  .language-select {
-    color: #cbd5e1;
-  }
-
-  .language-select select {
-    background: #20242b;
-    border-color: #475467;
-    color: #f2f4f7;
   }
 }

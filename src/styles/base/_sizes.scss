@@ -1,0 +1,82 @@
+/// _sizes.scss - Size definitions.
+
+@use 'sass:map';
+
+/// The generated sizes map.
+$generated-sizes: ();
+
+/// Map of size names and specifications.
+$sizes-spec: (
+  /// Spacing scale
+  spacing-unit: (
+      base: 1rem,
+      x-small: 0.3,
+      small: 0.5,
+      large: 2,
+      x-large: 3,
+    ),
+  /// Font sizes
+  font-size: (
+      base: 1rem,
+      x-small: 0.65,
+      small: 0.875,
+      large: 1.25,
+      x-large: 2.5,
+    ),
+  /// Math font sizes
+  math-font-size: (
+      base: 1.5rem,
+      x-small: 0.65,
+      small: 0.875,
+      large: 1.25,
+      x-large: 2.5,
+    ),
+  /// Border radius
+  border-radius: (
+      base: 4px,
+      x-small: 0.3,
+      small: 0.5,
+      large: 2,
+      x-large: 3,
+    ),
+  /// Screen width
+  screen-width: (
+      base: 1024px,
+      xx-small: calc(1 * 5 / (4 * 4)),
+      x-small: calc(3 * 5 / (8 * 4)),
+      small: calc(3 * 1 / (1 * 4)),
+      large: calc(1 * 5 / (1 * 4)),
+      x-large: calc(9 * 5 / (8 * 4)),
+      xx-large: calc(3 * 5 / (2 * 4)),
+    )
+);
+
+/// Iterate over the $sizes-spec map generating size values in the global $generated-sizes map.
+@each $size-name, $size-spec in $sizes-spec {
+  /// Generate the colors for each variation. If there's no definition for x- or xx- size, then use the nearest definition.
+  // prettier-ignore
+  $generated-map: (
+        '#{$size-name}': map.get($size-spec, base),
+        '#{$size-name}-base': map.get($size-spec, base),
+        '#{$size-name}-xx-small': map.get($size-spec, base) * (map.get($size-spec, xx-small) or map.get($size-spec, x-small) or map.get($size-spec, small)),
+        '#{$size-name}-x-small': map.get($size-spec, base) * (map.get($size-spec, x-small) or map.get($size-spec, small)),
+        '#{$size-name}-small': map.get($size-spec, base) * map.get($size-spec, small),
+        '#{$size-name}-medium': map.get($size-spec, base),
+        '#{$size-name}-large': map.get($size-spec, base) * map.get($size-spec, large),
+        '#{$size-name}-x-large': map.get($size-spec, base) * (map.get($size-spec, x-large) or map.get($size-spec, large)),
+        '#{$size-name}-xx-large': map.get($size-spec, base) * (map.get($size-spec, xx-large) or map.get($size-spec, x-large) or map.get($size-spec, large)),
+    );
+  /// Store the $generated-map in the global $generated-sizes map.
+  $generated-sizes: map.merge($generated-sizes, $generated-map) !global;
+}
+
+/// Gets size value from size-name.
+/// @param {string | null} $size-name - The size name to get. If not provided, returns the full size map.
+/// @return {number} - The equivalent size value for size name, or the full size map if argument is null.
+@function get($size-name: null) {
+  @if $size-name ==null {
+    @return $generated-sizes;
+  }
+
+  @return map.get($generated-sizes, $size-name);
+}

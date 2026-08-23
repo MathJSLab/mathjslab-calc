@@ -1,0 +1,21 @@
+{%- set pageData = i18n.pages[lang] -%}
+{%- set main = pageData.app -%}
+{% set canonicalPath = '/' if rootEndpoint else '/' + lang + '/' %}
+{% set canonicalUrl = site.url + canonicalPath %}
+<!DOCTYPE html>
+<html lang="{{ pageData.htmlLang }}">
+  <head>
+{% include "head-begin.njk" %}
+    <meta name="color-scheme" content="light dark">
+    <meta name="theme-color" content="#166534">
+{% include "head-seo.njk" %}
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" href="/images/favicon.ico" sizes="any">
+    <link rel="icon" href="/images/mathjslab-logo.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/images/mathjslab-logo-192.png">
+  </head>
+  <body>
+    <noscript>{{ pageData.app.noscript }}</noscript>
+    <calc-shell></calc-shell>
+  </body>
+</html>

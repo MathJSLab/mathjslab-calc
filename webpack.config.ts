@@ -40,6 +40,12 @@ export default (env: any, argv: any): webpack.Configuration[] => {
     const isProduction = mode === 'production';
     const buildConfiguration = buildConfig[mode];
     const defaultExclude = ['node_modules', 'dist', 'data', 'images', 'report', 'script'];
+    const htmlPages = [
+        { filename: 'index.html', source: path.join(__dirname, 'src', 'main.html') },
+        { filename: 'en/index.html', source: path.join(__dirname, 'src', 'en', 'index.html') },
+        { filename: 'es/index.html', source: path.join(__dirname, 'src', 'es', 'index.html') },
+        { filename: 'pt/index.html', source: path.join(__dirname, 'src', 'pt', 'index.html') },
+    ];
 
     console.log(`\nWebpack configuration: ${path.basename(__filename)}`);
     console.log(`Web components included:`);
@@ -125,18 +131,22 @@ export default (env: any, argv: any): webpack.Configuration[] => {
             output: {
                 filename: 'mathjslab-calc.js',
                 path: path.join(__dirname, 'dist'),
+                publicPath: '/',
                 environment: {
                     module: true,
                     dynamicImport: true,
                 },
             },
             plugins: [
-                new HtmlWebpackPlugin({
-                    title: 'MathJSLab Calc',
-                    templateContent: (_templateParameters: { [option: string]: any }): string =>
-                        fs.readFileSync(path.join(__dirname, 'src', 'main.html'), 'utf-8').replace('</body>', templates + '</body>'),
-                    inject: 'body',
-                }),
+                ...htmlPages.map(
+                    (page) =>
+                        new HtmlWebpackPlugin({
+                            filename: page.filename,
+                            title: 'MathJSLab Calc',
+                            templateContent: (_templateParameters: { [option: string]: any }): string => fs.readFileSync(page.source, 'utf-8').replace('</body>', templates + '</body>'),
+                            inject: 'body',
+                        }),
+                ),
                 new StaticRootAssetsPlugin(),
                 ...(isProduction ? [new MiniCssExtractPlugin({ filename: '[name].css' })] : []),
             ],

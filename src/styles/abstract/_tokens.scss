@@ -1,0 +1,44 @@
+@use '../base/colors';
+@use './define-map';
+
+:root {
+  @include define-map.mixin(colors.get(light));
+
+  --calc-app-background: var(--color-background-soft);
+  --calc-surface: var(--color-background);
+  --calc-surface-soft: var(--color-background-soft);
+  --calc-surface-mute: var(--color-background-mute);
+  --calc-text: var(--color-text);
+  --calc-text-muted: color-mix(in srgb, var(--color-text) 62%, transparent);
+  --calc-heading: var(--green-text-hover);
+  --calc-border: color-mix(in srgb, var(--color-border) 80%, transparent);
+  --calc-border-strong: color-mix(in srgb, var(--green-border) 42%, var(--color-border));
+  --calc-control: color-mix(in srgb, var(--green-background) 28%, var(--color-background));
+  --calc-control-active: var(--color-background);
+  --calc-control-muted: var(--color-background-mute);
+  --calc-control-text: var(--green-text-hover);
+  --calc-control-muted-text: var(--calc-text-muted);
+  --calc-operation: color-mix(in srgb, var(--blue-background) 34%, var(--color-background));
+  --calc-focus: color-mix(in srgb, var(--green-background) 24%, var(--color-background));
+  --calc-error: color-mix(in srgb, var(--red-text) 76%, var(--color-text));
+  --calc-shadow: 0 12px 32px color-mix(in srgb, var(--color-panel-box-shadow) 14%, transparent);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    @include define-map.mixin(colors.get(dark));
+
+    --calc-app-background: var(--color-background);
+    --calc-surface: var(--color-background-soft);
+    --calc-surface-soft: var(--color-background-mute);
+    --calc-surface-mute: var(--color-background);
+    --calc-heading: color-mix(in srgb, var(--green-text) 55%, var(--color-text));
+    --calc-border: var(--color-border);
+    --calc-border-strong: color-mix(in srgb, var(--green-border) 40%, var(--color-border));
+    --calc-control: color-mix(in srgb, var(--green-background) 32%, var(--color-background-soft));
+    --calc-control-active: color-mix(in srgb, var(--color-background-mute) 86%, var(--green-background));
+    --calc-control-muted: var(--color-background);
+    --calc-operation: color-mix(in srgb, var(--blue-background) 42%, var(--color-background-soft));
+    --calc-shadow: 0 12px 32px color-mix(in srgb, var(--color-panel-box-shadow) 24%, transparent);
+  }
+}

@@ -1,0 +1,16 @@
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{{ main.title }}">
+    <meta property="og:description" content="{{ main.description }}">
+    <meta property="og:url" content="{{ site.url }}/{{ lang }}/">
+    <meta property="og:site_name" content="{{ site.title }}">
+    <meta property="og:locale" content="{{ pageData.ogLocale }}">
+    {%- for locale in i18n.locales %}
+      {%- if locale != lang %}
+    <meta property="og:locale:alternate" content="{{ i18n.pages[locale].ogLocale }}">
+      {%- endif -%}
+    {% endfor %}
+    <meta property="og:image" content="{{ site.url }}/img/mathjslab-og.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="630">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="{{ site.title }}">

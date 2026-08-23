@@ -4,8 +4,8 @@
 }
 
 .keypad {
-  background: #f7f8fa;
-  color: #1d2939;
+  background: var(--calc-surface-soft);
+  color: var(--calc-text);
   display: flex;
   flex-direction: column;
   gap: clamp(8px, 2cqi, 14px);
@@ -24,13 +24,13 @@
 }
 
 .keypad-header span {
-  color: #667085;
+  color: var(--calc-text-muted);
   font-size: clamp(0.76rem, 2.6cqi, 0.92rem);
 }
 
 .tabs {
-  background: #e8edf2;
-  border: 1px solid #d0d5dd;
+  background: var(--calc-control-muted);
+  border: 1px solid var(--calc-border);
   border-radius: 8px;
   display: grid;
   gap: clamp(2px, 0.8cqi, 3px);
@@ -54,7 +54,7 @@
 }
 
 .base-control legend {
-  color: #475467;
+  color: var(--calc-control-muted-text);
   float: left;
   font-size: clamp(0.76rem, 2.5cqi, 0.9rem);
   font-weight: 600;
@@ -63,8 +63,8 @@
 }
 
 .base-options {
-  background: #e8edf2;
-  border: 1px solid #cfd7df;
+  background: var(--calc-control-muted);
+  border: 1px solid var(--calc-border);
   border-radius: 7px;
   display: grid;
   flex: 1 1 auto;
@@ -78,7 +78,7 @@
   align-items: center;
   border: 1px solid transparent;
   border-radius: 5px;
-  color: #1d2939;
+  color: var(--calc-text);
   cursor: pointer;
   display: inline-flex;
   font:
@@ -99,10 +99,10 @@
 }
 
 .base-options label:has(input:checked) {
-  background: #ffffff;
-  border-color: #c7d7cf;
+  background: var(--calc-control-active);
+  border-color: var(--calc-border-strong);
   box-shadow: 0 1px 2px rgb(16 24 40 / 10%);
-  color: #215b43;
+  color: var(--calc-control-text);
 }
 
 .keys {
@@ -118,8 +118,8 @@
 button {
   align-items: center;
   aspect-ratio: 1.08;
-  background: #ffffff;
-  border: 1px solid #d0d5dd;
+  background: var(--calc-surface);
+  border: 1px solid var(--calc-border);
   border-radius: 7px;
   color: inherit;
   cursor: pointer;
@@ -137,29 +137,29 @@ button {
   aspect-ratio: auto;
   border-color: transparent;
   border-radius: 6px;
-  color: #475467;
+  color: var(--calc-control-muted-text);
   font-size: clamp(0.78rem, 3.3cqi, 1rem);
   height: clamp(30px, 9.5cqi, 40px);
   min-height: 0;
 }
 
 .tab[aria-selected='true'] {
-  background: #ffffff;
-  border-color: #c7d7cf;
+  background: var(--calc-control-active);
+  border-color: var(--calc-border-strong);
   box-shadow: 0 1px 2px rgb(16 24 40 / 10%);
-  color: #215b43;
+  color: var(--calc-control-text);
 }
 
 .key:hover,
 .tab:hover {
-  background: #edf6f2;
-  border-color: #74b59c;
+  background: var(--calc-control);
+  border-color: var(--calc-border-strong);
 }
 
 .key:disabled {
-  background: #eef1f4;
-  border-color: #d8dee6;
-  color: #98a2b3;
+  background: var(--calc-control-muted);
+  border-color: var(--calc-border);
+  color: var(--calc-control-muted-text);
   cursor: not-allowed;
   opacity: 0.58;
 }
@@ -170,13 +170,29 @@ button {
 }
 
 .key[data-kind='operation'] {
-  background: #edf3f8;
+  background: var(--calc-operation);
 }
 
 .key[data-kind='command'] {
-  background: #2e7d5b;
-  border-color: #2e7d5b;
-  color: #fff;
+  background: linear-gradient(
+    to bottom,
+    var(--color-button-background-to) 5%,
+    var(--color-button-background-from) 100%
+  );
+  background-color: var(--color-button-background-to);
+  border: 1px outset var(--color-button-border);
+  box-shadow: 0 10px 14px -7px var(--color-button-box-shadow);
+  color: var(--color-button-text);
+  text-shadow: 0 1px 0 var(--color-button-text-shadow);
+}
+
+.key[data-kind='command']:hover {
+  background: linear-gradient(
+    to bottom,
+    var(--color-button-background-from) 5%,
+    var(--color-button-background-to) 100%
+  );
+  background-color: var(--color-button-background-from);
 }
 
 .key[data-wide='true'] {
@@ -239,66 +255,5 @@ button {
 
   .key[data-wide='true'] {
     min-height: clamp(22px, 8cqi, 34px);
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  .keypad {
-    background: #20242b;
-    border-color: #3a424f;
-    color: #f2f4f7;
-  }
-
-  .keypad-header span {
-    color: #98a2b3;
-  }
-
-  .tabs {
-    background: #171a20;
-    border-color: #475467;
-  }
-
-  button {
-    background: #2b313a;
-    border-color: #475467;
-  }
-
-  .tab {
-    color: #cbd5e1;
-  }
-
-  .tab[aria-selected='true'] {
-    background: #364152;
-    border-color: #5a8b77;
-    color: #d8f3e8;
-  }
-
-  .base-control legend {
-    color: #cbd5e1;
-  }
-
-  .base-options {
-    background: #171a20;
-    border-color: #475467;
-  }
-
-  .base-options label {
-    color: #f2f4f7;
-  }
-
-  .base-options label:has(input:checked) {
-    background: #364152;
-    border-color: #5a8b77;
-    color: #d8f3e8;
-  }
-
-  .key[data-kind='operation'] {
-    background: #263847;
-  }
-
-  .key:disabled {
-    background: #252a32;
-    border-color: #343b46;
-    color: #667085;
   }
 }

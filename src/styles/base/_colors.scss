@@ -1,0 +1,267 @@
+/// _colors.scss - Color definitions and function getter.
+
+@use 'sass:map';
+
+/// The generated baseline color map.
+$generated-colors: ();
+
+/// List of primary color names.
+$color-primary: (red, yellow, green, blue);
+
+/// Color specifications map. The saturation and luminosity value is the default for the color specified by the name and hue.
+$color-spec: (
+  red: (
+    hue: 0,
+    saturation: 100%,
+    luminosity: 50%,
+  ),
+  yellow: (
+    hue: 60,
+    saturation: 100%,
+    luminosity: 50%,
+  ),
+  olive-green: (
+    hue: 113,
+    saturation: 100%,
+    luminosity: 43%,
+  ),
+  green: (
+    hue: 120,
+    saturation: 100%,
+    luminosity: 25%,
+  ),
+  blue: (
+    hue: 240,
+    saturation: 100%,
+    luminosity: 50%,
+  ),
+);
+
+/// Color saturation and luminosity map for theme styles. Null values for saturation or luminosity ​​specifies the default values in the $color-spec map.
+$theme-spec: (
+  light: (
+    background: (
+      saturation: 52%,
+      luminosity: 88%,
+    ),
+    text: (
+      saturation: 100%,
+      luminosity: 37%,
+    ),
+    text-hover: (
+      saturation: 100%,
+      luminosity: 23%,
+    ),
+    border: (
+      saturation: 100%,
+      luminosity: null,
+    ),
+    border-hover: (
+      saturation: 100%,
+      luminosity: 50%,
+    ),
+  ),
+  dark: (
+    background: (
+      saturation: 52%,
+      luminosity: 16%,
+    ),
+    text: (
+      saturation: 100%,
+      luminosity: 37%,
+    ),
+    text-hover: (
+      saturation: 100%,
+      luminosity: 23%,
+    ),
+    border: (
+      saturation: 100%,
+      luminosity: null,
+    ),
+    border-hover: (
+      saturation: 100%,
+      luminosity: 50%,
+    ),
+  ),
+);
+
+/// Iterates over the $color-spec and $theme-spec maps generating the color definitions in the $generated-colors map.
+@each $color-name, $color in $color-spec {
+  @each $theme-name, $theme in $theme-spec {
+    @each $style-name, $style in $theme {
+      $generated-colors: map.merge(
+        $generated-colors,
+        (
+          '#{$color-name}-#{$style-name}-#{$theme-name}': hsl(
+              map.get($color, hue),
+              map.get($style, saturation) or map.get($color, saturation),
+              map.get($style, luminosity) or map.get($color, luminosity)
+            ),
+        )
+      ) !global;
+    }
+  }
+}
+
+/// Map of semantic colors.
+$color-semantic: (
+  color-background-light: hsl(0, 0%, 100%),
+  color-background-soft-light: hsl(0, 0%, 96%),
+  color-background-mute-light: hsl(0, 0%, 93%),
+  color-background-dark: hsl(0, 0%, 9%),
+  color-background-soft-dark: hsl(0, 0%, 13%),
+  color-background-mute-dark: hsl(0, 0%, 16%),
+  color-trace-stroke-light: hsl(0, 0%, 24%),
+  color-trace-fill-light: hsl(0, 0%, 24%),
+  color-trace-stroke-dark: hsl(0, 0%, 92%),
+  color-trace-fill-dark: hsl(0, 0%, 92%),
+  color-border-hover-light: hsla(0, 0%, 24%, 0.3),
+  color-border-light: hsla(0, 0%, 24%, 0.1),
+  color-border-hover-dark: hsla(0, 0%, 33%, 0.7),
+  color-border-dark: hsla(0, 0%, 33%, 0.5),
+  color-heading-light: hsl(0, 0%, 16%),
+  color-text-light: hsl(0, 0%, 16%),
+  color-text-hover-light: hsla(0, 0%, 24%, 0.6),
+  color-heading-dark: hsl(0, 0%, 100%),
+  color-text-dark: hsl(0, 0%, 100%),
+  color-text-hover-dark: hsla(0, 0%, 92%, 0.6),
+  color-math-text-light: hsla(0, 0%, 24%, 0.8),
+  color-math-text-dark: hsla(0, 0%, 92%, 0.8),
+  color-panel-box-shadow-light: hsl(map.get(map.get($color-spec, olive-green), hue), 49%, 30%),
+  color-panel-box-shadow-dark: hsl(map.get(map.get($color-spec, olive-green), hue), 49%, 30%),
+  color-input-background-light: hsl(map.get(map.get($color-spec, green), hue), 35%, 91%),
+  color-input-background-dark: hsl(map.get(map.get($color-spec, green), hue), 35%, 91%),
+  color-input-background-hover-light: hsl(0, 0%, 96%),
+  color-input-background-hover-dark: hsl(0, 0%, 96%),
+  color-input-background-focus-light: hsl(60, 100%, 87%),
+  color-input-background-focus-dark: hsl(60, 100%, 87%),
+  color-input-text-light: hsl(map.get(map.get($color-spec, red), hue), 100%, 50%),
+  color-input-text-dark: hsl(map.get(map.get($color-spec, red), hue), 100%, 35%),
+  color-input-text-focus-light: hsl(map.get(map.get($color-spec, red), hue), 100%, 40%),
+  color-input-text-focus-dark: hsl(map.get(map.get($color-spec, red), hue), 100%, 25%),
+  color-a-text-light: hsl(map.get(map.get($color-spec, green), hue), 100%, 37%),
+  color-a-text-hover-light: hsl(map.get(map.get($color-spec, green), hue), 100%, 23%),
+  color-a-text-dark: hsl(map.get(map.get($color-spec, green), hue), 100%, 37%),
+  color-a-text-hover-dark: hsl(map.get(map.get($color-spec, green), hue), 100%, 23%),
+  color-a-background-hover-light: hsla(map.get(map.get($color-spec, green), hue), 100%, 37%, 0.2),
+  color-a-background-hover-dark: hsla(map.get(map.get($color-spec, green), hue), 100%, 37%, 0.2),
+  color-pre-code-background-light: hsl(0, 0%, 90%),
+  color-pre-code-background-dark: hsl(0, 0%, 20%),
+  color-button-text-light: hsl(map.get(map.get($color-spec, green), hue), 0%, 100%),
+  color-button-border-light: hsl(map.get(map.get($color-spec, green), hue), 100%, 25%),
+  color-button-background-to-light: hsl(map.get(map.get($color-spec, green), hue), 26%, 53%),
+  color-button-background-from-light: hsl(map.get(map.get($color-spec, olive-green), hue), 30%, 43%),
+  color-button-box-shadow-light: hsl(map.get(map.get($color-spec, olive-green), hue), 49%, 30%),
+  color-button-text-shadow-light: hsl(map.get(map.get($color-spec, olive-green), hue), 49%, 30%),
+  color-button-text-dark: hsl(map.get(map.get($color-spec, green), hue), 0%, 100%),
+  color-button-border-dark: hsl(map.get(map.get($color-spec, green), hue), 100%, 25%),
+  color-button-background-to-dark: hsl(map.get(map.get($color-spec, green), hue), 26%, 43%),
+  color-button-background-from-dark: hsl(map.get(map.get($color-spec, olive-green), hue), 30%, 33%),
+  color-button-box-shadow-dark: hsl(map.get(map.get($color-spec, olive-green), hue), 49%, 20%),
+  color-button-text-shadow-dark: hsl(map.get(map.get($color-spec, olive-green), hue), 49%, 20%),
+);
+
+/// Store the $color-semantic map in the $generated-colors map.
+$generated-colors: map.merge($generated-colors, $color-semantic);
+
+/// Generated semantic color map of light theme.
+$theme-light: ();
+
+/// Generated semantic color map of dark theme.
+$theme-dark: ();
+
+/// Semantic style list names.
+$style-semantic: (
+  background,
+  background-soft,
+  background-mute,
+  border-hover,
+  border,
+  trace-stroke,
+  trace-fill,
+  heading,
+  text,
+  text-hover,
+  math-text,
+  panel-box-shadow,
+  button-text,
+  button-border,
+  button-background-to,
+  button-background-from,
+  button-box-shadow,
+  button-text-shadow,
+  pre-code-background,
+  a-text,
+  a-text-hover,
+  a-background-hover,
+  input-background,
+  input-background-hover,
+  input-background-focus,
+  input-text,
+  input-text-focus
+);
+
+/// Iterates over $style-semantic map producing default definitions for light and dark themes.
+@each $style-name in $style-semantic {
+  $theme-light: map.merge(
+    $theme-light,
+    (
+      'color-#{$style-name}': map.get($generated-colors, color-#{$style-name}-light),
+    )
+  ) !global;
+  $theme-dark: map.merge(
+    $theme-dark,
+    (
+      'color-#{$style-name}': map.get($generated-colors, color-#{$style-name}-dark),
+    )
+  ) !global;
+}
+
+/// List of names of semantic styles associated with primary colors.
+$color-style: (background, border, border-hover, text, text-hover);
+
+/// Iterates over $color-primary list to produce primary color patterns for themes.
+@each $color-name in $color-primary {
+  @each $style-name in $color-style {
+    $theme-light: map.merge(
+      $theme-light,
+      (
+        '#{$color-name}-#{$style-name}': map.get($generated-colors, #{$color-name}-#{$style-name}-light),
+      )
+    ) !global;
+    $theme-dark: map.merge(
+      $theme-dark,
+      (
+        '#{$color-name}-#{$style-name}': map.get($generated-colors, #{$color-name}-#{$style-name}-dark),
+      )
+    ) !global;
+  }
+}
+
+/// Gets map or value from theme-name and color-name.
+/// @param {light | dark | null} $theme-name - The theme name to get - light or dark.
+/// @param {string | null} $color-name - The theme color name to get. If not provided, returns the full theme color map.
+/// @return {number | map} - The equivalent baseline color or theme color (or a map of one of these) for theme name. If $theme-name is null return baseline color map.
+@function get($theme-name: null, $color-name: null) {
+  @if $theme-name ==null {
+    @if $color-name ==null {
+      @return $generated-colors;
+    }
+
+    @return map.get($generated-colors, $color-name);
+  } @else if $theme-name ==light {
+    @if $color-name ==null {
+      @return $theme-light;
+    }
+
+    @return map.get($theme-light, $color-name);
+  } @else if $theme-name ==dark {
+    @if $color-name ==null {
+      @return $theme-dark;
+    }
+
+    @return map.get($theme-dark, $color-name);
+  } @else {
+    @error "The theme #{$theme-name} is invalid. Use 'light' or 'dark'.";
+  }
+}
