@@ -60,6 +60,123 @@
     </script>
 {% endmacro %}
 
+{# Emits a schema.org WebPage node inside a JSON-LD graph. #}
+{% macro headJsonLdWebPage(id, url, name, description, language, websiteId, aboutId, comma = true) %}
+          {
+            "@type": "WebPage",
+            "@id": "{{ id }}",
+            "url": "{{ url }}",
+            "name": "{{ name }}",
+            "description": "{{ description }}",
+            "inLanguage": "{{ language }}",
+            "isPartOf": {
+              "@id": "{{ websiteId }}"
+            },
+            "about": {
+              "@id": "{{ aboutId }}"
+            }
+          }{% if comma %},{% endif %}
+{% endmacro %}
+
+{# Emits a schema.org WebSite node inside a JSON-LD graph. #}
+{% macro headJsonLdWebSite(id, url, name, publisherId, comma = true) %}
+          {
+            "@type": "WebSite",
+            "@id": "{{ id }}",
+            "url": "{{ url }}",
+            "name": "{{ name }}",
+            "publisher": {
+              "@id": "{{ publisherId }}"
+            }
+          }{% if comma %},{% endif %}
+{% endmacro %}
+
+{# Emits a schema.org SoftwareApplication or WebApplication node. #}
+{% macro headJsonLdApplication(type, id, name, url, description = '', language = '', category = 'EducationalApplication', operatingSystem = 'Web', license = '', authorId = '', publisherId = '', isAccessibleForFree = '', offersPrice = '', comma = true) %}
+          {
+            "@type": "{{ type }}",
+            "@id": "{{ id }}",
+            "name": "{{ name }}",
+            "url": "{{ url }}"{% if description %},
+            "description": "{{ description }}"{% endif %},
+            "applicationCategory": "{{ category }}",
+            "operatingSystem": "{{ operatingSystem }}"{% if language %},
+            "inLanguage": "{{ language }}"{% endif %}{% if isAccessibleForFree %},
+            "isAccessibleForFree": {{ isAccessibleForFree }}{% endif %}{% if license %},
+            "license": "{{ license }}"{% endif %}{% if offersPrice %},
+            "offers": {
+              "@type": "Offer",
+              "price": {{ offersPrice }}
+            }{% endif %}{% if authorId %},
+            "author": {
+              "@id": "{{ authorId }}"
+            }{% endif %}{% if publisherId %},
+            "publisher": {
+              "@id": "{{ publisherId }}"
+            }{% endif %}
+          }{% if comma %},{% endif %}
+{% endmacro %}
+
+{# Emits an ItemList node whose items are application summaries. #}
+{% macro headJsonLdApplicationList(id, name, apps, publisherId, comma = true) %}
+          {
+            "@type": "ItemList",
+            "@id": "{{ id }}",
+            "name": "{{ name }}",
+            "numberOfItems": {{ apps | length }},
+            "itemListElement": [
+              {% for app in apps %}
+                {
+                  "@type": "ListItem",
+                  "position": {{ loop.index }},
+                  "item": {
+                    "@type": "SoftwareApplication",
+                    "@id": "{{ app.href }}#software",
+                    "name": "{{ app.label }}",
+                    "description": "{{ app.description }}",
+                    "url": "{{ app.href }}",
+                    "applicationCategory": "EducationalApplication",
+                    "operatingSystem": "Web",
+                    "publisher": {
+                      "@id": "{{ publisherId }}"
+                    }
+                  }
+                }{% if not loop.last %},{% endif %}
+              {% endfor %}
+            ]
+          }{% if comma %},{% endif %}
+{% endmacro %}
+
+{# Emits a schema.org Person node inside a JSON-LD graph. #}
+{% macro headJsonLdPerson(id, name, comma = true) %}
+          {
+            "@type": "Person",
+            "@id": "{{ id }}",
+            "name": "{{ name }}"
+          }{% if comma %},{% endif %}
+{% endmacro %}
+
+{# Emits a schema.org Organization node with logo and sameAs links. #}
+{% macro headJsonLdOrganization(id, name, url, logoUrl, logoWidth, logoHeight, sameAs, comma = true) %}
+          {
+            "@type": "Organization",
+            "@id": "{{ id }}",
+            "name": "{{ name }}",
+            "url": "{{ url }}",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "{{ logoUrl }}",
+              "width": {{ logoWidth }},
+              "height": {{ logoHeight }}
+            },
+            "sameAs": [
+              {% for url in sameAs %}
+                "{{ url }}"{% if not loop.last %},{% endif %}
+              {% endfor %}
+            ]
+          }{% if comma %},{% endif %}
+{% endmacro %}
+
 {% macro headAlternate(i18n, canonical, url, default = '', postfix = '') %}
     {% if canonical %}
     <link rel="canonical" href="{{ url }}/{{ canonical }}/{{ postfix }}">

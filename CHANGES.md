@@ -7,8 +7,8 @@ project adheres to [Semantic Versioning](http://semver.org/).
 
 - Consolidated SEO head definitions around the shared Nunjucks
   `head-macros.njk` template copied from the organization repository.
-- Added the `headJsonLdGraph` macro to define schema.org JSON-LD graph records
-  without repeating the script wrapper in each page template.
+- Added granular schema.org JSON-LD macros for application, webpage, website,
+  organization, person, and application-list graph nodes.
 - Replaced the separate SEO head include templates with calls to the shared
   head macros.
 - Fixed the generated meta description and canonical/alternate language links
