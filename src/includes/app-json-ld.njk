@@ -1,0 +1,39 @@
+{%- from 'head-macros.njk' import headJsonLdGraph, headJsonLdWebPage, headJsonLdWebSite, headJsonLdApplication, headJsonLdPerson, headJsonLdOrganization -%}
+{% call headJsonLdGraph() %}
+{{ headJsonLdApplication(
+  'WebApplication',
+  site.url + '/#app',
+  pageData.app.title,
+  canonicalUrl,
+  pageData.app.description,
+  pageData.htmlLang,
+  license = 'https://opensource.org/license/MIT',
+  publisherId = site.url + '/#organization',
+  isAccessibleForFree = 'true'
+) }}
+{{ headJsonLdWebPage(
+  canonicalUrl + '#webpage',
+  canonicalUrl,
+  pageData.app.title,
+  pageData.app.description,
+  pageData.htmlLang,
+  site.url + '/#website',
+  site.url + '/#app'
+) }}
+{{ headJsonLdWebSite(
+  site.url + '/#website',
+  site.url + '/',
+  'MathJSLab Calc',
+  site.url + '/#organization'
+) }}
+{{ headJsonLdOrganization(
+  site.url + '/#organization',
+  'MathJSLab',
+  'https://mathjslab.com/',
+  site.url + '/images/mathjslab-logo-512.png',
+  512,
+  512,
+  ['https://github.com/MathJSLab'],
+  comma = false
+) }}
+{% endcall %}
