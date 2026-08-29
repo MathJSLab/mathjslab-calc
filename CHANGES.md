@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file. This
 project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.1.0
+
+- Consolidated SEO head definitions around the shared Nunjucks
+  `head-macros.njk` template copied from the organization repository.
+- Added the `headJsonLdGraph` macro to define schema.org JSON-LD graph records
+  without repeating the script wrapper in each page template.
+- Replaced the separate SEO head include templates with calls to the shared
+  head macros.
+- Fixed the generated meta description and canonical/alternate language links
+  for the multilingual application endpoints.
+- Dependencies updated (`webpack` 5.110.1).
+
 ## 0.0.8
 
 - Toggle button between the native keyboard and the app's keyboard on mobile

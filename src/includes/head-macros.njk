@@ -1,0 +1,93 @@
+{% macro headBegin(title, description, author, keywords, robots = 'index,follow', charset = 'UTF-8') %}
+    <meta charset="{{ charset }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% if title -%}
+    <title>{{ title }}</title>
+    {% endif %}
+    {%- if description -%}
+    <meta name="description" content="{{ description }}">
+    {% endif %}
+    {%- if author -%}
+    <meta name="author" content="{{ author }}">
+    {% endif %}
+    {%- if keywords -%}
+    <meta name="keywords" content="{{ keywords }}">
+    {% endif %}
+    {%- if robots -%}
+    <meta name="robots" content="{{ robots }}">
+    {% endif %}
+{% endmacro %}
+
+{% macro headOpenGraph(i18n, lang, title, description, url, name, image, imageType = 'image/png', width = 1200, height = 630) %}
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{{ title }}">
+    <meta property="og:description" content="{{ description }}">
+    <meta property="og:url" content="{{ url }}/">
+    <meta property="og:site_name" content="{{ name }}">
+    {% if i18n %}
+    <meta property="og:locale" content="{{ i18n.pages[lang].ogLocale }}">
+    {%- for locale in i18n.locales %}
+      {%- if locale != lang %}
+    <meta property="og:locale:alternate" content="{{ i18n.pages[locale].ogLocale }}">
+      {%- endif -%}
+    {% endfor %}
+    {% else %}
+    <meta property="og:locale" content="{{ lang }}">
+    {% endif %}
+    <meta property="og:image" content="{{ url }}{{ image }}">
+    <meta property="og:image:type" content="{{ imageType }}">
+    <meta property="og:image:width" content="{{ width }}">
+    <meta property="og:image:height" content="{{ height }}">
+    <meta property="og:image:alt" content="{{ title }}">
+{% endmacro %}
+
+{% macro headTwitter(title, description, url, image, imageAlt) %}
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ title }}">
+    <meta name="twitter:description" content="{{ description }}">
+    <meta name="twitter:image" content="{{ url }}{{ image }}">
+    <meta name="twitter:image:alt" content="{{ imageAlt }}">
+{% endmacro %}
+
+{% macro headJsonLdGraph(context = 'https://schema.org') %}
+    <script type="application/ld+json">
+      {
+        "@context": "{{ context }}",
+        "@graph": [
+{{ caller() }}
+        ]
+      }
+    </script>
+{% endmacro %}
+
+{% macro headAlternate(i18n, canonical, url, default = '', postfix = '') %}
+    {% if canonical %}
+    <link rel="canonical" href="{{ url }}/{{ canonical }}/{{ postfix }}">
+    {% else %}
+    <link rel="canonical" href="{{ url }}/{{ postfix }}">
+    {% endif %}
+    {% for locale in i18n.locales -%}
+      <link rel="alternate" hreflang="{{ i18n.pages[locale].htmlLang }}" href="{{ url }}/{{ locale }}/{{ postfix }}">
+    {% endfor -%}
+    {% if default %}
+    <link rel="alternate" hreflang="x-default" href="{{ url }}/{{ default }}/{{ postfix }}">
+    {% else %}
+    <link rel="alternate" hreflang="x-default" href="{{ url }}/{{ postfix }}">
+    {% endif %}
+{% endmacro %}
+
+{% macro headIcon(light, dark, svg, appleTouch, sizes = '16x16 32x32 48x48') %}
+    {%- if dark %}
+    <meta name="color-scheme" content="light dark">
+    <link rel="icon" href="{{ light }}" sizes="{{ sizes }}" type="image/x-icon" media="(prefers-color-scheme: light)">
+    <link rel="icon" href="{{ dark }}" sizes="{{ sizes }}" type="image/x-icon" media="(prefers-color-scheme: dark)">
+    {% else %}
+    <link rel="icon" href="{{ light }}" sizes="{{ sizes }}" type="image/x-icon">
+    {% endif %}
+    {%- if svg -%}
+    <link rel="icon" href="{{ svg }}" sizes="any" type="image/svg+xml">
+    {% endif %}
+    {%- if appleTouch -%}
+    <link rel="apple-touch-icon" href="{{ appleTouch }}">
+    {% endif -%}
+{% endmacro %}

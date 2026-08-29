@@ -35,24 +35,8 @@
             "dest": "src/styles/constants.json.njk"
         },
         {
-            "src": "includes/head-alternate.njk",
-            "dest": "src/includes/head-alternate.njk"
-        },
-        {
-            "src": "includes/head-begin.njk",
-            "dest": "src/includes/head-begin.njk"
-        },
-        {
-            "src": "includes/head-og.njk",
-            "dest": "src/includes/head-og.njk"
-        },
-        {
-            "src": "includes/head-scheme-favicon.njk",
-            "dest": "src/includes/head-scheme-favicon.njk"
-        },
-        {
-            "src": "includes/head-twitter.njk",
-            "dest": "src/includes/head-twitter.njk"
+            "src": "includes/head-macros.njk",
+            "dest": "src/includes/head-macros.njk"
         },
         {
             "src": "images/img/ico/favicon.ico",

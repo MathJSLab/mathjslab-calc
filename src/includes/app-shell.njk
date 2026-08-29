@@ -2,17 +2,73 @@
 {%- set main = pageData.app -%}
 {% set canonicalPath = '/' if rootEndpoint else '/' + lang + '/' %}
 {% set canonicalUrl = site.url + canonicalPath %}
+{% set alternateCanonical = '' if rootEndpoint else lang %}
+{%- from 'src/includes/head-macros.njk' import headBegin, headOpenGraph, headTwitter, headJsonLdGraph, headAlternate, headIcon -%}
 <!DOCTYPE html>
 <html lang="{{ pageData.htmlLang }}">
   <head>
-{% include "head-begin.njk" %}
-    <meta name="color-scheme" content="light dark">
+{{ headBegin(main.title, main.description, pkg.author, pkg.keywords.join()) }}
     <meta name="theme-color" content="#166534">
-{% include "head-seo.njk" %}
+{{ headOpenGraph(i18n, lang, pageData.app.title, pageData.app.description, site.url, site.title, '/images/mathjslab-og.png') }}
+{{ headTwitter(main.title, main.description, site.url, '/images/mathjslab-og.png', site.title) }}
+{% call headJsonLdGraph() %}
+          {
+            "@type": "WebApplication",
+            "@id": "{{ site.url }}/#app",
+            "name": "{{ pageData.app.title }}",
+            "url": "{{ canonicalUrl }}",
+            "description": "{{ pageData.app.description }}",
+            "applicationCategory": "EducationalApplication",
+            "operatingSystem": "Web",
+            "inLanguage": "{{ pageData.htmlLang }}",
+            "isAccessibleForFree": true,
+            "license": "https://opensource.org/license/MIT",
+            "publisher": {
+              "@id": "{{ site.url }}/#organization"
+            }
+          },
+          {
+            "@type": "WebPage",
+            "@id": "{{ canonicalUrl }}#webpage",
+            "url": "{{ canonicalUrl }}",
+            "name": "{{ pageData.app.title }}",
+            "description": "{{ pageData.app.description }}",
+            "inLanguage": "{{ pageData.htmlLang }}",
+            "about": {
+              "@id": "{{ site.url }}/#app"
+            },
+            "isPartOf": {
+              "@id": "{{ site.url }}/#website"
+            }
+          },
+          {
+            "@type": "WebSite",
+            "@id": "{{ site.url }}/#website",
+            "url": "{{ site.url }}/",
+            "name": "MathJSLab Calc",
+            "publisher": {
+              "@id": "{{ site.url }}/#organization"
+            }
+          },
+          {
+            "@type": "Organization",
+            "@id": "{{ site.url }}/#organization",
+            "name": "MathJSLab",
+            "url": "https://mathjslab.com/",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "{{ site.url }}/images/mathjslab-logo-512.png",
+              "width": 512,
+              "height": 512
+            },
+            "sameAs": [
+              "https://github.com/MathJSLab"
+            ]
+          }
+{% endcall %}
+{{ headAlternate(i18n, alternateCanonical, site.url) }}
+{{ headIcon(light = '/images/favicon.ico', dark = '/images/favicon-dark.ico', svg = '/images/mathjslab-logo.svg') }}
     <link rel="manifest" href="/manifest.json">
-    <link rel="icon" href="/images/favicon.ico" sizes="any">
-    <link rel="icon" href="/images/mathjslab-logo.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/images/mathjslab-logo-192.png">
   </head>
   <body>
     <noscript>{{ pageData.app.noscript }}</noscript>

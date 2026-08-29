@@ -1,5 +1,0 @@
-    <link rel="canonical" href="{{ site.url }}/{{ lang }}/{{ alternatePostfix}}">
-    {%- for locale in i18n.locales -%}
-      <link rel="alternate" hreflang="{{ i18n.pages[locale].htmlLang }}" href="{{ site.url }}/{{ locale }}/{{ alternatePostfix}}">
-    {% endfor -%}
-    <link rel="alternate" hreflang="x-default" href="{{ site.url }}/en/{{ alternatePostfix}}">
