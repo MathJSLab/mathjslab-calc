@@ -3,8 +3,47 @@
 All notable changes to this project will be documented in this file. This
 project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.2.0
+
+- Replaced the first calculator-specific Web Components with reusable shared
+  components from the organization repository, including `application-wrapper`,
+  `command-prompt`, `command-prompt-list`, `keyboard-panel`, `control-bar`,
+  `language-switcher`, and `appearance-mode`.
+- Added the `control-bar` integration for the language selector, appearance
+  mode selector, and calculator keyboard toggle without changing the visual
+  toolbar appearance.
+- Improved the prompt runtime with syntax highlighting, selectable prompt text,
+  native/app keyboard switching on mobile devices, and removal of development
+  console diagnostics.
+- Expanded the calculator keyboard with scientific, function, alphabetic, and
+  programming panels, including responsive compact layouts and programming
+  base-specific key enabling.
+- Improved responsive layout behavior for desktop, landscape mobile, and
+  portrait mobile views so the keyboard remains aligned with the viewport base.
+- Consolidated application styling around shared SCSS templates and adjusted
+  calculator-specific button contrast for light and dark modes.
+- Added endpoint-aware multilingual SEO support for `calc.mathjslab.com`,
+  including localized canonical and alternate links, JSON-LD graph macros,
+  generated `robots.txt`, and sitemap `lastmod` values based on source file
+  modification times.
+- Updated the MathJSLab SEO diagnosis page in `mathjslab-www` with online SEO
+  tool links for the calculator application endpoints.
+- Dependencies updated (`webpack` 5.110.3).
+
 ## 0.1.0
 
+- Prompt history now uses the shared `command-prompt-list` Web Component,
+  bringing the app command prompt keyboard navigation, prompt insertion,
+  deletion, and evaluation behavior to the calculator.
+- The `AC` keypad command now clears the full prompt history and opens a fresh
+  active prompt.
+- The shared `command-prompt` textarea background now remains transparent so
+  the calculator prompt area preserves the application visual identity.
+- The calculator prompt now uses the shared `command-prompt` Web Component from
+  the organization repository while preserving the existing prompt list,
+  evaluator, and mobile keyboard behavior.
+- Prompt MathML output now fits the available prompt width without adding
+  internal horizontal scroll controls.
 - Consolidated SEO head definitions around the shared Nunjucks
   `head-macros.njk` template copied from the organization repository.
 - Added granular schema.org JSON-LD macros for application, webpage, website,

@@ -1,0 +1,82 @@
+@use '../../styles/component/button' as buttons;
+@use '../../styles/component/panel';
+
+:host {
+  display: block;
+}
+
+:host([width='fit']) {
+  display: inline-block;
+}
+
+:host([align='center']) {
+  margin-inline: auto;
+}
+
+:host([align='end']) {
+  margin-inline-start: auto;
+}
+
+.control-bar {
+  align-items: center;
+  box-sizing: border-box;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--control-bar-gap, 0.5rem);
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.control-bar[data-panel='none'] {
+  padding: 0;
+}
+
+.control-bar[data-width='fit'] {
+  width: fit-content;
+}
+
+.control-bar[data-orientation='vertical'] {
+  align-items: stretch;
+  flex-direction: column;
+  width: fit-content;
+}
+
+.control-bar[data-align='center'] {
+  justify-content: center;
+}
+
+.control-bar[data-align='end'] {
+  justify-content: flex-end;
+}
+
+.control-bar[data-align='stretch'] {
+  align-items: stretch;
+  justify-content: stretch;
+}
+
+.control-bar[data-align='stretch'] slot::slotted(*) {
+  flex: 1 1 auto;
+}
+
+:host(:not([button-style='preserve'])) ::slotted(button) {
+  @include buttons.green-button;
+
+  min-height: 2.35rem;
+  padding: 0.5rem 0.85rem;
+}
+
+:host(:not([button-style='preserve'])) ::slotted(button:hover) {
+  @include buttons.green-button-hover;
+}
+
+:host([panel='green']:not([button-style='preserve'])) ::slotted(button) {
+  @include buttons.gray-button;
+}
+
+:host([panel='green']:not([button-style='preserve'])) ::slotted(button:hover) {
+  @include buttons.gray-button-hover;
+}
+
+:host(:not([button-style='preserve'])) ::slotted(button:active) {
+  @include buttons.button-active;
+}

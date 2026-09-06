@@ -16,11 +16,15 @@ export default {
         useAppKeypad: 'Usar teclado do aplicativo',
         useNativeKeyboard: 'Usar teclado nativo',
     },
+    theme: {
+        light: 'Alternar para o modo claro',
+        dark: 'Alternar para o modo escuro',
+    },
     prompt: {
         ariaLabel: 'Prompt do MathJSLab',
         listAriaLabel: 'Lista de prompts do MathJSLab',
     },
-    keypad: {
+    keyboardPanel: {
         ariaLabel: 'Teclado científico',
         panelLabel: 'Painéis do teclado',
         title: 'Científica',

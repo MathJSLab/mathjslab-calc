@@ -18,6 +18,16 @@
   </head>
   <body>
     <noscript>{{ pageData.app.noscript }}</noscript>
-    <calc-shell></calc-shell>
+    <application-wrapper storage-key="mathjslab-calc:theme">
+      <button type="button" id="calc-keyboard-toggle" class="keyboard-toggle" slot="actions" aria-expanded="true" title="Toggle keypad">⌨</button>
+      <div id="calc-workspace" class="calc-workspace">
+        <main class="prompt-area">
+          <command-prompt-list id="calc-prompts"></command-prompt-list>
+        </main>
+        <aside class="keyboard-panel-container">
+          <keyboard-panel id="calc-keyboard-panel"></keyboard-panel>
+        </aside>
+      </div>
+    </application-wrapper>
   </body>
 </html>

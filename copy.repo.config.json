@@ -23,6 +23,14 @@
             "dest": "src/styles/base/_sizes.scss"
         },
         {
+            "src": "includes/styles/component/_panel.scss",
+            "dest": "src/styles/component/_panel.scss"
+        },
+        {
+            "src": "includes/styles/component/_button.scss",
+            "dest": "src/styles/component/_button.scss"
+        },
+        {
             "src": "includes/styles/abstract/_define-map.scss",
             "dest": "src/styles/abstract/_define-map.scss"
         },
@@ -109,6 +117,9 @@
         "images/mathjslab-logo.svg",
         "images/mathjslab-logo-light.svg",
         "images/mathjslab-logo-dark.svg",
+        "images/language-switch.svg",
+        "images/theme-light-mathjslab.svg",
+        "images/theme-dark-mathjslab.svg",
         "src/components/component.include.ts",
         "src/components/constructorFactory.ts",
         "src/components/createElementFactory.ts",
@@ -120,6 +131,90 @@
         "src/components/WebComponentElement.d.ts",
         "src/components/WebComponentInterface.d.ts",
         "src/components/WebComponentType.d.ts",
+        {
+            "src": "src/components/keyboard-panel/keyboard-panel.component.ts",
+            "dest": "src/components/keyboard-panel/keyboard-panel.component.ts"
+        },
+        {
+            "src": "src/components/keyboard-panel/keyboard-panel.styles.scss",
+            "dest": "src/components/keyboard-panel/keyboard-panel.styles.scss"
+        },
+        {
+            "src": "src/components/keyboard-panel/keyboard-panel.template.html",
+            "dest": "src/components/keyboard-panel/keyboard-panel.template.html"
+        },
+        {
+            "src": "src/components/application-wrapper/application-wrapper.component.ts",
+            "dest": "src/components/application-wrapper/application-wrapper.component.ts"
+        },
+        {
+            "src": "src/components/application-wrapper/application-wrapper.styles.scss",
+            "dest": "src/components/application-wrapper/application-wrapper.styles.scss"
+        },
+        {
+            "src": "src/components/application-wrapper/application-wrapper.template.html",
+            "dest": "src/components/application-wrapper/application-wrapper.template.html"
+        },
+        {
+            "src": "src/components/command-prompt/command-prompt.component.ts",
+            "dest": "src/components/command-prompt/command-prompt.component.ts"
+        },
+        {
+            "src": "src/components/command-prompt/command-prompt.styles.scss",
+            "dest": "src/components/command-prompt/command-prompt.styles.scss"
+        },
+        {
+            "src": "src/components/command-prompt/command-prompt.template.html",
+            "dest": "src/components/command-prompt/command-prompt.template.html"
+        },
+        {
+            "src": "src/components/command-prompt-list/command-prompt-list.component.ts",
+            "dest": "src/components/command-prompt-list/command-prompt-list.component.ts"
+        },
+        {
+            "src": "src/components/command-prompt-list/command-prompt-list.styles.scss",
+            "dest": "src/components/command-prompt-list/command-prompt-list.styles.scss"
+        },
+        {
+            "src": "src/components/command-prompt-list/command-prompt-list.template.html",
+            "dest": "src/components/command-prompt-list/command-prompt-list.template.html"
+        },
+        {
+            "src": "src/components/control-bar/control-bar.component.ts",
+            "dest": "src/components/control-bar/control-bar.component.ts"
+        },
+        {
+            "src": "src/components/control-bar/control-bar.styles.scss",
+            "dest": "src/components/control-bar/control-bar.styles.scss"
+        },
+        {
+            "src": "src/components/control-bar/control-bar.template.html",
+            "dest": "src/components/control-bar/control-bar.template.html"
+        },
+        {
+            "src": "src/components/language-switcher/language-switcher.component.ts",
+            "dest": "src/components/language-switcher/language-switcher.component.ts"
+        },
+        {
+            "src": "src/components/language-switcher/language-switcher.styles.scss",
+            "dest": "src/components/language-switcher/language-switcher.styles.scss"
+        },
+        {
+            "src": "src/components/language-switcher/language-switcher.template.html",
+            "dest": "src/components/language-switcher/language-switcher.template.html"
+        },
+        {
+            "src": "src/components/appearance-mode/appearance-mode.component.ts",
+            "dest": "src/components/appearance-mode/appearance-mode.component.ts"
+        },
+        {
+            "src": "src/components/appearance-mode/appearance-mode.styles.scss",
+            "dest": "src/components/appearance-mode/appearance-mode.styles.scss"
+        },
+        {
+            "src": "src/components/appearance-mode/appearance-mode.template.html",
+            "dest": "src/components/appearance-mode/appearance-mode.template.html"
+        },
         ".prettierrc"
     ]
 }

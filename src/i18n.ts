@@ -75,7 +75,14 @@ const formatValue = (value: MessageTree, locale: Locale, key = ''): any => {
     return Object.fromEntries(Object.entries(value).map(([entryKey, entry]) => [entryKey, formatValue(entry, locale, entryKey)]));
 };
 
+/**
+ * Fully formatted locale pages consumed by browser components and templates.
+ */
 const pages = Object.fromEntries(Object.entries(source).map(([locale, values]) => [locale, formatValue(values, locale as Locale)])) as Record<Locale, any>;
+
+/**
+ * Human-readable language names shown in the language switcher.
+ */
 const languageNames = Object.fromEntries(Object.entries(source).map(([locale, values]) => [locale, values.languageName])) as Record<Locale, string>;
 
 /**

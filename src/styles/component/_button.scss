@@ -1,0 +1,86 @@
+@mixin base-button {
+  align-items: center;
+  appearance: none;
+  border-radius: var(--border-radius-medium, 6px);
+  box-sizing: border-box;
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 400;
+  justify-content: center;
+  line-height: 1;
+  min-height: 2.35rem;
+  padding: 0.5rem 0.75rem;
+  text-align: center;
+  text-decoration: none;
+  text-shadow: none;
+  transition:
+    background-color 140ms ease,
+    border-color 140ms ease,
+    color 140ms ease,
+    box-shadow 140ms ease;
+}
+
+@mixin green-button {
+  @include base-button;
+
+  background: linear-gradient(
+    to bottom,
+    var(--color-button-background-to) 5%,
+    var(--color-button-background-from) 100%
+  );
+  background-color: var(--color-button-background-to);
+  border: 1px outset var(--color-button-border);
+  box-shadow: 0 8px 12px -8px var(--color-button-box-shadow);
+  color: var(--color-button-text);
+}
+
+@mixin green-button-hover {
+  background: linear-gradient(
+    to bottom,
+    var(--color-button-background-from) 5%,
+    var(--color-button-background-to) 100%
+  );
+  background-color: var(--color-button-background-from);
+}
+
+@mixin gray-button {
+  @include base-button;
+
+  background: var(--calc-control, var(--color-background-mute, #edf1f6));
+  border: 1px solid var(--calc-border, var(--color-border, #cfd7df));
+  box-shadow: 0 8px 16px -14px var(--color-panel-box-shadow, rgb(15 23 42 / 45%));
+  color: var(--calc-control-text, var(--color-a-text, currentColor));
+}
+
+@mixin gray-button-hover {
+  background: var(--calc-control-active, var(--color-background-soft, #f5f7fa));
+  color: var(--calc-control-text, var(--color-a-text-hover, currentColor));
+}
+
+@mixin button-active {
+  position: relative;
+  top: 1px;
+}
+
+.green-button {
+  @include green-button;
+}
+
+.green-button:hover {
+  @include green-button-hover;
+}
+
+.gray-button {
+  @include gray-button;
+}
+
+.gray-button:hover {
+  @include gray-button-hover;
+}
+
+.green-button:active,
+.gray-button:active {
+  @include button-active;
+}

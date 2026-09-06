@@ -123,15 +123,25 @@
 
 
     <meta name="color-scheme" content="light dark">
-    <link rel="icon" href="/images/favicon.ico" sizes="16x16 32x32 48x48" type="image/x-icon" media="(prefers-color-scheme: light)">
-    <link rel="icon" href="/images/favicon-dark.ico" sizes="16x16 32x32 48x48" type="image/x-icon" media="(prefers-color-scheme: dark)">
+    <link rel="icon" href="/images/favicon.ico" sizes="16x16 32x32 48x48" type="image/x-icon" media="(prefers-color-scheme: light)" data-appearance-icon data-light-href="/images/favicon.ico" data-dark-href="/images/favicon-dark.ico">
+    <link rel="icon" href="/images/favicon-dark.ico" sizes="16x16 32x32 48x48" type="image/x-icon" media="(prefers-color-scheme: dark)" data-appearance-icon data-light-href="/images/favicon.ico" data-dark-href="/images/favicon-dark.ico">
     <link rel="icon" href="/images/mathjslab-logo.svg" sizes="any" type="image/svg+xml">
     
     <link rel="manifest" href="/manifest.json">
   </head>
   <body>
     <noscript>JavaScript must be enabled to run MathJSLab Calc.</noscript>
-    <calc-shell></calc-shell>
+    <application-wrapper storage-key="mathjslab-calc:theme">
+      <button type="button" id="calc-keyboard-toggle" class="keyboard-toggle" slot="actions" aria-expanded="true" title="Toggle keypad">⌨</button>
+      <div id="calc-workspace" class="calc-workspace">
+        <main class="prompt-area">
+          <command-prompt-list id="calc-prompts"></command-prompt-list>
+        </main>
+        <aside class="keyboard-panel-container">
+          <keyboard-panel id="calc-keyboard-panel"></keyboard-panel>
+        </aside>
+      </div>
+    </application-wrapper>
   </body>
 </html>
 

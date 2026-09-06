@@ -1,4 +1,4 @@
-import styles from './calculator-keypad.styles.scss';
+import styles from './keyboard-panel.styles.scss';
 import i18n from '../../i18n';
 import type WebComponentElement from '../WebComponentElement';
 import constructorFactory from '../constructorFactory';
@@ -9,9 +9,9 @@ import setContainerFactory from '../setContainerFactory';
 import setIdFirstFactory from '../setIdFirstFactory';
 
 /**
- * Elements addressed inside the scientific keypad shadow tree.
+ * Elements addressed inside the scientific keyboard panel shadow tree.
  */
-export interface CalculatorKeypadElementEntry {
+export interface KeyboardPanelElementEntry {
     root: HTMLElement;
     title: HTMLElement;
     brand: HTMLElement;
@@ -22,14 +22,14 @@ export interface CalculatorKeypadElementEntry {
     keys: HTMLElement;
 }
 
-export type CalculatorKeypadElement = WebComponentElement<CalculatorKeypadElementEntry>;
-export const CalculatorKeypadElementEntryKey: (keyof CalculatorKeypadElementEntry)[] = ['root', 'title', 'brand', 'tabs', 'baseControl', 'baseLabel', 'base', 'keys'] as const;
+export type KeyboardPanelElement = WebComponentElement<KeyboardPanelElementEntry>;
+export const KeyboardPanelElementEntryKey: (keyof KeyboardPanelElementEntry)[] = ['root', 'title', 'brand', 'tabs', 'baseControl', 'baseLabel', 'base', 'keys'] as const;
 
 type PanelId = 'calculator' | 'functions' | 'alphabet' | 'programming';
 type NumericBase = 'bin' | 'oct' | 'dec' | 'hex';
 
 /**
- * A single calculator key and the command it emits.
+ * A single keyboard key and the command it emits.
  */
 type KeyDefinition = {
     label: string;
@@ -41,7 +41,7 @@ type KeyDefinition = {
 };
 
 /**
- * One tabbed keypad panel with regular and compact key layouts.
+ * One tabbed keyboard panel with regular and compact key layouts.
  */
 type KeyPanel = {
     id: PanelId;
@@ -51,7 +51,7 @@ type KeyPanel = {
 };
 
 /**
- * Calculator panel definitions. Each panel is capped at nine five-column rows
+ * Keyboard panel definitions. Each panel is capped at nine five-column rows
  * on desktop and six four-column rows on smaller screens.
  */
 const panels: KeyPanel[] = [
@@ -65,8 +65,8 @@ const panels: KeyPanel[] = [
                 { label: 'sin', value: 'sin(' },
                 { label: 'cos', value: 'cos(' },
                 { label: 'tan', value: 'tan(' },
+                { label: 'log', value: 'log(' },
                 { label: '^', kind: 'operation' },
-                { label: '!', kind: 'operation' },
             ],
             [
                 { label: '7', kind: 'number' },
@@ -404,22 +404,22 @@ const numericBasePrefixes: Record<NumericBase, string> = {
 const compactLayoutMedia = '(max-width: 680px), (max-height: 520px)';
 
 /**
- * Tabbed scientific keypad that dispatches insertion and command events.
+ * Tabbed scientific keyboard panel that dispatches insertion and command events.
  */
-export class CalculatorKeypad extends HTMLElement {
-    public static readonly tagName = 'calculator-keypad';
-    public readonly element = {} as CalculatorKeypadElement;
-    public static readonly elementFields: (keyof CalculatorKeypadElementEntry)[] = CalculatorKeypadElementEntryKey;
-    public static readonly elementPostfix = keyToPostfix(CalculatorKeypadElementEntryKey);
-    public static readonly null = null as unknown as CalculatorKeypad;
-    public static readonly undefined = undefined as unknown as CalculatorKeypad;
+export class KeyboardPanel extends HTMLElement {
+    public static readonly tagName = 'keyboard-panel';
+    public readonly element = {} as KeyboardPanelElement;
+    public static readonly elementFields: (keyof KeyboardPanelElementEntry)[] = KeyboardPanelElementEntryKey;
+    public static readonly elementPostfix = keyToPostfix(KeyboardPanelElementEntryKey);
+    public static readonly null = null as unknown as KeyboardPanel;
+    public static readonly undefined = undefined as unknown as KeyboardPanel;
     private activePanel: PanelId = 'calculator';
     private numericBase: NumericBase = 'dec';
     private readonly compactLayout = globalThis.matchMedia(compactLayoutMedia);
 
     public constructor() {
         super();
-        constructorFactory(CalculatorKeypad, styles).bind(this)();
+        constructorFactory(KeyboardPanel, styles).bind(this)();
         this.renderBaseOptions();
         this.renderTabs();
         this.renderKeys();
@@ -442,9 +442,9 @@ export class CalculatorKeypad extends HTMLElement {
         return super.id;
     }
 
-    public setId: (this: CalculatorKeypad, id?: string) => void = setIdFirstFactory(CalculatorKeypad).bind(this);
-    public static readonly createElement = createElementFactory(CalculatorKeypad);
-    public static readonly define = defineFactory(CalculatorKeypad);
+    public setId: (this: KeyboardPanel, id?: string) => void = setIdFirstFactory(KeyboardPanel).bind(this);
+    public static readonly createElement = createElementFactory(KeyboardPanel);
+    public static readonly define = defineFactory(KeyboardPanel);
 
     public set container(element: HTMLElement) {
         setContainerFactory().bind(this)(element);
@@ -477,7 +477,7 @@ export class CalculatorKeypad extends HTMLElement {
             tab.textContent = panel.label;
             tab.dataset.panel = panel.id;
             tab.setAttribute('role', 'tab');
-            tab.setAttribute('aria-controls', `${CalculatorKeypad.tagName}-${panel.id}-panel`);
+            tab.setAttribute('aria-controls', `${KeyboardPanel.tagName}-${panel.id}-panel`);
             tab.addEventListener('click', () => {
                 this.activePanel = panel.id;
                 this.renderKeys();
@@ -491,7 +491,7 @@ export class CalculatorKeypad extends HTMLElement {
      */
     private renderKeys(): void {
         this.element.keys.replaceChildren();
-        this.element.keys.id = `${CalculatorKeypad.tagName}-${this.activePanel}-panel`;
+        this.element.keys.id = `${KeyboardPanel.tagName}-${this.activePanel}-panel`;
         this.element.keys.setAttribute('role', 'tabpanel');
         this.element.keys.setAttribute('aria-label', panels.find((panel) => panel.id === this.activePanel)!.label);
         this.element.keys.dataset.layout = this.compactLayout.matches ? 'compact' : 'regular';
@@ -515,7 +515,7 @@ export class CalculatorKeypad extends HTMLElement {
             }
             button.addEventListener('click', () => {
                 this.dispatchEvent(
-                    new CustomEvent('calculator-key', {
+                    new CustomEvent('keyboard-panel-key', {
                         bubbles: true,
                         composed: true,
                         detail: {
@@ -539,10 +539,10 @@ export class CalculatorKeypad extends HTMLElement {
             const input = document.createElement('input');
             const caption = document.createElement('span');
             input.type = 'radio';
-            input.name = `${CalculatorKeypad.tagName}-base`;
+            input.name = `${KeyboardPanel.tagName}-base`;
             input.value = base;
             input.checked = base === this.numericBase;
-            caption.textContent = i18n.page.keypad.base.options[base];
+            caption.textContent = i18n.page.keyboardPanel.base.options[base];
             option.append(input, caption);
             this.element.base.append(option);
         }
@@ -560,15 +560,15 @@ export class CalculatorKeypad extends HTMLElement {
     }
 
     private readonly setLanguage = (): void => {
-        this.element.root.setAttribute('aria-label', i18n.page.keypad.ariaLabel);
-        this.element.tabs.setAttribute('aria-label', i18n.page.keypad.panelLabel);
-        this.element.title.textContent = i18n.page.keypad.title;
-        this.element.brand.textContent = i18n.page.keypad.brand;
-        this.element.baseLabel.textContent = i18n.page.keypad.base.label;
+        this.element.root.setAttribute('aria-label', i18n.page.keyboardPanel.ariaLabel);
+        this.element.tabs.setAttribute('aria-label', i18n.page.keyboardPanel.panelLabel);
+        this.element.title.textContent = i18n.page.keyboardPanel.title;
+        this.element.brand.textContent = i18n.page.keyboardPanel.brand;
+        this.element.baseLabel.textContent = i18n.page.keyboardPanel.base.label;
         for (const tab of this.element.tabs.querySelectorAll<HTMLButtonElement>('.tab')) {
             const panel = panels.find((candidate) => candidate.id === tab.dataset.panel);
             if (panel) {
-                tab.title = i18n.page.keypad.panels[panel.id];
+                tab.title = i18n.page.keyboardPanel.panels[panel.id];
             }
         }
         this.renderBaseOptions();
@@ -587,7 +587,7 @@ export class CalculatorKeypad extends HTMLElement {
         this.numericBase = checked.value as NumericBase;
         this.renderKeys();
         this.dispatchEvent(
-            new CustomEvent('calculator-base-change', {
+            new CustomEvent('keyboard-panel-base-change', {
                 bubbles: true,
                 composed: true,
                 detail: {
@@ -615,16 +615,16 @@ export class CalculatorKeypad extends HTMLElement {
 
     private getKeyLabel(key: KeyDefinition): string {
         if (key.action === 'evaluate') {
-            return i18n.page.keypad.keys.enter;
+            return i18n.page.keyboardPanel.keys.enter;
         }
         if (key.action === 'backspace') {
-            return i18n.page.keypad.keys.delete;
+            return i18n.page.keyboardPanel.keys.delete;
         }
         if (key.action === 'clear') {
-            return i18n.page.keypad.keys.clear;
+            return i18n.page.keyboardPanel.keys.clear;
         }
         return key.label;
     }
 }
 
-CalculatorKeypad.define();
+KeyboardPanel.define();

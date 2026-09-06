@@ -1,0 +1,143 @@
+:host {
+  display: block;
+  height: 100vh;
+  height: 100svh;
+  min-height: 100vh;
+  min-height: 100svh;
+  overflow: hidden;
+}
+
+.application-wrapper {
+  background: var(--calc-app-background);
+  color: var(--calc-text);
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  height: 100vh;
+  height: 100svh;
+  min-height: 100vh;
+  min-height: 100svh;
+  overflow: hidden;
+}
+
+.application-toolbar {
+  align-items: center;
+  background: var(--calc-surface);
+  border-bottom: 1px solid var(--calc-border);
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+  padding: 12px 18px;
+}
+
+.application-brand {
+  align-items: center;
+  display: flex;
+  gap: 11px;
+  min-width: 0;
+}
+
+.application-logo {
+  flex: 0 0 auto;
+  height: 42px;
+  width: 42px;
+}
+
+.application-title-group {
+  min-width: 0;
+}
+
+h1,
+p {
+  margin: 0;
+}
+
+h1 {
+  color: var(--calc-heading);
+  font-size: 1.15rem;
+  font-weight: 750;
+}
+
+p {
+  color: var(--calc-text-muted);
+  font-size: 0.86rem;
+}
+
+.application-actions {
+  --control-bar-gap: 10px;
+
+  flex: 0 0 auto;
+}
+
+language-switcher,
+appearance-mode,
+::slotted([slot='actions']),
+::slotted([slot='status']) {
+  flex: 0 0 auto;
+}
+
+.application-workspace {
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+}
+
+:host([layout='document']) {
+  height: auto;
+  min-height: 100vh;
+  min-height: 100svh;
+  overflow: visible;
+}
+
+:host([layout='document']) .application-wrapper {
+  height: auto;
+  min-height: 100vh;
+  min-height: 100svh;
+  overflow: visible;
+}
+
+:host([layout='document']) .application-workspace {
+  overflow: visible;
+}
+
+@media (max-width: 640px) {
+  .application-toolbar {
+    padding: 9px 12px;
+  }
+
+  .application-brand {
+    gap: 8px;
+  }
+
+  .application-logo {
+    height: 34px;
+    width: 34px;
+  }
+
+  h1 {
+    font-size: 1rem;
+  }
+
+  p {
+    font-size: 0.78rem;
+  }
+
+  .application-actions {
+    --control-bar-gap: 6px;
+  }
+}
+
+:host([chrome='none']) {
+  display: contents;
+}
+
+:host([chrome='none']) .application-wrapper {
+  display: contents;
+}
+
+:host([chrome='none']) .application-toolbar {
+  display: none;
+}
+
+:host([chrome='none']) .application-workspace {
+  display: contents;
+}

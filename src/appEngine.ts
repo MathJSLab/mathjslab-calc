@@ -1,5 +1,5 @@
 import { Interpreter } from 'mathjslab';
-import type { CalcShell } from './components/calc-shell/calc-shell.component';
+import type { ApplicationWrapper } from './components/application-wrapper/application-wrapper.component';
 
 type MathJSLabInterpreter = ReturnType<typeof Interpreter.Create>;
 
@@ -19,7 +19,7 @@ type AppEngine = {
     setLanguage: (lang?: string) => void;
     buildMessage: string;
     interpreter: MathJSLabInterpreter;
-    shell: CalcShell;
+    shell: ApplicationWrapper;
 };
 
 const appConfiguration: AppConfiguration = {};
@@ -33,7 +33,7 @@ const appEngine: AppEngine = {
     setLanguage: () => {},
     buildMessage: '',
     interpreter: null as unknown as MathJSLabInterpreter,
-    shell: null as unknown as CalcShell,
+    shell: null as unknown as ApplicationWrapper,
 };
 
 (globalThis as any).appEngine = appEngine;

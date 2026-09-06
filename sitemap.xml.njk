@@ -7,7 +7,17 @@
 
   <url>
     <loc>{{ site.url }}/</loc>
-    <lastmod>{% currentDate 'yyyy-MM-dd' %}</lastmod>
+    <lastmod>{{
+      [
+        'src/main.html.njk',
+        'src/includes/app-shell.njk',
+        'src/includes/head-macros.njk',
+        'src/includes/app-json-ld.njk',
+        'data/i18n.js',
+        'data/site.json',
+        'package.json'
+      ] | sitemapLastmod
+    }}</lastmod>
     {% for alternate in i18n.locales %}
     <xhtml:link rel="alternate" hreflang="{{ i18n.pages[alternate].htmlLang }}" href="{{ site.url }}/{{ alternate }}/" />
     {% endfor %}
@@ -19,7 +29,18 @@
   {% set loc = site.url + '/' + locale + '/' %}
   <url>
     <loc>{{ loc }}</loc>
-    <lastmod>{% currentDate 'yyyy-MM-dd' %}</lastmod>
+    <lastmod>{{
+      [
+        'src/' ~ locale ~ '/index.html.njk',
+        'src/includes/app-shell.njk',
+        'src/includes/head-macros.njk',
+        'src/includes/app-json-ld.njk',
+        'data/i18n-' ~ locale ~ '.js',
+        'data/i18n.js',
+        'data/site.json',
+        'package.json'
+      ] | sitemapLastmod
+    }}</lastmod>
     {% for alternate in i18n.locales %}
     <xhtml:link rel="alternate" hreflang="{{ i18n.pages[alternate].htmlLang }}" href="{{ site.url }}/{{ alternate }}/" />
     {% endfor %}

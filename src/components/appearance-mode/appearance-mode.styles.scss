@@ -1,0 +1,35 @@
+@use '../../styles/component/button' as buttons;
+
+:host {
+  display: inline-block;
+}
+
+.appearance-mode-toggle {
+  @include buttons.green-button;
+
+  align-items: center;
+  height: 2.35rem;
+  margin: 0.5rem;
+  min-width: 2.35rem;
+  padding: 0.45rem;
+}
+
+.appearance-mode-toggle:hover {
+  @include buttons.green-button-hover;
+}
+
+:host-context(.green-panel) .appearance-mode-toggle,
+:host-context(control-bar[panel='green']) .appearance-mode-toggle {
+  @include buttons.gray-button;
+}
+
+:host-context(.green-panel) .appearance-mode-toggle:hover,
+:host-context(control-bar[panel='green']) .appearance-mode-toggle:hover {
+  @include buttons.gray-button-hover;
+}
+
+.appearance-mode-icon {
+  display: block;
+  height: 1.35rem;
+  width: 1.35rem;
+}

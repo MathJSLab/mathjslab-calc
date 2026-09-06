@@ -18,11 +18,11 @@
     {% endif %}
 {% endmacro %}
 
-{% macro headOpenGraph(i18n, lang, title, description, url, name, image, imageType = 'image/png', width = 1200, height = 630) %}
+{% macro headOpenGraph(i18n, lang, title, description, url, name, image, imageType = 'image/png', width = 1200, height = 630, pageUrl = '') %}
     <meta property="og:type" content="website">
     <meta property="og:title" content="{{ title }}">
     <meta property="og:description" content="{{ description }}">
-    <meta property="og:url" content="{{ url }}/">
+    <meta property="og:url" content="{{ pageUrl or url + '/' }}">
     <meta property="og:site_name" content="{{ name }}">
     {% if i18n %}
     <meta property="og:locale" content="{{ i18n.pages[lang].ogLocale }}">
@@ -196,8 +196,8 @@
 {% macro headIcon(light, dark, svg, appleTouch, sizes = '16x16 32x32 48x48') %}
     {%- if dark %}
     <meta name="color-scheme" content="light dark">
-    <link rel="icon" href="{{ light }}" sizes="{{ sizes }}" type="image/x-icon" media="(prefers-color-scheme: light)">
-    <link rel="icon" href="{{ dark }}" sizes="{{ sizes }}" type="image/x-icon" media="(prefers-color-scheme: dark)">
+    <link rel="icon" href="{{ light }}" sizes="{{ sizes }}" type="image/x-icon" media="(prefers-color-scheme: light)" data-appearance-icon data-light-href="{{ light }}" data-dark-href="{{ dark }}">
+    <link rel="icon" href="{{ dark }}" sizes="{{ sizes }}" type="image/x-icon" media="(prefers-color-scheme: dark)" data-appearance-icon data-light-href="{{ light }}" data-dark-href="{{ dark }}">
     {% else %}
     <link rel="icon" href="{{ light }}" sizes="{{ sizes }}" type="image/x-icon">
     {% endif %}

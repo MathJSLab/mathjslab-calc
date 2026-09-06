@@ -1,0 +1,16 @@
+<template id="command-prompt-template">
+    <section id="command-prompt-wrapper" class="prompt">
+        <div id="command-prompt-frame-box" class="green-panel good">
+            <label id="command-prompt-root" class="prompt-line">
+                <span class="marker">&gt;</span>
+                <span id="command-prompt-input-stack" class="input-stack">
+                    <pre id="command-prompt-highlight" class="highlight language-matlab" aria-hidden="true"></pre>
+                    <textarea id="command-prompt-input" spellcheck="false" rows="1" aria-label="MathJSLab prompt"></textarea>
+                </span>
+            </label>
+            <div id="command-prompt-output-scroller" class="output-scroller">
+                <div id="command-prompt-output" class="output" aria-live="polite"></div>
+            </div>
+        </div>
+    </section>
+</template>

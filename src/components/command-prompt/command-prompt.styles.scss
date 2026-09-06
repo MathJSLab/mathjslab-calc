@@ -1,0 +1,193 @@
+@use '../../styles/component/panel';
+
+:host {
+  display: block;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.prompt {
+  box-sizing: border-box;
+  display: block;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.prompt-line {
+  align-items: flex-start;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 1.4rem minmax(0, 1fr);
+}
+
+.marker {
+  color: var(--green-text);
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.65;
+}
+
+.input-stack {
+  border-radius: 0.3rem;
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.input-stack:focus-within {
+  background: var(--color-input-background-focus, var(--yellow-background, hsl(60deg 100% 87%)));
+}
+
+.highlight,
+textarea {
+  border: 0;
+  box-sizing: border-box;
+  font:
+    1rem/1.25 ui-monospace,
+    SFMono-Regular,
+    Consolas,
+    monospace;
+  letter-spacing: 0;
+  margin: 0;
+  min-height: 1.44rem;
+  min-width: 100%;
+  overflow: hidden;
+  padding: 0;
+  tab-size: 4;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.highlight {
+  color: var(--calc-text, var(--color-text, currentColor));
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+  user-select: none;
+}
+
+textarea {
+  background: transparent;
+  border-radius: 0.3rem;
+  caret-color: var(--color-input-text-focus, var(--calc-text, currentColor));
+  color: transparent;
+  outline: 0;
+  position: relative;
+  resize: none;
+  user-select: text;
+  width: 100%;
+}
+
+textarea:hover {
+  background: transparent;
+}
+
+textarea:focus {
+  background: transparent;
+  color: transparent;
+}
+
+textarea::selection {
+  background: color-mix(in srgb, var(--yellow-background, #fff3a3) 62%, transparent);
+  color: transparent;
+}
+
+.hljs-keyword,
+.hljs-built_in,
+.hljs-name {
+  color: var(--blue-text, #0550ae);
+  font-weight: 650;
+}
+
+.hljs-string {
+  color: var(--green-text, #0a7c46);
+}
+
+.hljs-number {
+  color: var(--red-text, #9a3412);
+}
+
+.hljs-comment {
+  color: var(--color-text-hover, #6b7280);
+  font-style: italic;
+}
+
+.hljs-title,
+.hljs-function {
+  color: var(--blue-text-hover, #7c3aed);
+}
+
+.output-scroller {
+  box-sizing: border-box;
+  display: block;
+  font-size: 1.2rem;
+  margin: 8px 0 0;
+  max-width: 100%;
+  min-height: 0;
+  min-width: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-left: 2.15rem;
+  transform: rotateX(180deg);
+  width: 100%;
+}
+
+.output-scroller:has(.output:empty) {
+  display: none;
+}
+
+.output {
+  display: block;
+  max-width: none;
+  min-width: 100%;
+  overflow: visible;
+  transform: rotateX(180deg);
+  width: max-content;
+}
+
+.output:has(.plot-output) {
+  width: 100%;
+}
+
+.output .plot-output {
+  box-sizing: border-box;
+  display: block;
+  max-width: 100%;
+  min-width: 0;
+  width: 100%;
+}
+
+.output table {
+  border-collapse: collapse;
+  max-width: none;
+  width: max-content;
+}
+
+.output td {
+  padding: 2px 7px 2px 0;
+  vertical-align: middle;
+  white-space: normal;
+}
+
+.output math {
+  max-width: none;
+  overflow: visible;
+}
+
+.output mtext {
+  overflow-wrap: anywhere;
+}
+
+.error {
+  color: var(--calc-error, var(--red-text, #b00020));
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  white-space: pre-wrap;
+}
+
+@media (min-width: 768px) {
+  .output-scroller {
+    font-size: 1.5rem;
+  }
+}

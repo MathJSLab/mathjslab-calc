@@ -3,8 +3,8 @@
   container-type: inline-size;
 }
 
-.keypad {
-  background: var(--calc-surface-soft);
+.keyboard-panel {
+  background: transparent;
   color: var(--calc-text);
   display: flex;
   flex-direction: column;
@@ -13,17 +13,17 @@
   padding: clamp(10px, 2.5cqi, 18px);
 }
 
-.keypad-header {
+.keyboard-panel-header {
   align-items: baseline;
   display: flex;
   justify-content: space-between;
 }
 
-.keypad-header strong {
+.keyboard-panel-header strong {
   font-size: clamp(0.95rem, 3.4cqi, 1.2rem);
 }
 
-.keypad-header span {
+.keyboard-panel-header span {
   color: var(--calc-text-muted);
   font-size: clamp(0.76rem, 2.6cqi, 0.92rem);
 }
@@ -173,6 +173,10 @@ button {
   background: var(--calc-operation);
 }
 
+.key[data-kind='number'] {
+  border-color: var(--green-border);
+}
+
 .key[data-kind='command'] {
   background: linear-gradient(
     to bottom,
@@ -202,7 +206,7 @@ button {
 }
 
 @media (orientation: portrait) {
-  .keypad {
+  .keyboard-panel {
     gap: clamp(2px, 0.35svh, 4px);
     height: auto;
     padding: clamp(3px, 0.55svh, 6px);
@@ -243,7 +247,7 @@ button {
 }
 
 @media (orientation: landscape) and (max-height: 520px) {
-  .keypad-header {
+  .keyboard-panel-header {
     display: none;
   }
 

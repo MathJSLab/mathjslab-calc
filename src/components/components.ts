@@ -1,5 +1,8 @@
-/* Web components. File generated at Sat, 29 Aug 2026 04:55:24 GMT. */
-export * from './calc-prompt/calc-prompt.component';
-export * from './calc-prompt-list/calc-prompt-list.component';
-export * from './calculator-keypad/calculator-keypad.component';
-export * from './calc-shell/calc-shell.component';
+/* Web components. File generated at Sun, 06 Sep 2026 16:00:35 GMT. */
+export * from './command-prompt/command-prompt.component';
+export * from './command-prompt-list/command-prompt-list.component';
+export * from './keyboard-panel/keyboard-panel.component';
+export * from './control-bar/control-bar.component';
+export * from './language-switcher/language-switcher.component';
+export * from './appearance-mode/appearance-mode.component';
+export * from './application-wrapper/application-wrapper.component';

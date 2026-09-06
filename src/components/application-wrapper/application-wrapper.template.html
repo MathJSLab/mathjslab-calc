@@ -1,0 +1,23 @@
+<template id="application-wrapper-template">
+    <section id="application-wrapper-root" class="application-wrapper">
+        <header class="application-toolbar">
+            <div class="application-brand">
+                <img id="application-wrapper-logo" class="application-logo" src="/images/mathjslab-logo.svg" alt="" aria-hidden="true" />
+                <div class="application-title-group">
+                    <h1 id="application-wrapper-title">MathJSLab</h1>
+                    <p id="application-wrapper-description"></p>
+                </div>
+            </div>
+            <control-bar id="application-wrapper-actions" class="application-actions" align="end" button-style="preserve" width="fit" aria-label="Application controls">
+                <language-switcher id="application-wrapper-language" locale="en"></language-switcher>
+                <appearance-mode id="application-wrapper-appearance" light-label="light" dark-label="dark"></appearance-mode>
+                <slot name="actions"></slot>
+                <slot name="status"></slot>
+            </control-bar>
+        </header>
+        <main id="application-wrapper-workspace" class="application-workspace">
+            <slot></slot>
+        </main>
+        <slot name="footer"></slot>
+    </section>
+</template>
