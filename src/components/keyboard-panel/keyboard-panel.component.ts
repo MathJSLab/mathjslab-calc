@@ -579,6 +579,9 @@ export class KeyboardPanel extends HTMLElement {
         this.renderKeys();
     };
 
+    /**
+     * Store the selected programming base and notify prompt lists of its prefix.
+     */
     private readonly changeNumericBase = (): void => {
         const checked = this.element.base.querySelector<HTMLInputElement>('input:checked');
         if (!checked) {
@@ -609,10 +612,16 @@ export class KeyboardPanel extends HTMLElement {
         }
     }
 
+    /**
+     * Check whether a key is valid for the selected programming numeric base.
+     */
     private isKeyEnabled(key: KeyDefinition): boolean {
         return this.activePanel !== 'programming' || !key.bases || key.bases.includes(this.numericBase);
     }
 
+    /**
+     * Resolve localized command labels while preserving literal key labels.
+     */
     private getKeyLabel(key: KeyDefinition): string {
         if (key.action === 'evaluate') {
             return i18n.page.keyboardPanel.keys.enter;

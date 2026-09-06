@@ -22,11 +22,17 @@ export interface LanguageSwitcherElementEntry {
 export type LanguageSwitcherElement = WebComponentElement<LanguageSwitcherElementEntry>;
 export const LanguageSwitcherElementEntryKey: (keyof LanguageSwitcherElementEntry)[] = ['wrapper', 'toggle', 'icon', 'label', 'menu'] as const;
 
+/**
+ * Payload emitted when the user chooses a language entry.
+ */
 export type LanguageSwitcherSelectDetail = {
     locale: string;
     href: string;
 };
 
+/**
+ * Custom event dispatched before navigating to a localized endpoint.
+ */
 export type LanguageSwitcherSelectEvent = CustomEvent<LanguageSwitcherSelectDetail>;
 
 /**
@@ -75,6 +81,9 @@ export class LanguageSwitcher extends HTMLElement {
         return this.element.container;
     }
 
+    /**
+     * Render current language state and subscribe to menu interactions.
+     */
     public connectedCallback(): void {
         this.element.toggle.addEventListener('click', this.toggleMenu);
         this.element.menu.addEventListener('click', this.selectLanguage);
@@ -84,6 +93,9 @@ export class LanguageSwitcher extends HTMLElement {
         this.setLanguage();
     }
 
+    /**
+     * Remove menu and global listeners registered while connected.
+     */
     public disconnectedCallback(): void {
         this.element.toggle.removeEventListener('click', this.toggleMenu);
         this.element.menu.removeEventListener('click', this.selectLanguage);
@@ -92,6 +104,9 @@ export class LanguageSwitcher extends HTMLElement {
         i18n.removeEventListener('languagechange', this.setLanguage);
     }
 
+    /**
+     * Re-render after observed configuration attributes change.
+     */
     public attributeChangedCallback(): void {
         if (this.isConnected) {
             this.setLanguage();

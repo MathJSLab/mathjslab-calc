@@ -7,10 +7,29 @@ import keyToPostfix from '../keyToPostfix';
 import setContainerFactory from '../setContainerFactory';
 import setIdFirstFactory from '../setIdFirstFactory';
 
+/**
+ * Horizontal alignment modes supported by the control bar.
+ */
 export type ControlBarAlignment = 'center' | 'end' | 'start' | 'stretch';
+
+/**
+ * Axis used to lay out slotted controls.
+ */
 export type ControlBarOrientation = 'horizontal' | 'vertical';
+
+/**
+ * Visual panel treatment applied around the control group.
+ */
 export type ControlBarPanel = 'green' | 'none';
+
+/**
+ * Width strategy for the control group.
+ */
 export type ControlBarWidth = 'fit' | 'full';
+
+/**
+ * Whether the control bar should style slotted buttons automatically.
+ */
 export type ControlBarButtonStyle = 'default' | 'preserve';
 
 /**
@@ -70,15 +89,24 @@ export class ControlBar extends HTMLElement {
         return this.element.container;
     }
 
+    /**
+     * Keep slotted button classes in sync while the component is connected.
+     */
     public connectedCallback(): void {
         this.element.slot?.addEventListener('slotchange', this.updateSlottedButtons);
         this.applyAttributes();
     }
 
+    /**
+     * Remove slot subscriptions registered by `connectedCallback`.
+     */
     public disconnectedCallback(): void {
         this.element.slot?.removeEventListener('slotchange', this.updateSlottedButtons);
     }
 
+    /**
+     * Re-apply reflected host options when observed attributes change.
+     */
     public attributeChangedCallback(): void {
         this.applyAttributes();
     }

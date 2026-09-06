@@ -20,10 +20,16 @@ export interface AppearanceModeElementEntry {
 export type AppearanceModeElement = WebComponentElement<AppearanceModeElementEntry>;
 export const AppearanceModeElementEntryKey: (keyof AppearanceModeElementEntry)[] = ['toggle', 'icon'] as const;
 
+/**
+ * Payload emitted when the appearance mode toggle requests a new mode.
+ */
 export type AppearanceModeToggleDetail = {
     mode: AppearanceModeValue;
 };
 
+/**
+ * Custom event dispatched before applying a light or dark appearance change.
+ */
 export type AppearanceModeToggleEvent = CustomEvent<AppearanceModeToggleDetail>;
 
 /**
@@ -71,6 +77,9 @@ export class AppearanceMode extends HTMLElement {
         return this.element.container;
     }
 
+    /**
+     * Initialize the current mode and subscribe to button interactions.
+     */
     public connectedCallback(): void {
         this.element.toggle.addEventListener('click', this.toggleMode);
         if (!this.hasAttribute('mode')) {
@@ -80,10 +89,16 @@ export class AppearanceMode extends HTMLElement {
         this.render();
     }
 
+    /**
+     * Remove button subscriptions registered while connected.
+     */
     public disconnectedCallback(): void {
         this.element.toggle.removeEventListener('click', this.toggleMode);
     }
 
+    /**
+     * Refresh visible labels and icons when observed attributes change.
+     */
     public attributeChangedCallback(): void {
         if (this.isConnected) {
             this.render();
