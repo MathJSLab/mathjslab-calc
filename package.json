@@ -1,6 +1,6 @@
 {
     "name": "mathjslab-calc",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "description": "A MathJSLab calculator.",
     "repository": {
         "type": "git",
@@ -114,7 +114,7 @@
     },
     "dependencies": {
         "highlight.js": "^11.12.0",
-        "mathjslab": "^2.5.1"
+        "mathjslab": "^2.5.2"
     },
     "allowScripts": {
         "@parcel/watcher@2.6.0": true,

@@ -1,4 +1,4 @@
-/* Web components. File generated at Sun, 06 Sep 2026 16:55:15 GMT. */
+/* Web components. File generated at Mon, 07 Sep 2026 00:59:11 GMT. */
 export * from './command-prompt/command-prompt.component';
 export * from './command-prompt-list/command-prompt-list.component';
 export * from './keyboard-panel/keyboard-panel.component';
