@@ -9,7 +9,7 @@
   <head>
 {{ headBegin(main.title, main.description, pkg.author, pkg.keywords.join()) }}
     <meta name="theme-color" content="#166534">
-{{ headOpenGraph(i18n, lang, pageData.app.title, pageData.app.description, site.url, site.title, '/images/mathjslab-og.png') }}
+{{ headOpenGraph(i18n, lang, pageData.app.title, pageData.app.description, site.url, site.title, '/images/mathjslab-og.png', pageUrl = canonicalUrl) }}
 {{ headTwitter(main.title, main.description, site.url, '/images/mathjslab-og.png', site.title) }}
 {%- include "app-json-ld.njk" -%}
 {{ headAlternate(i18n, alternateCanonical, site.url) }}
