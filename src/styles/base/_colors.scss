@@ -159,6 +159,8 @@ $color-semantic: (
   color-button-background-from-dark: hsl(map.get(map.get($color-spec, olive-green), hue), 30%, 33%),
   color-button-box-shadow-dark: hsl(map.get(map.get($color-spec, olive-green), hue), 49%, 20%),
   color-button-text-shadow-dark: hsl(map.get(map.get($color-spec, olive-green), hue), 49%, 20%),
+  color-gray-button-text-light: hsl(map.get(map.get($color-spec, green), hue), 100%, 23%),
+  color-gray-button-text-dark: hsl(map.get(map.get($color-spec, green), hue), 0%, 100%),
 );
 
 /// Store the $color-semantic map in the $generated-colors map.
@@ -190,6 +192,7 @@ $style-semantic: (
   button-background-from,
   button-box-shadow,
   button-text-shadow,
+  gray-button-text,
   pre-code-background,
   a-text,
   a-text-hover,

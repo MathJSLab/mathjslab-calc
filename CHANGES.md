@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file. This
 project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.2.3
+
+- Improved dark-mode contrast for gray controls and the shared appearance and
+  language icons when they are displayed on green panels.
+- Decoupled language menu label colors from calculator-specific control tokens,
+  giving App and Calc consistent text colors while exposing component-level
+  override variables.
+- Updated Sass to 1.104.1.
+
 ## 0.2.2
 
 - Added the shared Plotly-based `plot`, `plot3`, `surf`, `plot2d`, and

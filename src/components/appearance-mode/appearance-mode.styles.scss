@@ -47,3 +47,13 @@
 :host-context(control-bar[panel='green']) .appearance-mode-icon-green {
   display: block;
 }
+
+:host-context(html[data-theme='dark']):host-context(.green-panel) .appearance-mode-icon-white,
+:host-context(html[data-theme='dark']):host-context(control-bar[panel='green']) .appearance-mode-icon-white {
+  display: block;
+}
+
+:host-context(html[data-theme='dark']):host-context(.green-panel) .appearance-mode-icon-green,
+:host-context(html[data-theme='dark']):host-context(control-bar[panel='green']) .appearance-mode-icon-green {
+  display: none;
+}

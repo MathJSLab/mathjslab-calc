@@ -51,12 +51,12 @@
   background: var(--calc-control, var(--color-background-mute, #edf1f6));
   border: 1px solid var(--calc-border, var(--color-border, #cfd7df));
   box-shadow: 0 8px 16px -14px var(--color-panel-box-shadow, rgb(15 23 42 / 45%));
-  color: var(--calc-control-text, var(--color-a-text, currentColor));
+  color: var(--gray-button-text, var(--color-gray-button-text, var(--color-text, currentColor)));
 }
 
 @mixin gray-button-hover {
   background: var(--calc-control-active, var(--color-background-soft, #f5f7fa));
-  color: var(--calc-control-text, var(--color-a-text-hover, currentColor));
+  color: var(--gray-button-text, var(--color-gray-button-text, var(--color-text, currentColor)));
 }
 
 @mixin button-active {

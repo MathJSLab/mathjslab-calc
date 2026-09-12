@@ -56,6 +56,16 @@
   display: inline-block;
 }
 
+:host-context(html[data-theme='dark']):host-context(.green-panel) .language-switcher-icon-white,
+:host-context(html[data-theme='dark']):host-context(control-bar[panel='green']) .language-switcher-icon-white {
+  display: inline-block;
+}
+
+:host-context(html[data-theme='dark']):host-context(.green-panel) .language-switcher-icon-green,
+:host-context(html[data-theme='dark']):host-context(control-bar[panel='green']) .language-switcher-icon-green {
+  display: none;
+}
+
 .language-switcher-menu {
   align-items: stretch;
   background: var(--calc-surface, var(--color-background, #fbfcfe));
@@ -80,7 +90,7 @@
 
 .language-switcher-menu a {
   border-radius: var(--border-radius-medium, 6px);
-  color: var(--calc-control-text, var(--color-a-text, currentColor));
+  color: var(--language-switcher-label-color, var(--color-a-text, currentColor));
   display: block;
   font-size: 0.95rem;
   line-height: 1.25;
@@ -93,5 +103,5 @@
 .language-switcher-menu a:hover,
 .language-switcher-menu a[aria-current='page'] {
   background: var(--calc-control-active, var(--color-background-soft, #f5f7fa));
-  color: var(--calc-control-text, var(--color-a-text-hover, currentColor));
+  color: var(--language-switcher-label-active-color, var(--color-a-text-hover, currentColor));
 }
