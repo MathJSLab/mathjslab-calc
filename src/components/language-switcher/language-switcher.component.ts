@@ -15,12 +15,12 @@ export interface LanguageSwitcherElementEntry {
     wrapper: HTMLElement;
     toggle: HTMLButtonElement;
     icon: HTMLImageElement;
-    label: HTMLSpanElement;
+    iconGreen: HTMLImageElement;
     menu: HTMLUListElement;
 }
 
 export type LanguageSwitcherElement = WebComponentElement<LanguageSwitcherElementEntry>;
-export const LanguageSwitcherElementEntryKey: (keyof LanguageSwitcherElementEntry)[] = ['wrapper', 'toggle', 'icon', 'label', 'menu'] as const;
+export const LanguageSwitcherElementEntryKey: (keyof LanguageSwitcherElementEntry)[] = ['wrapper', 'toggle', 'icon', 'iconGreen', 'menu'] as const;
 
 /**
  * Payload emitted when the user chooses a language entry.
@@ -46,8 +46,6 @@ export class LanguageSwitcher extends HTMLElement {
     public static readonly null = null as unknown as LanguageSwitcher;
     public static readonly undefined = undefined as unknown as LanguageSwitcher;
     public static readonly observedAttributes = ['base-path', 'button-label', 'href-template', 'icon-src', 'locale', 'menu-label', 'path-suffix'];
-    private readonly mobileBreakpoint = 900;
-
     public constructor() {
         super();
         constructorFactory(LanguageSwitcher, styles).bind(this)();
@@ -123,7 +121,7 @@ export class LanguageSwitcher extends HTMLElement {
         this.element.toggle.setAttribute('aria-controls', this.element.menu.id);
         this.element.toggle.title = this.menuLabel;
         this.element.icon.src = this.iconSrc;
-        this.element.label.textContent = this.currentLanguageName;
+        this.element.iconGreen.src = this.greenIconSrc;
         this.element.menu.setAttribute('aria-label', this.menuLabel);
         const sourceLinks = [...this.querySelectorAll<HTMLAnchorElement>('a[data-locale]')];
         const links =
@@ -160,16 +158,16 @@ export class LanguageSwitcher extends HTMLElement {
         return this.getAttribute('button-label') || i18n.page.language?.menu || 'Language';
     }
 
-    private get currentLanguageName(): string {
-        return i18n.languageNames[this.locale] || this.buttonLabel;
-    }
-
     private get menuLabel(): string {
         return this.getAttribute('menu-label') || i18n.page.language?.label || this.buttonLabel;
     }
 
     private get iconSrc(): string {
-        return this.getAttribute('icon-src') || '/images/language-switch.svg';
+        return this.getAttribute('icon-src') || '/images/language-switch-white.svg';
+    }
+
+    private get greenIconSrc(): string {
+        return '/images/language-switch-green.svg';
     }
 
     private hrefFor(locale: string): string {

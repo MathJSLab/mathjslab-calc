@@ -49,7 +49,7 @@ export class ApplicationWrapper extends HTMLElement {
     public static readonly elementPostfix = keyToPostfix(ApplicationWrapperElementEntryKey);
     public static readonly null = null as unknown as ApplicationWrapper;
     public static readonly undefined = undefined as unknown as ApplicationWrapper;
-    public static readonly observedAttributes = ['chrome', 'layout', 'logo-dark-src', 'logo-light-src', 'logo-src', 'storage-key'];
+    public static readonly observedAttributes = ['chrome', 'layout', 'logo-dark-src', 'logo-light-src', 'logo-src'];
     private readonly colorScheme = globalThis.matchMedia('(prefers-color-scheme: dark)');
     private readonly themeObserver = new MutationObserver(() => this.syncThemeAssets());
 
@@ -171,12 +171,10 @@ export class ApplicationWrapper extends HTMLElement {
             this.element.appearance.hidden = true;
             this.element.appearance.setAttribute('target-selector', `#${this.element.root.id}`);
             this.element.appearance.setAttribute('target-attribute', 'data-wrapper-theme');
-            this.element.appearance.setAttribute('storage-key', `${this.element.root.id}:theme`);
             return;
         }
         this.element.language.hidden = false;
         this.element.appearance.hidden = false;
-        this.element.appearance.setAttribute('storage-key', this.getAttribute('storage-key') || 'theme');
         this.syncThemeAssets();
     }
 

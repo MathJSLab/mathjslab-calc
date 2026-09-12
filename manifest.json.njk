@@ -1,0 +1,30 @@
+---json
+{
+  "permalink": "manifest.json",
+  "eleventyExcludeFromCollections": true
+}
+---
+{% set iconSizes = [16, 32, 48, 64, 72, 96, 128, 144, 152, 192, 256, 384, 512] -%}
+{
+    "id": "/",
+    "name": {% stringify site.title %},
+    "short_name": {% stringify site.title %},
+    "description": {% stringify site.description %},
+    "categories": ["education", "tools", "utilities"],
+    "lang": "en",
+    "start_url": "/",
+    "scope": "/",
+    "background_color": "#ffffff",
+    "theme_color": "#166534",
+    "display": "standalone",
+    "icons": [
+{%- for size in iconSizes %}
+        {
+            "src": "/images/mathjslab-logo-{{ size }}.png",
+            "sizes": "{{ size }}x{{ size }}",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }{% if not loop.last %},{% endif %}
+{%- endfor %}
+    ]
+}

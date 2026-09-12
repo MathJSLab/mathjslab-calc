@@ -1,8 +1,7 @@
-import { Interpreter } from 'mathjslab';
-import type { AliasNameTable } from 'mathjslab/lib/types/AST';
-import type { InterpreterConfig } from 'mathjslab/lib/types/Interpreter';
+import { Interpreter, type AliasNameTable, type InterpreterConfig } from 'mathjslab';
 import { appEngine } from './appEngine';
 import buildConfiguration from './build-configuration.json';
+import { externalFunctionTable } from './externalFunctionTable';
 import i18n, { type Locale } from './i18n';
 
 /**
@@ -41,6 +40,8 @@ export const languageAlias: Record<Locale, AliasNameTable> = {
         min: /^min(imum)?$/,
         max: /^max(imum)?$/,
         mean: /^mean|avg|average$/,
+        plot2d: /^graph(ics?)?$/,
+        histogram: /^hist(ogram)?$/,
     },
     es: {
         abs: /^abs(olut(o|e))?$/,
@@ -74,6 +75,8 @@ export const languageAlias: Record<Locale, AliasNameTable> = {
         min: /^min(imo)?$|^min(imum)?$/,
         max: /^max(imo)?$|^max(imum)?$/,
         mean: /^media|mean$/,
+        plot2d: /^graph(ics?)?$/,
+        histogram: /^hist(ogram)?$/,
     },
     pt: {
         abs: /^abs(olut(o|e))?$/,
@@ -107,6 +110,10 @@ export const languageAlias: Record<Locale, AliasNameTable> = {
         min: /^min(imo)?$|^min(imum)?$/,
         max: /^max(imo)?$|^max(imum)?$/,
         mean: /^media|mean$/,
+        summation: /^somatorio$/,
+        productory: /^produtorio$/,
+        plot2d: /^gra(f(ico)?|ph?(ics?)?)?$/,
+        histogram: /^hist(ogram(a)?)?$/,
     },
 };
 
@@ -115,6 +122,7 @@ export const languageAlias: Record<Locale, AliasNameTable> = {
  */
 export const InterpreterConfiguration: InterpreterConfig = {
     aliasNameTable: languageAlias[i18n.locale],
+    externalFunctionTable,
 };
 
 /**

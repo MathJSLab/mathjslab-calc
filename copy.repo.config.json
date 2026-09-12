@@ -5,6 +5,46 @@
             "src": "resource/mathjslab-calc/eleventy.build.json",
             "dest": "eleventy.build.json"
         },
+        {
+            "src": "script/eleventy.build.mjs",
+            "dest": "eleventy.build.mjs"
+        },
+        {
+            "src": "script/eslint.shared.config.cjs",
+            "dest": "eslint.config.cjs"
+        },
+        {
+            "src": "includes/manifest.json.njk",
+            "dest": "manifest.json.njk"
+        },
+        {
+            "src": "includes/robots.txt.njk",
+            "dest": "robots.txt.njk"
+        },
+        {
+            "src": "includes/sitemap.xml.njk",
+            "dest": "sitemap.xml.njk"
+        },
+        {
+            "src": "includes/endpoints/main.html.njk",
+            "dest": "src/main.html.njk"
+        },
+        {
+            "src": "includes/endpoints/en/index.html.njk",
+            "dest": "src/en/index.html.njk"
+        },
+        {
+            "src": "includes/endpoints/es/index.html.njk",
+            "dest": "src/es/index.html.njk"
+        },
+        {
+            "src": "includes/endpoints/pt/index.html.njk",
+            "dest": "src/pt/index.html.njk"
+        },
+        {
+            "src": "types/tsconfig.webapp.json",
+            "dest": "tsconfig.webapp.json"
+        },
         "script/tsconfig.json",
         "script/helper/clean-package-lock.cjs",
         "script/helper/EleventyUtil.mjs",
@@ -45,6 +85,10 @@
         {
             "src": "includes/head-macros.njk",
             "dest": "src/includes/head-macros.njk"
+        },
+        {
+            "src": "includes/app-json-ld.njk",
+            "dest": "src/includes/app-json-ld.njk"
         },
         {
             "src": "images/img/ico/favicon.ico",
@@ -117,9 +161,15 @@
         "images/mathjslab-logo.svg",
         "images/mathjslab-logo-light.svg",
         "images/mathjslab-logo-dark.svg",
-        "images/language-switch.svg",
-        "images/theme-light-mathjslab.svg",
-        "images/theme-dark-mathjslab.svg",
+        "images/language-switch-green.svg",
+        "images/language-switch-white.svg",
+        "images/theme-light-green-mathjslab.svg",
+        "images/theme-dark-green-mathjslab.svg",
+        "images/theme-light-white-mathjslab.svg",
+        "images/theme-dark-white-mathjslab.svg",
+        "src/PlotEngine.ts",
+        "src/outputFunction.ts",
+        "src/commonExternalFunctionTable.ts",
         "src/components/component.include.ts",
         "src/components/constructorFactory.ts",
         "src/components/createElementFactory.ts",
@@ -215,6 +265,8 @@
             "src": "src/components/appearance-mode/appearance-mode.template.html",
             "dest": "src/components/appearance-mode/appearance-mode.template.html"
         },
+        "types/scss.d.ts",
+        "types/styles.scss.d.ts",
         ".prettierrc"
     ]
 }

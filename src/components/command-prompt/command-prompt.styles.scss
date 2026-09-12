@@ -29,6 +29,7 @@
 }
 
 .input-stack {
+  background: var(--green-background, var(--calc-control, transparent));
   border-radius: 0.3rem;
   display: block;
   min-width: 0;
@@ -37,7 +38,7 @@
 }
 
 .input-stack:focus-within {
-  background: var(--color-input-background-focus, var(--yellow-background, hsl(60deg 100% 87%)));
+  background: var(--calc-app-background, var(--color-background, Canvas));
 }
 
 .highlight,
@@ -90,7 +91,7 @@ textarea:focus {
 }
 
 textarea::selection {
-  background: color-mix(in srgb, var(--yellow-background, #fff3a3) 62%, transparent);
+  background: color-mix(in srgb, var(--blue-background, Highlight) 52%, transparent);
   color: transparent;
 }
 

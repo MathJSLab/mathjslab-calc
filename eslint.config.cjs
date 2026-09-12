@@ -79,6 +79,12 @@ module.exports = [
         },
     },
     {
+        files: ['eslint.config.cjs', 'eleventy.build.mjs'],
+        rules: {
+            'prettier/prettier': ['error', { tabWidth: 4, useTabs: false, endOfLine: 'auto' }],
+        },
+    },
+    {
         files: ['script/**/*.ts'],
         languageOptions: {
             parser: tsParser,

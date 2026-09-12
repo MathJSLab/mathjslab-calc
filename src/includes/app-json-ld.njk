@@ -1,4 +1,4 @@
-{%- from 'head-macros.njk' import headJsonLdGraph, headJsonLdWebPage, headJsonLdWebSite, headJsonLdApplication, headJsonLdPerson, headJsonLdOrganization -%}
+{%- from 'head-macros.njk' import headJsonLdGraph, headJsonLdWebPage, headJsonLdWebSite, headJsonLdApplication, headJsonLdOrganization -%}
 {% call headJsonLdGraph() %}
 {{ headJsonLdApplication(
   'WebApplication',
@@ -23,7 +23,7 @@
 {{ headJsonLdWebSite(
   site.url + '/#website',
   site.url + '/',
-  'MathJSLab Calc',
+  site.title,
   site.url + '/#organization'
 ) }}
 {{ headJsonLdOrganization(

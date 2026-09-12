@@ -33,3 +33,17 @@
   height: 1.35rem;
   width: 1.35rem;
 }
+
+.appearance-mode-icon-green {
+  display: none;
+}
+
+:host-context(.green-panel) .appearance-mode-icon-white,
+:host-context(control-bar[panel='green']) .appearance-mode-icon-white {
+  display: none;
+}
+
+:host-context(.green-panel) .appearance-mode-icon-green,
+:host-context(control-bar[panel='green']) .appearance-mode-icon-green {
+  display: block;
+}

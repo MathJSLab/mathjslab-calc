@@ -1,6 +1,7 @@
 import type { NodeInput } from 'mathjslab';
 import { appEngine } from './appEngine';
 import i18n from './i18n';
+import { insertOutput, outputFunction } from './outputFunction';
 import type { CommandPrompt } from './components/command-prompt/command-prompt.component';
 import type { CommandPromptList } from './components/command-prompt-list/command-prompt-list.component';
 
@@ -156,6 +157,7 @@ export class CalculatorController {
     private readonly evaluatePrompt = (prompt: CommandPrompt): void => {
         let tree: NodeInput | undefined;
         const { interpreter } = appEngine;
+        insertOutput.type = '';
         try {
             tree = interpreter.Parse(prompt.value);
             const evaluated = interpreter.Evaluate(tree);
@@ -170,6 +172,16 @@ export class CalculatorController {
                 prompt.setOutput(
                     `<table><tr><td>${inputMath}</td><td><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mo>=</mo></math></td><td>${resultMath}</td></tr></table>`,
                 );
+            }
+            if (insertOutput.type !== '') {
+                const output = document.createElement('div');
+                const renderOutput = outputFunction[insertOutput.type];
+                if (!renderOutput) {
+                    throw new Error(`unknown output type: ${insertOutput.type}`);
+                }
+                output.className = 'plot-output';
+                prompt.element.output.append(output);
+                renderOutput(output);
             }
         } catch (error) {
             const message = error instanceof Error ? error.message : String(error);

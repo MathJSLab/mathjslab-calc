@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file. This
 project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.2.2
+
+- Added the shared Plotly-based `plot`, `plot3`, `surf`, `plot2d`, and
+  `histogram` external functions to calculator prompts.
+- Added the shared `summation` and `productory` numerical functions and the
+  corresponding localized aliases used by the full application.
+- Integrated the common plot output registry with calculator prompt rendering
+  while keeping file, Markdown, load, and external help features out of the
+  calculator.
+- Adopted the shared Eleventy and ESLint entry points, PWA manifest, endpoint,
+  JSON-LD, robots, sitemap, SCSS declaration, and `tsconfig.webapp.json`
+  resources provided by the organization repository.
+- Removed the redundant local `mathjslab` declaration file after confirming
+  that the package-provided TypeScript definitions cover the calculator.
+- Removed persisted language and appearance settings so startup follows browser
+  preferences, and replaced the responsive language text control with the
+  shared icon-only language and appearance controls using green and white SVG
+  variants.
+- Updated dependencies, including `mathjslab` 2.5.3, Plotly 4.1.0, and the
+  current build and lint tooling.
+
 ## 0.2.1
 
 - Dependencies Updated (`mathjslab` 2.5.2).

@@ -21,5 +21,3 @@ function bootstrap(): void {
 }
 
 bootstrap();
-
-export { bootstrap };

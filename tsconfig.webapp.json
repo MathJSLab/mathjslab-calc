@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+        "module": "ESNext",
+        "moduleResolution": "node",
+        "target": "ES2022",
+        "lib": ["ES2022", "DOM", "DOM.Iterable"],
+        "baseUrl": "./",
+        "typeRoots": ["node_modules/@types", "types"],
+        "sourceMap": false,
+        "noUncheckedIndexedAccess": true,
+        "exactOptionalPropertyTypes": true,
+        "strict": true,
+        "allowJs": true,
+        "allowSyntheticDefaultImports": true,
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "noUncheckedSideEffectImports": true,
+        "moduleDetection": "force",
+        "resolveJsonModule": true,
+        "ignoreDeprecations": "6.0",
+        "skipLibCheck": true
+    }
+}

@@ -15,10 +15,11 @@ export type AppearanceModeValue = 'dark' | 'light';
 export interface AppearanceModeElementEntry {
     toggle: HTMLButtonElement;
     icon: HTMLImageElement;
+    iconGreen: HTMLImageElement;
 }
 
 export type AppearanceModeElement = WebComponentElement<AppearanceModeElementEntry>;
-export const AppearanceModeElementEntryKey: (keyof AppearanceModeElementEntry)[] = ['toggle', 'icon'] as const;
+export const AppearanceModeElementEntryKey: (keyof AppearanceModeElementEntry)[] = ['toggle', 'icon', 'iconGreen'] as const;
 
 /**
  * Payload emitted when the appearance mode toggle requests a new mode.
@@ -42,7 +43,7 @@ export class AppearanceMode extends HTMLElement {
     public static readonly elementPostfix = keyToPostfix(AppearanceModeElementEntryKey);
     public static readonly null = null as unknown as AppearanceMode;
     public static readonly undefined = undefined as unknown as AppearanceMode;
-    public static readonly observedAttributes = ['dark-icon-src', 'dark-label', 'light-icon-src', 'light-label', 'mode', 'storage-key', 'target-attribute', 'target-selector'];
+    public static readonly observedAttributes = ['dark-icon-src', 'dark-label', 'light-icon-src', 'light-label', 'mode', 'target-attribute', 'target-selector'];
 
     public constructor() {
         super();
@@ -85,7 +86,7 @@ export class AppearanceMode extends HTMLElement {
         if (!this.hasAttribute('mode')) {
             this.setAttribute('mode', this.initialMode);
         }
-        this.applyMode(this.mode, false);
+        this.applyMode(this.mode);
         this.render();
     }
 
@@ -110,7 +111,8 @@ export class AppearanceMode extends HTMLElement {
      */
     public render(): void {
         const nextMode = this.nextMode;
-        this.element.icon.src = this.iconFor(nextMode);
+        this.element.icon.src = this.iconFor(nextMode, 'white');
+        this.element.iconGreen.src = this.iconFor(nextMode, 'green');
         this.element.toggle.setAttribute('aria-label', this.labelFor(nextMode));
         this.element.toggle.title = this.labelFor(nextMode);
     }
@@ -120,10 +122,6 @@ export class AppearanceMode extends HTMLElement {
     }
 
     private get initialMode(): AppearanceModeValue {
-        const storedMode = globalThis.localStorage?.getItem(this.storageKey);
-        if (storedMode === 'dark' || storedMode === 'light') {
-            return storedMode;
-        }
         return globalThis.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     }
 
@@ -131,17 +129,13 @@ export class AppearanceMode extends HTMLElement {
         return this.mode === 'dark' ? 'light' : 'dark';
     }
 
-    private get storageKey(): string {
-        return this.getAttribute('storage-key') || 'theme';
-    }
-
     private get targetAttribute(): string {
         return this.getAttribute('target-attribute') || 'data-theme';
     }
 
-    private iconFor(mode: AppearanceModeValue): string {
+    private iconFor(mode: AppearanceModeValue, color: 'green' | 'white'): string {
         const attribute = mode === 'dark' ? 'dark-icon-src' : 'light-icon-src';
-        return this.getAttribute(attribute) || `/images/theme-${mode}-mathjslab.svg`;
+        return (color === 'white' ? this.getAttribute(attribute) : null) || `/images/theme-${mode}-${color}-mathjslab.svg`;
     }
 
     private labelFor(mode: AppearanceModeValue): string {
@@ -154,11 +148,8 @@ export class AppearanceMode extends HTMLElement {
         return (selector ? document.querySelector<HTMLElement>(selector) : null) || document.documentElement;
     }
 
-    private applyMode(mode: AppearanceModeValue, persist = true): void {
+    private applyMode(mode: AppearanceModeValue): void {
         this.target.setAttribute(this.targetAttribute, mode);
-        if (persist) {
-            globalThis.localStorage?.setItem(this.storageKey, mode);
-        }
     }
 
     private readonly toggleMode = (): void => {
