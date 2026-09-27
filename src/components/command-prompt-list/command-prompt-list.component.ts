@@ -117,6 +117,20 @@ export class CommandPromptList extends HTMLElement {
     }
 
     /**
+     * Focuses the prompt input when its frame is clicked.
+     *
+     * This behavior is opt-in so links, controls, and other interactive output
+     * can handle pointer interaction without moving focus to the prompt input.
+     */
+    public get focusInputOnFrameClick(): boolean {
+        return this.hasAttribute('focus-input-on-frame-click');
+    }
+
+    public set focusInputOnFrameClick(value: boolean) {
+        this.toggleAttribute('focus-input-on-frame-click', value);
+    }
+
+    /**
      * Previous prompt getter.
      */
     public get previousPrompt(): CommandPrompt {
@@ -178,7 +192,9 @@ export class CommandPromptList extends HTMLElement {
         newPrompt.element.input.addEventListener('keydown', this.promptKeydown);
         newPrompt.element.input.addEventListener('change', newPrompt.resize);
         newPrompt.onClickFrameBox = (): void => {
-            newPrompt.focusInput();
+            if (this.focusInputOnFrameClick) {
+                newPrompt.focusInput();
+            }
         };
         return {
             newPrompt,
