@@ -1,10 +1,4 @@
-import { PlotEngine } from './PlotEngine';
-
-/**
- * Mutable rendering request shared between interpreter built-ins and prompt
- * output handling.
- */
-const insertOutput = { type: '' };
+import { insertOutput, PlotEngine } from './PlotEngine';
 
 /**
  * Output renderers keyed by the `insertOutput.type` value produced by

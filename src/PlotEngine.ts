@@ -1,7 +1,29 @@
-import Plotly from 'plotly.js-dist-min';
+import type Plotly from 'plotly.js-dist-min';
 import { type ElementType, type NodeExpr, type NodeIdentifier, AST, BuiltInFunctionTable, CallFrame, CharString, ComplexDecimal, Decimal, LinearAlgebra, MultiArray, Scope } from 'mathjslab';
-import { insertOutput } from './outputFunction';
 import { appEngine } from './appEngine';
+
+/**
+ * Mutable rendering request shared between interpreter built-ins and prompt
+ * output handling. It lives in this module to keep the PlotEngine dependency
+ * graph acyclic; outputFunction.ts re-exports the same object.
+ */
+const insertOutput = { type: '' };
+
+type PlotlyApi = typeof Plotly;
+
+let plotlyApi: PlotlyApi | undefined;
+
+const loadPlotly = async (): Promise<PlotlyApi> => {
+    if (typeof window === 'undefined' || typeof document === 'undefined') {
+        throw new Error('Plotly rendering requires a browser document.');
+    }
+
+    if (plotlyApi) return plotlyApi;
+
+    const loadedPlotly: PlotlyApi = (await import('plotly.js-dist-min')).default;
+    plotlyApi = loadedPlotly;
+    return loadedPlotly;
+};
 
 const plotDataLayoutConfig: Plotly.PlotlyDataLayoutConfig = {
     data: [],
@@ -53,6 +75,10 @@ type PlotRenderState = {
     data: Plotly.Data[];
     layout: Partial<Plotly.Layout>;
     config: Partial<Plotly.Config>;
+};
+
+type PlotOutputRequest = PlotRenderState & {
+    readonly type: 'plot' | 'plot3' | 'surf' | 'plot2d' | 'histogram';
 };
 
 const defaultPlotConfig: Partial<Plotly.Config> = {
@@ -113,12 +139,19 @@ const lineStyleMap: Record<string, NonNullable<LineStyle['dash']>> = {
 
 const plotPropertyNames = new Set(['color', 'linestyle', 'linewidth', 'marker', 'markersize', 'markeredgecolor', 'markerfacecolor', 'displayname']);
 
-const isNumericPlotValue = (value: ElementType): value is ComplexDecimal | MultiArray => value instanceof ComplexDecimal || value instanceof MultiArray;
+const isComplexValue = (value: ElementType): value is ComplexDecimal =>
+    value instanceof ComplexDecimal || (typeof value === 'object' && value !== null && 're' in value && 'im' in value && typeof value.re === 'object' && typeof value.im === 'object');
 
-const isStringPlotValue = (value: ElementType): value is CharString => value instanceof CharString;
+const isMultiArrayValue = (value: ElementType): value is MultiArray =>
+    value instanceof MultiArray || (typeof value === 'object' && value !== null && 'array' in value && 'dimension' in value && Array.isArray(value.array) && Array.isArray(value.dimension));
+
+const isNumericPlotValue = (value: ElementType): value is ComplexDecimal | MultiArray => isComplexValue(value) || isMultiArrayValue(value);
+
+const isStringPlotValue = (value: ElementType): value is CharString =>
+    value instanceof CharString || (typeof value === 'object' && value !== null && 'str' in value && typeof value.str === 'string');
 
 const realNumber = (value: ElementType, argumentName: string): number => {
-    if (!(value instanceof ComplexDecimal)) {
+    if (!isComplexValue(value)) {
         throw new Error(`${argumentName}: expected numeric scalar`);
     }
     if (!value.im.eq(0)) {
@@ -132,7 +165,7 @@ const realNumber = (value: ElementType, argumentName: string): number => {
 };
 
 const complexPoint = (value: ElementType, argumentName: string): ComplexPoint => {
-    if (!(value instanceof ComplexDecimal)) {
+    if (!isComplexValue(value)) {
         throw new Error(`${argumentName}: expected numeric scalar`);
     }
     const re = value.re.toNumber();
@@ -144,20 +177,20 @@ const complexPoint = (value: ElementType, argumentName: string): ComplexPoint =>
 };
 
 const numericMatrix = (value: ElementType, argumentName: string): NumericMatrix => {
-    if (value instanceof ComplexDecimal) {
+    if (isComplexValue(value)) {
         return [[realNumber(value, argumentName)]];
     }
-    if (!(value instanceof MultiArray)) {
+    if (!isMultiArrayValue(value)) {
         throw new Error(`${argumentName}: expected numeric array`);
     }
     return value.array.map((row) => row.map((entry) => realNumber(entry, argumentName)));
 };
 
 const complexVector = (value: ElementType, argumentName: string): ComplexPoint[] => {
-    if (value instanceof ComplexDecimal) {
+    if (isComplexValue(value)) {
         return [complexPoint(value, argumentName)];
     }
-    if (!(value instanceof MultiArray)) {
+    if (!isMultiArrayValue(value)) {
         throw new Error(`${argumentName}: expected numeric array`);
     }
     if (!isVectorMatrix(value)) {
@@ -529,22 +562,52 @@ const setPlotRenderState = (state: PlotRenderState): void => {
  * application.
  */
 abstract class PlotEngine {
+    private static outputCapture: ((request: PlotOutputRequest) => void) | undefined;
+
+    public static setOutputCapture(capture: ((request: PlotOutputRequest) => void) | undefined): ((request: PlotOutputRequest) => void) | undefined {
+        const previous = PlotEngine.outputCapture;
+        PlotEngine.outputCapture = capture;
+        return previous;
+    }
+
+    public static async render(parent: HTMLElement, request: PlotOutputRequest): Promise<void> {
+        const plotly = await loadPlotly();
+        await plotly.newPlot(parent, request.data, request.layout, request.config);
+    }
+
+    public static async resize(parent: HTMLElement): Promise<void> {
+        const plotly = await loadPlotly();
+        await plotly.Plots.resize(parent);
+    }
+
+    public static dispose(parent: HTMLElement): void {
+        plotlyApi?.purge(parent);
+    }
+
+    private static publish(type: PlotOutputRequest['type'], state: PlotRenderState): void {
+        setPlotRenderState(state);
+        PlotEngine.outputCapture?.({ type, ...state });
+    }
+
     public static readonly outputFunction: { [k: string]: Function } = {
         plot: function (parent: HTMLElement): void {
             (async () => {
-                await Plotly.newPlot(parent, plotRenderState.data, plotRenderState.layout, plotRenderState.config);
+                const plotly = await loadPlotly();
+                await plotly.newPlot(parent, plotRenderState.data, plotRenderState.layout, plotRenderState.config);
             })();
             insertOutput.type = '';
         },
         plot3: function (parent: HTMLElement): void {
             (async () => {
-                await Plotly.newPlot(parent, plotRenderState.data, plotRenderState.layout, plotRenderState.config);
+                const plotly = await loadPlotly();
+                await plotly.newPlot(parent, plotRenderState.data, plotRenderState.layout, plotRenderState.config);
             })();
             insertOutput.type = '';
         },
         surf: function (parent: HTMLElement): void {
             (async () => {
-                await Plotly.newPlot(parent, plotRenderState.data, plotRenderState.layout, plotRenderState.config);
+                const plotly = await loadPlotly();
+                await plotly.newPlot(parent, plotRenderState.data, plotRenderState.layout, plotRenderState.config);
             })();
             insertOutput.type = '';
         },
@@ -567,7 +630,8 @@ abstract class PlotEngine {
                     // scrollZoom: true, // Allow mouse-wheel zoom.
                 };
                 const data = [trace] as Plotly.Data[];
-                await Plotly.newPlot(output, data, layout, config);
+                const plotly = await loadPlotly();
+                await plotly.newPlot(output, data, layout, config);
             })();
             insertOutput.type = '';
         },
@@ -580,7 +644,8 @@ abstract class PlotEngine {
                 };
 
                 const data = [histogram] as Plotly.Data[];
-                await Plotly.newPlot(parent, data);
+                const plotly = await loadPlotly();
+                await plotly.newPlot(parent, data);
             })();
             insertOutput.type = '';
         },
@@ -593,7 +658,7 @@ abstract class PlotEngine {
             mapper: false,
             ev: [],
             func: (...args: ElementType[]): NodeExpr => {
-                setPlotRenderState(buildPlot(args));
+                PlotEngine.publish('plot', buildPlot(args));
                 insertOutput.type = 'plot';
                 return AST.nodeIndexExpr(AST.nodeIdentifier('plot'), AST.nodeList(args));
             },
@@ -605,7 +670,7 @@ abstract class PlotEngine {
             mapper: false,
             ev: [],
             func: (...args: ElementType[]): NodeExpr => {
-                setPlotRenderState(buildPlot3(args));
+                PlotEngine.publish('plot3', buildPlot3(args));
                 insertOutput.type = 'plot3';
                 return AST.nodeIndexExpr(AST.nodeIdentifier('plot3'), AST.nodeList(args));
             },
@@ -617,7 +682,7 @@ abstract class PlotEngine {
             mapper: false,
             ev: [],
             func: (...args: ElementType[]): NodeExpr => {
-                setPlotRenderState(buildSurf(args));
+                PlotEngine.publish('surf', buildSurf(args));
                 insertOutput.type = 'surf';
                 return AST.nodeIndexExpr(AST.nodeIdentifier('surf'), AST.nodeList(args));
             },
@@ -667,6 +732,12 @@ abstract class PlotEngine {
                 /* Restore the call stack after sampling the expression. */
                 appEngine.interpreter.context.callStack!.pop();
                 Decimal.set({ precision: save_precision });
+                PlotEngine.outputCapture?.({
+                    type: 'plot2d',
+                    data: [{ x: [...plotData.X], y: [...plotData.data], type: 'scatter', mode: 'lines' }],
+                    layout: { autosize: true, margin: { b: 48, l: 56, r: 24, t: 24 } },
+                    config: defaultPlotConfig,
+                });
                 return AST.nodeIndexExpr(AST.nodeIdentifier('plot2d'), AST.nodeList([expr, variable, minx, maxx]));
             },
         },
@@ -693,16 +764,16 @@ abstract class PlotEngine {
                 for (let i = 0; i < (IMAG.dimension[1] ?? 0); i++) {
                     if (DOM) {
                         const domainValue = domainRow?.[i];
-                        if (domainValue instanceof ComplexDecimal) {
+                        if (isComplexValue(domainValue)) {
                             plotData.X[i] = domainValue.re.toNumber();
-                        } else if (domainValue instanceof CharString) {
+                        } else if (isStringPlotValue(domainValue)) {
                             plotData.X[i] = domainValue.str;
                         }
                     } else {
                         plotData.X[i] = i;
                     }
                     const value = imagRow[i];
-                    if (value instanceof ComplexDecimal && isFinite(value.re.toNumber()) && isFinite(value.im.toNumber()) && value.im.eq(0)) {
+                    if (isComplexValue(value) && isFinite(value.re.toNumber()) && isFinite(value.im.toNumber()) && value.im.eq(0)) {
                         plotData.data[i] = value.re.toNumber();
                     } else {
                         throw new Error('non real number in histogram y axis');
@@ -710,12 +781,18 @@ abstract class PlotEngine {
                     plotData.MaxY = Math.max(plotData.MaxY, plotData.data[i]!);
                     plotData.MinY = Math.min(plotData.MinY, plotData.data[i]!);
                 }
+                PlotEngine.outputCapture?.({
+                    type: 'histogram',
+                    data: [{ x: [...plotData.X], y: [...plotData.data], type: 'bar' }],
+                    layout: { autosize: true },
+                    config: defaultPlotConfig,
+                });
                 return AST.nodeIndexExpr(AST.nodeIdentifier('histogram'), AST.nodeList([IMAG, DOM]));
             },
         },
     };
 }
 
-export type { PlotData };
-export { plotDataLayoutConfig, plotData, plotWidth, PlotEngine };
-export default { plotDataLayoutConfig, plotData, plotWidth, PlotEngine };
+export type { PlotData, PlotOutputRequest };
+export { plotDataLayoutConfig, plotData, plotWidth, insertOutput, PlotEngine };
+export default { plotDataLayoutConfig, plotData, plotWidth, insertOutput, PlotEngine };

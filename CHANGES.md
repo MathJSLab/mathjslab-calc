@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file. This
 project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.3.0
+
+- Migrated command execution to the public asynchronous `mathjslab` runtime
+  with an isolated browser Worker session and recoverable lifecycle handling.
+- Kept Plotly rendering on the main thread through serializable plot output
+  capture while sharing the corrected plotting lifecycle with `mathjslab-app`.
+- Deferred Plotly loading until main-thread rendering and accepted runtime
+  values across bundle boundaries, keeping Worker startup independent of DOM
+  globals.
+- Separated the runtime Worker bundle from the calculator entry bundle and
+  corrected development asset generation for reliable browser loading.
+- Pinned the Node.js type definitions to the registry-verified 24.10.1 release
+  used with the Node 24 deployment runtime.
+- Added an npm-check-updates policy that preserves the supported Node.js type
+  major during routine dependency updates.
+- Updated dependencies to `mathjslab` 2.6.1 and the current shared organization
+  resources.
+
 ## 0.2.4
 
 - Dependencies Updated (`mathjslab` 2.5.4).

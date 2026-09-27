@@ -19,18 +19,35 @@ const __dirname = path.dirname(__filename);
 
 class StaticRootAssetsPlugin {
     apply(compiler: webpack.Compiler): void {
-        compiler.hooks.afterEmit.tap('StaticRootAssetsPlugin', () => {
-            const outputPath = compiler.options.output.path;
-            if (!outputPath) {
-                return;
-            }
-            ['manifest.json', 'robots.txt', 'sitemap.xml'].forEach((file) => {
-                const source = path.join(__dirname, file);
+        compiler.hooks.thisCompilation.tap('StaticRootAssetsPlugin', (compilation) => {
+            const { RawSource } = compiler.webpack.sources;
+            const emitFile = (source: string, destination: string): void => {
                 if (fs.existsSync(source)) {
-                    fs.copyFileSync(source, path.join(outputPath, file));
+                    compilation.emitAsset(destination.replaceAll(path.sep, '/'), new RawSource(fs.readFileSync(source)));
                 }
-            });
-            fs.cpSync(path.join(__dirname, 'images'), path.join(outputPath, 'images'), { recursive: true });
+            };
+            const emitDirectory = (source: string, destination: string): void => {
+                for (const entry of fs.readdirSync(source, { withFileTypes: true })) {
+                    const sourcePath = path.join(source, entry.name);
+                    const destinationPath = path.join(destination, entry.name);
+                    if (entry.isDirectory()) {
+                        emitDirectory(sourcePath, destinationPath);
+                    } else if (entry.isFile()) {
+                        emitFile(sourcePath, destinationPath);
+                    }
+                }
+            };
+
+            compilation.hooks.processAssets.tap(
+                {
+                    name: 'StaticRootAssetsPlugin',
+                    stage: webpack.Compilation.PROCESS_ASSETS_STAGE_ADDITIONAL,
+                },
+                () => {
+                    ['manifest.json', 'robots.txt', 'sitemap.xml'].forEach((file) => emitFile(path.join(__dirname, file), file));
+                    emitDirectory(path.join(__dirname, 'images'), 'images');
+                },
+            );
         });
     }
 }
@@ -129,7 +146,8 @@ export default (env: any, argv: any): webpack.Configuration[] => {
                 },
             },
             output: {
-                filename: 'mathjslab-calc.js',
+                filename: '[name].js',
+                chunkFilename: '[name].[contenthash:8].js',
                 path: path.join(__dirname, 'dist'),
                 publicPath: '/',
                 environment: {
